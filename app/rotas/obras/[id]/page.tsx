@@ -11,10 +11,18 @@ type Obra = {
   progresso: number;
   imagem: string;
 };
-export default function NomeDaPagina() {
-  return (
-    <main>
-      <h1>Conteúdo Principal</h1>
-    </main>
-  );
-}
+
+const obras: Obra[] = [
+  {
+    id: 1,
+    nome: "Obra 1",
+    endereço: "Endereço 1",
+    investimento: "Investimento 1",
+    inicio: "Inicio 1",
+    conclusão: "Conclusão 1",
+    progresso: 50,
+
+    imagem: "/obra1.jpg",
+    descricao: "Descrição 1",
+  },
+];

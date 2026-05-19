@@ -11,6 +11,8 @@ export default function Home() {
           width={100}
           height={20}
           priority
+
+          <div className="w-40 h-40 bg-white border border-zinc-300"></div>
         />
         <div className="w-40 h-40 bg-white-500 hover:scale-110 transition rounded-xl"></div>
           <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-white dark:text-zinc-50">
