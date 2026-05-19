@@ -2,10 +2,10 @@ import Image from "next/image";
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
+    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-white">
       <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
         <Image
-          className="dark:invert"
+          className="white"
           src="/next.svg"
           alt="Next.js logo"
           width={100}
@@ -14,11 +14,11 @@ export default function Home() {
         />
 
         <div className="flex gap-6">
-          <div className="h-40 w-40 rounded-lg border border-zinc-300 bg-white"></div>
+          <div className="h-40 w-40 rounded-lg border border-zinc-300 bg-dark"></div>
 
-          <div className="h-40 w-40 rounded-lg border border-zinc-300 bg-white"></div>
+          <div className="h-40 w-40 rounded-lg border border-zinc-300 bg-dark"></div>
 
-          <div className="h-40 w-40 rounded-lg border border-zinc-300 bg-white"></div>
+          <div className="h-40 w-40 rounded-lg border border-zinc-300 bg-dark"></div>
         </div>
 
         <div className="flex-1">
