@@ -26,7 +26,7 @@ const obras: Obra[] = [
   },
   {
     id: 4,
-    nome: "trocar tiro com upp",
+    nome: "atirar uma pedra derruba um 7.62",
     descricao: "Pavimentação completa.",
     progresso: 33,
   },
