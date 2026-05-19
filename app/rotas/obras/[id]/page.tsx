@@ -21,7 +21,6 @@ const obras: Obra[] = [
     inicio: "Inicio 1",
     conclusão: "Conclusão 1",
     progresso: 50,
-
     imagem: "/obra1.jpg",
     descricao: "Descrição 1",
   },
