@@ -12,7 +12,7 @@ export default function Home() {
           height={20}
           priority
         />
-        <div className="flex-1">
+        <div className="w-40 h-40 bg-purple-500 hover:scale-110 transition rounded-xl"></div>
           <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-white dark:text-zinc-50">
             MACACOS ME MORDAM
           </h1>
