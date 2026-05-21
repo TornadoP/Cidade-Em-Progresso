@@ -4,7 +4,7 @@ import Image from "next/image";
 export default function Home() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-[#E3F1F1] to-[#CBDfde] font-sans p-6">
-      <main className="flex min-h-[650px] w-full max-w-5xl flex-col items-center justify-between rounded-3xl bg-black px-16 py-10 shadow-2xl sm:items-start">
+      <main className="flex min-h-[650px] w-full max-w-5xl flex-col items-center justify-between rounded-3xl bg-gradient-to-b from-[#F3EAE2] to-[#E0D1D4] px-16 py-10 shadow-2xl sm:items-start">
         {/* Aqui é o código para os quadrados de teste */}
         <div className="flex gap-6">
           <div className="h-40 w-40 rounded-lg border border-zinc-300 bg-white"></div>
