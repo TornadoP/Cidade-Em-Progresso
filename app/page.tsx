@@ -13,7 +13,8 @@ export default function Home() {
             <div className="h-50 w-50 rounded-lg border border-zinc-300 bg-white"></div>
           </div>
         </div>
-
+        {/* Barra de pesquisa */}
+        <div className="flex items-center gap-3 rounded-full border border-zinc-300 bg-white px-4 py-2 shadow-sm w-[300px]"></div>
         <div className="flex-1 py-10">
           <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black">
             Que droga
