@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-export default async function Home(params: { id: string }) {
+export default async function ObraPage(params: { id: string }) {
   const { id } = await params;
 
   const obra = obras.find((item) => item.id === Number(id));
@@ -43,7 +43,8 @@ export default async function Home(params: { id: string }) {
       inicio: "15/02/2024",
       conclusão: "15/12/2024",
       progresso: 48,
-      imagem: "/escola.jpg",
+      imagem:
+        "https://www.folhabv.com.br/wp-content/uploads/2024/04/ESCOLA-PROFESSOR-DIOMEDES-FOTO-NILZETE-FRANCO-3-1024x683.jpg",
       descricao: "Construção de novas salas.",
     },
     {
@@ -54,7 +55,8 @@ export default async function Home(params: { id: string }) {
       inicio: "10/03/2024",
       conclusão: "10/09/2024",
       progresso: 33,
-      imagem: "/asfalto.jpg",
+      imagem:
+        "https://f.i.uol.com.br/fotografia/2023/12/04/1701724804656e4284e0098_1701724804_3x2_rt.jpg",
       descricao: "Pavimentação completa.",
     },
     {
@@ -65,7 +67,8 @@ export default async function Home(params: { id: string }) {
       inicio: "01/04/2024",
       conclusão: "01/10/2024",
       progresso: 33,
-      imagem: "/caos.jpg",
+      imagem:
+        "https://s2.glbimg.com/LvSZ_Ig3NxNvTgA1dbzSf6cP0f8=/e.glbimg.com/og/ed/f/original/2018/01/12/73633385_ri-rio-de-janeiro-rj-13-12-2017-crise-no-estado-governo-do-estado-corta-o-orcamento-da-pm-e.jpg",
       descricao: "Pavimentação completa.",
     },
     {
