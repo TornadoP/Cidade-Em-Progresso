@@ -5,6 +5,10 @@ export default function Home() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-[#E3F1F1] to-[#CBDfde] font-sans p-6">
       <main className="flex min-h-[650px] w-full max-w-5xl flex-col items-center justify-between rounded-3xl bg-gradient-to-b from-[#F3EAE2] to-[#E0D1D4] px-16 py-10 shadow-2xl sm:items-start">
+        <aside className="flex h-full w-56 flex-col rounded-l-3xl bg-[#EFE7E2] px-5 py-6">
+          {/* Conteúdo da sidebar */}
+        </aside>
+
         {/* Aqui é o código para os quadrados de teste */}
         <div className="rounded-3xl border border-white/20 bg-black/10 p-6 shadow-xl ml-auto">
           <div className="flex  flex-col gap-6 ml-auto">
