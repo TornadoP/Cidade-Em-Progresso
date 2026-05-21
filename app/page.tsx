@@ -41,7 +41,7 @@ export default function Home() {
 
         <div className="flex flex-col gap-4 pt-10 text-base font-medium sm:flex-row">
           <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-black px-5 text-black transition-colors hover:bg-zinc-300 md:w-[158px]"
+            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-white px-5 text-black transition-colors hover:bg-zinc-300 md:w-[158px]"
             href=""
             target="_blank"
             rel="noopener noreferrer"
@@ -56,7 +56,7 @@ export default function Home() {
           </a>
 
           <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-black px-5 text-black transition-colors hover:bg-zinc-300 md:w-[158px]"
+            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-white px-5 text-black transition-colors hover:bg-zinc-300 md:w-[158px]"
             href=""
             target="_blank"
             rel="noopener noreferrer"
