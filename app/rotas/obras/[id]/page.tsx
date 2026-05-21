@@ -1,6 +1,10 @@
 import Link from "next/link";
 
-export default function ObraPage() {
+export default async function Home(params: { id: string }) {
+  const { id } = await params;
+
+  const obra = obras.find((item) => item.id === Number(id));
+
   return (
     <main className="min-h-screen bg-white p-8">
       <h1 className="text-3xl font-bold text-black">detalhe da obra</h1>
@@ -27,8 +31,9 @@ export default function ObraPage() {
       inicio: "01/01/2024",
       conclusão: "30/06/2024",
       progresso: 75,
-      imagem: "/esburacamento.jpg",
-      descricao: "Destruir completamente as ruas.",
+      imagem: "https://www.pedreiras.ma.gov.br/fotos/738/Img0_600x400.jpg",
+      descricao:
+        "Destruir completamente as ruas, até que não sobre mais asfalto Destruir completamente as ruas, até que não sobre mais asfalto, taca uma bomba logo, até que não sobre mais nada não precisa ter rua, só lama já serve.",
     },
     {
       id: 2,
