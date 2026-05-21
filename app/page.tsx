@@ -53,14 +53,12 @@ export default function Home() {
             </a>
           </nav>
 
-          <div className="mt-auto">
-            <a
-              className="rounded-xl px-4 py-3 text-sm transition hover:bg-[#D8CBD4]"
-              href="#"
-            >
-              Sair
-            </a>
-          </div>
+          <a
+            className="rounded-xl px-4 py-3 text-sm transition hover:bg-[#D8CBD4]"
+            href="#"
+          >
+            Sair
+          </a>
         </aside>
 
         {/* Aqui é o código para os quadrados de teste */}
