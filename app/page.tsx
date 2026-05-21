@@ -56,7 +56,7 @@ export default function Home() {
           </a>
 
           <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-white/20 px-5 text-white transition-colors hover:bg-white/10 md:w-[158px]"
+            className="flex h-12 w-full items-center justify-center rounded-full border border-black/20 px-5 text-black transition-colors hover:bg-black/10 md:w-[158px]"
             href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
             target="_blank"
             rel="noopener noreferrer"
