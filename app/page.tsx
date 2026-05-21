@@ -41,7 +41,7 @@ export default function Home() {
 
         <div className="flex flex-col gap-4 pt-10 text-base font-medium sm:flex-row">
           <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-white px-5 text-black transition-colors hover:bg-zinc-300 md:w-[158px]"
+            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-black px-5 text-black transition-colors hover:bg-zinc-300 md:w-[158px]"
             href=""
             target="_blank"
             rel="noopener noreferrer"
@@ -52,16 +52,16 @@ export default function Home() {
               width={16}
               height={16}
             />
-            Deploy Now
+            Startar Agora
           </a>
 
           <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-black/20 px-5 text-black transition-colors hover:bg-black/10 md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
+            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-black px-5 text-black transition-colors hover:bg-zinc-300 md:w-[158px]"
+            href=""
             target="_blank"
             rel="noopener noreferrer"
           >
-            Documentation
+            Documentação
           </a>
         </div>
       </main>
