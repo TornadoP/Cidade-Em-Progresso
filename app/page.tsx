@@ -13,13 +13,13 @@ export default function Home() {
         </div>
 
         <div className="flex-1 py-10">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-white">
+          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black">
             Que droga
           </h1>
         </div>
 
         <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-white">
+          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black">
             To get started, edit the page.tsx file.
           </h1>
 
@@ -27,12 +27,12 @@ export default function Home() {
             Looking for a starting point or more instructions? Head over to{" "}
             <a
               href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-white"
+              className="font-medium text-black"
             >
               Templates
             </a>{" "}
             or the{" "}
-            <a href="" className="font-medium text-white">
+            <a href="" className="font-medium text-black">
               Learning
             </a>{" "}
             center.
