@@ -3,8 +3,6 @@ import Link from "next/link";
 export default async function ObraPage(params: { id: string }) {
   const { id } = await params;
 
-  const obra = obras.find((item) => item.id === Number(id));
-
   return (
     <main className="min-h-screen bg-white p-8">
       <h1 className="text-3xl font-bold text-black">detalhe da obra</h1>
@@ -83,4 +81,5 @@ export default async function ObraPage(params: { id: string }) {
       descricao: "Criação de áreas verdes e lazer.",
     },
   ];
+  const obra = obras.find((item) => item.id === Number(id));
 }
