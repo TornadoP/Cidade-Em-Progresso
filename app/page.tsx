@@ -1,51 +1,52 @@
 import Image from "next/image";
-//Aqui é o código para o sistema funcionar, não mexa aqui
+
+// Aqui é o código para o sistema funcionar, não mexa aqui
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-white">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-8 px-16 bg-white dark:bg-black sm:items-start">
+    <div className="flex min-h-screen items-center justify-center bg-zinc-100 font-sans p-6">
+      <main className="flex min-h-[650px] w-full max-w-5xl flex-col items-center justify-between rounded-3xl bg-black px-16 py-10 shadow-2xl sm:items-start">
+        {/* Aqui é o código para os quadrados de teste */}
         <div className="flex gap-6">
-          {" "}
-          *aqui é o código para os quadrados de teste*
           <div className="h-40 w-40 rounded-lg border border-zinc-300 bg-white"></div>
           <div className="h-40 w-40 rounded-lg border border-zinc-300 bg-white"></div>
           <div className="h-40 w-40 rounded-lg border border-zinc-300 bg-white"></div>
         </div>
 
-        <div className="flex-1">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-white dark:text-zinc-50">
+        <div className="flex-1 py-10">
+          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-white">
             MACACOS ME MORDAM
           </h1>
         </div>
 
         <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
+          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-white">
             To get started, edit the page.tsx file.
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
+
+          <p className="max-w-md text-lg leading-8 text-zinc-400">
             Looking for a starting point or more instructions? Head over to{" "}
             <a
               href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+              className="font-medium text-white"
             >
               Templates
             </a>{" "}
             or the{" "}
-            <a href="" className="font-medium text-zinc-950 dark:text-zinc-50">
+            <a href="" className="font-medium text-white">
               Learning
             </a>{" "}
             center.
           </p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
+
+        <div className="flex flex-col gap-4 pt-10 text-base font-medium sm:flex-row">
           <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
+            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-white px-5 text-black transition-colors hover:bg-zinc-300 md:w-[158px]"
             href=""
             target="_blank"
             rel="noopener noreferrer"
           >
             <Image
-              className="dark:invert"
               src="/vercel.svg"
               alt="Vercel logomark"
               width={16}
@@ -53,8 +54,9 @@ export default function Home() {
             />
             Deploy Now
           </a>
+
           <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
+            className="flex h-12 w-full items-center justify-center rounded-full border border-white/20 px-5 text-white transition-colors hover:bg-white/10 md:w-[158px]"
             href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
             target="_blank"
             rel="noopener noreferrer"
