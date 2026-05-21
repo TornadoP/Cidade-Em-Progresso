@@ -7,9 +7,9 @@ export default function Home() {
       <main className="flex min-h-[650px] w-full max-w-5xl flex-col items-center justify-between rounded-3xl bg-gradient-to-b from-[#F3EAE2] to-[#E0D1D4] px-16 py-10 shadow-2xl sm:items-start">
         {/* Aqui é o código para os quadrados de teste */}
         <div className="flex gap-6">
-          <div className="h-40 w-40 rounded-lg border border-zinc-300 bg-white"></div>
-          <div className="h-40 w-40 rounded-lg border border-zinc-300 bg-white"></div>
-          <div className="h-40 w-40 rounded-lg border border-zinc-300 bg-white"></div>
+          <div className="h-60 w-60 rounded-lg border border-zinc-300 bg-white"></div>
+          <div className="h-60 w-60 rounded-lg border border-zinc-300 bg-white"></div>
+          <div className="h-60 w-60 rounded-lg border border-zinc-300 bg-white"></div>
         </div>
 
         <div className="flex-1 py-10">
@@ -41,7 +41,7 @@ export default function Home() {
 
         <div className="flex flex-col gap-4 pt-10 text-base font-medium sm:flex-row">
           <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-white px-5 text-black transition-colors hover:bg-zinc-300 md:w-[158px]"
+            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-black px-5 text-black transition-colors hover:bg-zinc-300 md:w-[158px]"
             href=""
             target="_blank"
             rel="noopener noreferrer"
