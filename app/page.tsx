@@ -9,56 +9,47 @@ export default function Home() {
         <aside className="flex w-56 flex-col bg-[#EFE7E2] px-5 py-6 text-[#4B3348]">
           <h1 className="mb-8 text-xl font-semibold">Smartech</h1>
 
-          <div className="mb-8 flex items-center gap-3">
-            <div className="h-12 w-12 rounded-full bg-[#D9B8C4]"></div>
-
-            <div>
-              <p className="text-sm font-semibold">Sophia</p>
-              <p className="text-xs text-[#7A6675]">Tompson</p>
-            </div>
-          </div>
-
           <nav className="flex flex-col gap-3 text-sm">
             <a
               className="rounded-xl bg-[#D8CBD4] px-4 py-3 font-medium"
               href="#"
             >
-              Dashboard
+              Inicio
             </a>
 
             <a
               className="rounded-xl px-4 py-3 transition hover:bg-[#D8CBD4]"
               href="#"
             >
-              My classes
+              Obras
             </a>
 
             <a
               className="rounded-xl px-4 py-3 transition hover:bg-[#D8CBD4]"
               href="#"
             >
-              My grades
+              Participar
             </a>
 
             <a
               className="rounded-xl px-4 py-3 transition hover:bg-[#D8CBD4]"
               href="#"
             >
-              Schedule
+              Ranking
             </a>
 
             <a
               className="rounded-xl px-4 py-3 transition hover:bg-[#D8CBD4]"
               href="#"
             >
-              Messages
+              Sobre
             </a>
 
             <a
               className="rounded-xl px-4 py-3 transition hover:bg-[#D8CBD4]"
               href="#"
             >
-              Setting
+              Configurações
             </a>
           </nav>
 
@@ -67,7 +58,7 @@ export default function Home() {
               className="rounded-xl px-4 py-3 text-sm transition hover:bg-[#D8CBD4]"
               href="#"
             >
-              Log out
+              Sair
             </a>
           </div>
         </aside>
