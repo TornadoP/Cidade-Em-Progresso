@@ -61,8 +61,9 @@ export default function Home() {
         {/* ÁREA PRINCIPAL DA DIREITA */}
         <section className="flex flex-1 flex-col px-4 py-6 sm:px-6 md:px-10 md:py-8">
           <div className="mx-auto flex w-full max-w-[662px] flex-1 flex-col">
-            {/* Barra de pesquisa */}
-            <div className="mb-6 flex w-full justify-start md:mb-8">
+            {/* Topo: pesquisa + ícones */}
+            <div className="mb-6 flex w-full flex-col gap-4 md:mb-8 lg:flex-row lg:items-center">
+              {" "}
               <div className="flex w-full max-w-[320px] items-center gap-3 rounded-full border border-zinc-300 bg-white/70 px-4 py-2 shadow-sm backdrop-blur-sm">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -84,6 +85,54 @@ export default function Home() {
                   placeholder="Pesquisar"
                   className="w-full bg-transparent text-sm text-zinc-700 outline-none placeholder:text-zinc-400"
                 />
+              </div>
+              {/* Ícones de usuário e logout */}
+              <div className="flex items-center gap-3 lg:ml-[132px]">
+                {/* Botão usuário */}
+                <button
+                  type="button"
+                  aria-label="Perfil do usuário"
+                  onClick={() => alert("Abrir perfil do usuário")}
+                  className="flex h-10 w-10 items-center justify-center rounded-full bg-[#425C59] shadow-sm transition hover:scale-105 hover:bg-[#334846]"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5 text-white"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M15.75 7.5a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.5 20.25a7.5 7.5 0 0115 0"
+                    />
+                  </svg>
+                </button>
+
+                {/* Botão logout */}
+                <button
+                  type="button"
+                  aria-label="Sair da conta"
+                  onClick={() => alert("Deslogar usuário")}
+                  className="flex h-10 w-10 items-center justify-center rounded-full bg-[#425C59] shadow-sm transition hover:scale-105 hover:bg-[#334846]"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5 text-white"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6A2.25 2.25 0 005.25 5.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M18 15l3-3m0 0l-3-3m3 3H9"
+                    />
+                  </svg>
+                </button>
               </div>
             </div>
 
