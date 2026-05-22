@@ -76,7 +76,7 @@ export default function Home() {
             </div>
           </div>
           {/* Card central com imagem e descrição */}
-          <div className="flex flex-1 items-center-top justify-center">
+          <div className="flex flex-1 items-stretch justify-center gap-8">
             <div className="w-[420px] rounded-3xl bg-[#4B3348]/35 p-5 shadow-xl">
               {/* Área da imagem */}
               <div className="flex h-[360px] w-full items-center justify-center rounded-2xl bg-white/20">
@@ -97,12 +97,10 @@ export default function Home() {
             </div>
           </div>
           {/* Quadrados Verticais */}
-          <div className="my-8 mr-8 self-start rounded-3xl border border-white/10 bg-[#4B3348]/35 p-5 shadow-xl">
-            <div className="flex  flex-col gap-6 ">
-              <div className="h-50 w-50 rounded-lg border border-zinc-300 bg-white"></div>
-              <div className="h-50 w-50 rounded-lg border border-zinc-300 bg-white"></div>
-              <div className="h-50 w-50 rounded-lg border border-zinc-300 bg-white"></div>
-            </div>
+          <div className="flex w-[190px] flex-col justify-between rounded-3xl border border-white/10 bg-[#4B3348]/35 p-5 shadow-xl">
+            <div className="h-[170px] w-full rounded-lg border border-zinc-300 bg-white"></div>
+            <div className="h-[170px] w-full rounded-lg border border-zinc-300 bg-white"></div>
+            <div className="h-[170px] w-full rounded-lg border border-zinc-300 bg-white"></div>
           </div>
           {/* Daqui para baixo fica o resto do seu conteúdo */}
         </section>
