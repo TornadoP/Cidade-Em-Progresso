@@ -1,10 +1,11 @@
 import Image from "next/image";
 
+// Aqui é o código para o sistema funcionar, não mexa aqui comece após o main
 export default function Home() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-[#E3F1F1] to-[#CBDfde] p-4 font-sans sm:p-6">
       <main className="flex w-full max-w-5xl flex-col overflow-hidden rounded-3xl bg-[#C9D9DB] shadow-[0_25px_80px_rgba(0,0,0,0.45)] md:min-h-[650px] md:flex-row">
-        {/* SIDEBAR ESQUERDA */}
+        {/* SIDEBAR ESQUERDA - a cor #CBDfde é #D8CBD4 um tom de roxo, ou lilas  #4B5563 #425C59  #C9D9DB*/}
         <aside className="flex w-full flex-col bg-[#425C59]/35 px-5 py-6 text-black md:w-56">
           <h1 className="mb-6 text-center text-xl font-semibold md:text-left">
             Cidade em Progresso
@@ -59,7 +60,6 @@ export default function Home() {
             </a>
           </nav>
         </aside>
-
         {/* ÁREA PRINCIPAL DA DIREITA */}
         <section className="flex flex-1 flex-col px-4 py-6 sm:px-6 md:px-10 md:py-8">
           {/* Barra de pesquisa */}
@@ -87,10 +87,8 @@ export default function Home() {
               />
             </div>
           </div>
-
-          {/* Card central + quadrados */}
-          <div className="flex flex-1 flex-col items-stretch justify-center gap-6 md:flex-row md:gap-8">
-            {/* Card central */}
+          {/* Card central com imagem e descrição */}
+          <div className="flex flex-1 items-stretch justify-center gap-8">
             <div className="w-full rounded-3xl bg-[#425C59] p-5 shadow-xl md:w-[420px]">
               {/* Área da imagem */}
               <div className="flex h-[260px] w-full items-center justify-center rounded-2xl bg-white/20 sm:h-[320px] md:h-[360px]">
@@ -109,7 +107,6 @@ export default function Home() {
                 </p>
               </div>
             </div>
-
             {/* Quadrados Verticais */}
             <div className="grid w-full grid-cols-1 gap-5 rounded-3xl border border-white/10 bg-[#425C59] p-5 shadow-xl sm:grid-cols-3 md:flex md:w-[210px] md:flex-col md:justify-between">
               <div className="h-[160px] w-full rounded-lg border border-zinc-300 bg-white md:h-[180px]"></div>
@@ -117,6 +114,8 @@ export default function Home() {
               <div className="h-[160px] w-full rounded-lg border border-zinc-300 bg-white md:h-[180px]"></div>
             </div>
           </div>
+
+          {/* Daqui para baixo fica o resto do seu conteúdo */}
         </section>
       </main>
     </div>
