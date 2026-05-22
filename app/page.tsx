@@ -5,8 +5,71 @@ export default function Home() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-[#E3F1F1] to-[#CBDfde] font-sans p-6">
       <main className="flex min-h-[650px] w-full max-w-5xl flex-col items-center justify-between rounded-3xl bg-gradient-to-b from-[#F3EAE2] to-[#E0D1D4] px-16 py-10 shadow-2xl sm:items-start">
-        <aside className="flex h-full w-56 flex-col rounded-l-3xl bg-[#EFE7E2] px-5 py-6">
-          {/* Conteúdo da sidebar */}
+        {/* SIDEBAR ESQUERDA */}
+        <aside className="flex w-56 flex-col bg-[#EFE7E2] px-5 py-6 text-[#4B3348]">
+          <h1 className="mb-8 text-xl font-semibold">Smartech</h1>
+
+          <div className="mb-8 flex items-center gap-3">
+            <div className="h-12 w-12 rounded-full bg-[#D9B8C4]"></div>
+
+            <div>
+              <p className="text-sm font-semibold">Sophia</p>
+              <p className="text-xs text-[#7A6675]">Tompson</p>
+            </div>
+          </div>
+
+          <nav className="flex flex-col gap-3 text-sm">
+            <a
+              className="rounded-xl bg-[#D8CBD4] px-4 py-3 font-medium"
+              href="#"
+            >
+              Dashboard
+            </a>
+
+            <a
+              className="rounded-xl px-4 py-3 transition hover:bg-[#D8CBD4]"
+              href="#"
+            >
+              My classes
+            </a>
+
+            <a
+              className="rounded-xl px-4 py-3 transition hover:bg-[#D8CBD4]"
+              href="#"
+            >
+              My grades
+            </a>
+
+            <a
+              className="rounded-xl px-4 py-3 transition hover:bg-[#D8CBD4]"
+              href="#"
+            >
+              Schedule
+            </a>
+
+            <a
+              className="rounded-xl px-4 py-3 transition hover:bg-[#D8CBD4]"
+              href="#"
+            >
+              Messages
+            </a>
+
+            <a
+              className="rounded-xl px-4 py-3 transition hover:bg-[#D8CBD4]"
+              href="#"
+            >
+              Setting
+            </a>
+          </nav>
+
+          <div className="mt-auto">
+            <a
+              className="rounded-xl px-4 py-3 text-sm transition hover:bg-[#D8CBD4]"
+              href="#"
+            >
+              Log out
+            </a>
+          </div>
         </aside>
 
         {/* Aqui é o código para os quadrados de teste */}
@@ -18,6 +81,7 @@ export default function Home() {
           </div>
         </div>
         {/* Barra de pesquisa */}
+        <div className="flex justify-end w-full mb-6"></div>
         <div className="flex items-center gap-3 rounded-full border border-zinc-300 bg-white px-4 py-2 shadow-sm w-[300px]"></div>
         <svg
           xmlns="http://www.w3.org/2000/svg"
