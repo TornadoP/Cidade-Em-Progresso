@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 
 // Aqui é o código para o sistema funcionar, não mexa aqui comece após o main
