@@ -170,7 +170,7 @@ export default function Home() {
                     <div className="h-3 w-full overflow-hidden rounded-full bg-white/20">
                       <div
                         className="h-full rounded-full bg-gradient-to-r from-[#EF4444] via-[#FACC15] to-[#22C55E] barra-progresso-animada"
-                        style={{ "--progresso": "99%" } as CSSProperties}
+                        style={{ "--progresso": "72%" } as CSSProperties}
                       ></div>
                     </div>
                   </div>
