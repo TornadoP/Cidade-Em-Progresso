@@ -6,14 +6,15 @@ export default function Home() {
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-[#E3F1F1] to-[#CBDfde] p-4 font-sans sm:p-6">
       <main className="flex w-full max-w-5xl flex-col overflow-hidden rounded-3xl bg-[#C9D9DB] shadow-[0_25px_80px_rgba(0,0,0,0.45)] md:min-h-[650px] md:flex-row">
         {/* SIDEBAR ESQUERDA - a cor #CBDfde é #D8CBD4 um tom de roxo, ou lilas  #4B5563 #425C59  #C9D9DB*/}
-        <aside className="flex w-full flex-col bg-[#425C59]/35 px-5 py-6 text-black md:w-56">
+        <aside className="flex w-full flex-col bg-[#425C59]/35 px-5 py-5 text-black md:w-56">
+          {" "}
           <h1 className="mb-6 text-center text-xl font-semibold md:text-left">
             Cidade em Progresso
           </h1>
-
           {/* logo */}
           <div className="mb-6 flex justify-center md:mb-8">
-            <div className="relative h-28 w-28 overflow-hidden rounded-full bg-[#D9B8C4] md:h-36 md:w-36">
+            <div className="relative h-20 w-20 overflow-hidden rounded-full bg-[#D9B8C4] md:h-36 md:w-36">
+              {" "}
               <Image
                 src="/logo.png"
                 alt="Logo Cidade em Progresso"
@@ -23,36 +24,32 @@ export default function Home() {
               />
             </div>
           </div>
-
-          <nav className="flex flex-wrap justify-center gap-3 text-sm md:flex-col md:justify-start">
+          <nav className="flex overflow-x-auto gap-3 text-sm md:flex-col md:overflow-visible">
+            {" "}
             <a
               className="rounded-xl bg-[#CBDfde] px-4 py-3 font-medium"
               href="#"
             >
               Inicio
             </a>
-
             <a
               className="rounded-xl px-4 py-3 transition hover:bg-[#CBDfde]"
               href="#"
             >
               Obras
             </a>
-
             <a
               className="rounded-xl px-4 py-3 transition hover:bg-[#CBDfde]"
               href="#"
             >
               Participar
             </a>
-
             <a
               className="rounded-xl px-4 py-3 transition hover:bg-[#CBDfde]"
               href="#"
             >
               Ranking
             </a>
-
             <a
               className="rounded-xl px-4 py-3 transition hover:bg-[#CBDfde]"
               href="#"
@@ -109,7 +106,7 @@ export default function Home() {
               </div>
             </div>
             {/* Quadrados Verticais */}
-            <div className="grid w-full grid-cols-1 gap-5 rounded-3xl border border-white/10 bg-[#425C59] p-5 shadow-xl sm:grid-cols-3 lg:flex lg:w-[210px] lg:flex-col lg:justify-between">
+            <div className="flex gap-4 overflow-x-auto rounded-3xl bg-[#425C59] p-5 shadow-xl lg:flex-col lg:overflow-visible">
               <p className="text-xl font-semibold text-white">Outras Obras</p>
               <div className="h-[160px] w-full rounded-lg border border-zinc-300 bg-white lg:h-[180px]"></div>
               <div className="h-[160px] w-full rounded-lg border border-zinc-300 bg-white lg:h-[180px]"></div>
