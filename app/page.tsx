@@ -47,7 +47,7 @@ export default function Home() {
           </nav>
         </aside>
 
-        {/* Aqui é o código para os quadrados de teste */}
+        {/* Quadrados Verticais */}
         <div className="rounded-3xl border border-white/20 bg-black/10 p-6 shadow-xl ml-auto">
           <div className="flex  flex-col gap-6 ml-auto">
             <div className="h-50 w-50 rounded-lg border border-zinc-300 bg-white"></div>
@@ -77,7 +77,6 @@ export default function Home() {
           placeholder="Search"
           className="w-full bg-transparent outline-none text-sm text-zinc-700 placeholder:text-zinc-400"
         />
-
         <div className="flex-1 py-10">
           <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black">
             Que droga
