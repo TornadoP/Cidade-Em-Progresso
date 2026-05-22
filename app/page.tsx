@@ -6,7 +6,7 @@ import Image from "next/image";
 export default function Home() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-[#E3F1F1] to-[#CBDfde] font-sans p-6">
-      <main className="flex min-h-[650px] min-w-[650px] max-w-5xl overflow-hidden rounded-3xl bg-[#4B5563]/35 text-black shadow-2xl">
+      <main className="flex min-h-[650px] min-w-[650px] max-w-5xl overflow-hidden rounded-3xl bg-[#4B5563]/10 text-red shadow-2xl">
         {/* SIDEBAR ESQUERDA - a cor #CBDfde é um tom de roxo, ou lilas  #4B5563 #425C59*/}
         <aside className="flex w-56 flex-col bg-[#425C59] px-5 py-6 text-[#4B3348]">
           <h1 className="mb-8 text-xl font-semibold">Cidade em Progresso</h1>
