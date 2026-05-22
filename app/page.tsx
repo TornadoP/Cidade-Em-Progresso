@@ -149,7 +149,7 @@ export default function Home() {
                     alt="Imagem da obra principal"
                     fill
                     sizes="(max-width: 768px) 100vw, 420px"
-                    className="object-cover"
+                    className="object-contain"
                   />
                 </div>
 
