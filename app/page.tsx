@@ -90,7 +90,7 @@ export default function Home() {
           </div>
           {/* Card central com imagem e descrição */}
           <div className="flex flex-1 items-stretch justify-center gap-8">
-            <div className="w-[420px] rounded-3xl bg-[#3D5650]/35 p-5 shadow-xl">
+            <div className="w-[420px] rounded-3xl bg-[#3D5650]/50 p-5 shadow-xl">
               {/* Área da imagem */}
               <div className="flex h-[360px] w-full items-center justify-center rounded-2xl bg-white/20">
                 <span className="text-sm text-white/70">Imagem aqui</span>
@@ -109,7 +109,7 @@ export default function Home() {
               </div>
             </div>
             {/* Quadrados Verticais */}
-            <div className="flex w-[210px] flex-col justify-between rounded-3xl border border-white/10 bg-[#3D5650]/35 p-5 shadow-xl">
+            <div className="flex w-[210px] flex-col justify-between rounded-3xl border border-white/10 bg-[#3D5650]/50 p-5 shadow-xl">
               <div className="h-[180px] w-full rounded-lg border border-zinc-300 bg-white"></div>
               <div className="h-[180px] w-full rounded-lg border border-zinc-300 bg-white"></div>
               <div className="h-[180px] w-full rounded-lg border border-zinc-300 bg-white"></div>
