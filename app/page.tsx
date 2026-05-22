@@ -11,13 +11,14 @@ export default function Home() {
         <aside className="flex w-56 flex-col bg-[#EFE7E2] px-5 py-6 text-[#4B3348]">
           <h1 className="mb-8 text-xl font-semibold">Cidade em Progresso</h1>
 
-          {/* Foto/perfil */}
+          {/* logo */}
           <div className="mb-8 flex items-center gap-3">
             <div className="relative h-24 w-24 overflow-hidden rounded-full bg-[#D9B8C4]">
               <Image
-                src="/perfil.png"
-                alt="Foto de perfil"
-                fill
+                src="/logo.png"
+                alt="Logo Cidade em Progresso"
+                width={120}
+                height={120}
                 className="object-cover"
               />
             </div>
