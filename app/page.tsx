@@ -6,9 +6,9 @@ import Image from "next/image";
 export default function Home() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-[#E3F1F1] to-[#CBDfde] font-sans p-6">
-      <main className="flex min-h-[850px] w-full max-w-5xl overflow-hidden rounded-3xl bg-gradient-to-b from-[#F3EAE2] to-[#E0D1D4] shadow-2xl">
+      <main className="flex min-h-[950px] w-full max-w-5xl overflow-hidden rounded-3xl bg-gradient-to-b from-[#F3EAE2] to-[#E0D1D4] shadow-2xl">
         {/* SIDEBAR ESQUERDA - a cor #4B3348 é um tom de roxo, ou lilas */}
-        <aside className="flex w-64 flex-col bg-[#EFE7E2] px-5 py-6 text-[#4B3348]">
+        <aside className="flex w-56 flex-col bg-[#EFE7E2] px-5 py-6 text-[#4B3348]">
           <h1 className="mb-8 text-xl font-semibold">Cidade em Progresso</h1>
 
           <nav className="flex flex-col gap-3 text-sm">
@@ -77,7 +77,7 @@ export default function Home() {
           </div>
           {/* Card central com imagem e descrição */}
           <div className="flex flex-1 items-center-top justify-center">
-            <div className="w-[520px] rounded-3xl bg-[#4B3348]/50 p-5 shadow-xl">
+            <div className="w-[420px] rounded-3xl bg-[#4B3348]/35 p-5 shadow-xl">
               {/* Área da imagem */}
               <div className="flex h-[260px] w-full items-center justify-center rounded-2xl bg-white/20">
                 <span className="text-sm text-white/70">Imagem aqui</span>
