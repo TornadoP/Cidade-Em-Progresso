@@ -168,11 +168,107 @@ export default function Home() {
                 </p>
 
                 <div className="flex gap-4 overflow-x-auto lg:flex-1 lg:flex-col lg:justify-between lg:overflow-visible">
-                  <div className="h-[160px] min-w-[160px] rounded-lg border border-zinc-300 bg-white lg:h-auto lg:min-w-0 lg:flex-1"></div>
+                  {/* Gráfico 1 */}
+                  <div className="flex h-[160px] min-w-[160px] flex-col items-center justify-center rounded-lg bg-white lg:h-auto lg:min-w-0 lg:flex-1">
+                    <p className="mb-2 text-sm font-medium text-[#425C59]">
+                      Rua Maneco Rego
+                    </p>
 
-                  <div className="h-[160px] min-w-[160px] rounded-lg border border-zinc-300 bg-white lg:h-auto lg:min-w-0 lg:flex-1"></div>
+                    <div className="relative flex h-20 w-20 items-center justify-center">
+                      <svg className="h-20 w-20 -rotate-90" viewBox="0 0 36 36">
+                        <circle
+                          cx="18"
+                          cy="18"
+                          r="14"
+                          fill="none"
+                          stroke="#E5E7EB"
+                          strokeWidth="4"
+                        />
+                        <circle
+                          cx="18"
+                          cy="18"
+                          r="14"
+                          fill="none"
+                          stroke="#425C59"
+                          strokeWidth="4"
+                          strokeDasharray="70 100"
+                          strokeLinecap="round"
+                        />
+                      </svg>
 
-                  <div className="h-[160px] min-w-[160px] rounded-lg border border-zinc-300 bg-white lg:h-auto lg:min-w-0 lg:flex-1"></div>
+                      <span className="absolute text-sm font-semibold text-[#425C59]">
+                        70%
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Gráfico 2 */}
+                  <div className="flex h-[160px] min-w-[160px] flex-col items-center justify-center rounded-lg bg-white lg:h-auto lg:min-w-0 lg:flex-1">
+                    <p className="mb-2 text-sm font-medium text-[#425C59]">
+                      Rua João Pessoa
+                    </p>
+
+                    <div className="relative flex h-20 w-20 items-center justify-center">
+                      <svg className="h-20 w-20 -rotate-90" viewBox="0 0 36 36">
+                        <circle
+                          cx="18"
+                          cy="18"
+                          r="14"
+                          fill="none"
+                          stroke="#E5E7EB"
+                          strokeWidth="4"
+                        />
+                        <circle
+                          cx="18"
+                          cy="18"
+                          r="14"
+                          fill="none"
+                          stroke="#22C55E"
+                          strokeWidth="4"
+                          strokeDasharray="45 100"
+                          strokeLinecap="round"
+                        />
+                      </svg>
+
+                      <span className="absolute text-sm font-semibold text-[#425C59]">
+                        45%
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Gráfico 3 */}
+                  <div className="flex h-[160px] min-w-[160px] flex-col items-center justify-center rounded-lg bg-white lg:h-auto lg:min-w-0 lg:flex-1">
+                    <p className="mb-2 text-sm font-medium text-[#425C59]">
+                      Rua do Ifma de terra
+                    </p>
+
+                    <div className="relative flex h-20 w-20 items-center justify-center">
+                      <svg className="h-20 w-20 -rotate-90" viewBox="0 0 36 36">
+                        <circle
+                          cx="18"
+                          cy="18"
+                          r="14"
+                          fill="none"
+                          stroke="#E5E7EB"
+                          strokeWidth="4"
+                        />
+                        <circle
+                          cx="18"
+                          cy="18"
+                          r="14"
+                          fill="none"
+                          stroke="#F59E0B"
+                          strokeWidth="4"
+                          strokeDasharray="85 100"
+                          strokeLinecap="round"
+                        />
+                      </svg>
+
+                      <span className="absolute text-sm font-semibold text-[#425C59]">
+                        85%
+                      </span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
