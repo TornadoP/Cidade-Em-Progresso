@@ -79,12 +79,12 @@ export default function Home() {
           <div className="flex flex-1 items-center-top justify-center">
             <div className="w-[420px] rounded-3xl bg-[#4B3348]/35 p-5 shadow-xl">
               {/* Área da imagem */}
-              <div className="flex h-[260px] w-full items-center justify-center rounded-2xl bg-white/20">
+              <div className="flex h-[360px] w-full items-center justify-center rounded-2xl bg-white/20">
                 <span className="text-sm text-white/70">Imagem aqui</span>
               </div>
 
               {/* Área da descrição */}
-              <div className="mt-5 rounded-2xl bg-white/10 p-4">
+              <div className="mt-5 h-[150px] rounded-2xl bg-white/10 p-4">
                 <h2 className="text-xl font-semibold text-white">
                   Título da obra
                 </h2>
