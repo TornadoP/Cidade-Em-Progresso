@@ -8,7 +8,7 @@ export default function Home() {
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-[#E3F1F1] to-[#CBDfde] font-sans p-6">
       <main className="flex min-h-[650px] min-w-[650px] max-w-5xl overflow-hidden rounded-3xl bg-gradient-to-b from-[#F3EAE2] to-[#E0D1D4] shadow-2xl">
         {/* SIDEBAR ESQUERDA - a cor #4B3348 é um tom de roxo, ou lilas  #2563EB*/}
-        <aside className="flex w-56 flex-col bg-[#2563EB] px-5 py-6 text-[#4B3348]">
+        <aside className="flex w-56 flex-col bg-[#2563EB]/35 px-5 py-6 text-[#4B3348]">
           <h1 className="mb-8 text-xl font-semibold">Cidade em Progresso</h1>
 
           {/* logo */}
