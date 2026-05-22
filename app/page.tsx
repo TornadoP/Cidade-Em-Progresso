@@ -11,6 +11,18 @@ export default function Home() {
         <aside className="flex w-56 flex-col bg-[#EFE7E2] px-5 py-6 text-[#4B3348]">
           <h1 className="mb-8 text-xl font-semibold">Cidade em Progresso</h1>
 
+          {/* Foto/perfil */}
+          <div className="mb-8 flex items-center gap-3">
+            <div className="relative h-12 w-12 overflow-hidden rounded-full bg-[#D9B8C4]">
+              <Image
+                src="/perfil.png"
+                alt="Foto de perfil"
+                fill
+                className="object-cover"
+              />
+            </div>
+          </div>
+
           <nav className="flex flex-col gap-3 text-sm">
             <a
               className="rounded-xl bg-[#D8CBD4] px-4 py-3 font-medium"
@@ -97,9 +109,9 @@ export default function Home() {
             </div>
             {/* Quadrados Verticais */}
             <div className="flex w-[190px] flex-col justify-between rounded-3xl border border-white/10 bg-[#4B3348]/35 p-5 shadow-xl">
-              <div className="h-[180px] h-[180px] rounded-lg border border-zinc-300 bg-white"></div>
-              <div className="h-[180px] h-[180px] rounded-lg border border-zinc-300 bg-white"></div>
-              <div className="h-[180px] h-[180px] rounded-lg border border-zinc-300 bg-white"></div>
+              <div className="h-[180px] w-[180px] rounded-lg border border-zinc-300 bg-white"></div>
+              <div className="h-[180px] w-[180px] rounded-lg border border-zinc-300 bg-white"></div>
+              <div className="h-[180px] w-[180px] rounded-lg border border-zinc-300 bg-white"></div>
             </div>
           </div>
 
