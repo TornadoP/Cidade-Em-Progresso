@@ -60,61 +60,72 @@ export default function Home() {
         </aside>
         {/* ÁREA PRINCIPAL DA DIREITA */}
         <section className="flex flex-1 flex-col px-4 py-6 sm:px-6 md:px-10 md:py-8">
-          {/* Barra de pesquisa */}
-          <div className="mb-6 flex w-full justify-center md:mb-8 md:justify-start">
-            <div className="flex w-full max-w-[320px] items-center gap-3 rounded-full border border-zinc-300 bg-white/70 px-4 py-2 shadow-sm backdrop-blur-sm">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5 text-zinc-400"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M21 21l-4.35-4.35m1.85-5.15a7 7 0 11-14 0 7 7 0 0114 0z"
+          <div className="mx-auto flex w-full max-w-[662px] flex-1 flex-col">
+            {/* Barra de pesquisa */}
+            <div className="mb-6 flex w-full justify-start md:mb-8">
+              <div className="flex w-full max-w-[320px] items-center gap-3 rounded-full border border-zinc-300 bg-white/70 px-4 py-2 shadow-sm backdrop-blur-sm">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5 text-zinc-400"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M21 21l-4.35-4.35m1.85-5.15a7 7 0 11-14 0 7 7 0 0114 0z"
+                  />
+                </svg>
+
+                <input
+                  type="text"
+                  placeholder="Pesquisar"
+                  className="w-full bg-transparent text-sm text-zinc-700 outline-none placeholder:text-zinc-400"
                 />
-              </svg>
-
-              <input
-                type="text"
-                placeholder="Pesquisar"
-                className="w-full bg-transparent text-sm text-zinc-700 outline-none placeholder:text-zinc-400"
-              />
+              </div>
             </div>
-          </div>
-          {/* Card central com imagem e descrição */}
-          <div className="flex flex-1 flex-col items-stretch justify-center gap-6 lg:flex-row lg:gap-8">
-            <div className="w-full rounded-3xl bg-[#425C59] p-5 shadow-xl lg:w-[420px]">
-              {/* Área da imagem */}
-              <div className="flex h-[260px] w-full items-center justify-center rounded-2xl bg-white/20 sm:h-[320px] md:h-[360px]">
-                <span className="text-sm text-white/70">Imagem aqui</span>
+
+            {/* Card central com imagem e descrição + Outras obras */}
+            <div className="flex flex-1 flex-col items-stretch justify-center gap-6 lg:flex-row lg:gap-8">
+              {/* Card principal */}
+              <div className="w-full rounded-3xl bg-[#425C59] p-5 shadow-xl lg:w-[420px]">
+                {/* Área da imagem */}
+                <div className="flex h-[260px] w-full items-center justify-center rounded-2xl bg-white/20 sm:h-[320px] md:h-[360px]">
+                  <span className="text-sm text-white/70">Imagem aqui</span>
+                </div>
+
+                {/* Área da descrição */}
+                <div className="mt-5 min-h-[160px] rounded-2xl bg-white/10 p-4 md:h-[200px]">
+                  <h2 className="text-xl font-semibold text-white">
+                    Título da obra
+                  </h2>
+
+                  <p className="mt-2 text-sm leading-6 text-white/80">
+                    Aqui você pode colocar uma descrição sobre a obra,
+                    andamento, localização ou informações importantes para o
+                    cidadão.
+                  </p>
+                </div>
               </div>
 
-              {/* Área da descrição */}
-              <div className="mt-5 min-h-[160px] rounded-2xl bg-white/10 p-4 md:h-[200px]">
-                <h2 className="text-xl font-semibold text-white">
-                  Título da obra
-                </h2>
-
-                <p className="mt-2 text-sm leading-6 text-white/80">
-                  Aqui você pode colocar uma descrição sobre a obra, andamento,
-                  localização ou informações importantes para o cidadão.
+              {/* Outras Obras */}
+              <div className="flex w-full flex-col rounded-3xl bg-[#425C59] p-5 shadow-xl lg:w-[210px]">
+                <p className="mb-4 text-xl font-semibold text-white">
+                  Outras Obras
                 </p>
+
+                <div className="flex gap-4 overflow-x-auto lg:flex-1 lg:flex-col lg:justify-between lg:overflow-visible">
+                  <div className="h-[160px] min-w-[160px] rounded-lg border border-zinc-300 bg-white lg:h-auto lg:min-w-0 lg:flex-1"></div>
+
+                  <div className="h-[160px] min-w-[160px] rounded-lg border border-zinc-300 bg-white lg:h-auto lg:min-w-0 lg:flex-1"></div>
+
+                  <div className="h-[160px] min-w-[160px] rounded-lg border border-zinc-300 bg-white lg:h-auto lg:min-w-0 lg:flex-1"></div>
+                </div>
               </div>
             </div>
-            {/* Quadrados Verticais */}
-            <div className="flex gap-4 overflow-x-auto rounded-3xl bg-[#425C59] p-5 shadow-xl lg:flex-col lg:overflow-visible">
-              <p className="text-xl font-semibold text-white">Outras Obras</p>
-              <div className="h-[160px] w-full rounded-lg border border-zinc-300 bg-white lg:h-[180px]"></div>
-              <div className="h-[160px] w-full rounded-lg border border-zinc-300 bg-white lg:h-[180px]"></div>
-              <div className="h-[160px] w-full rounded-lg border border-zinc-300 bg-white lg:h-[180px]"></div>
-            </div>
           </div>
-
-          {/* Daqui para baixo fica o resto do seu conteúdo */}
         </section>
       </main>
     </div>
