@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import type { CSSProperties } from "react";
 
 // Aqui é o código para o sistema funcionar, não mexa aqui comece após o main
 export default function Home() {
@@ -167,7 +168,10 @@ export default function Home() {
                     </div>
 
                     <div className="h-3 w-full overflow-hidden rounded-full bg-white/20">
-                      <div className="h-full w-[72%] animate-pulse rounded-full bg-[#CBDfde]"></div>
+                      <div
+                        className="h-full rounded-full bg-gradient-to-r from-[#EF4444] via-[#FACC15] to-[#22C55E] barra-progresso-animada"
+                        style={{ "--progresso": "72%" } as CSSProperties}
+                      ></div>
                     </div>
                   </div>
 
