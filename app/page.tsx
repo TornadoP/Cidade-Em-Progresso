@@ -181,7 +181,7 @@ export default function Home() {
                           cy="18"
                           r="14"
                           fill="none"
-                          stroke="#E5E7EB"
+                          stroke="#425C59/35"
                           strokeWidth="4"
                         />
                         <circle
@@ -189,7 +189,7 @@ export default function Home() {
                           cy="18"
                           r="14"
                           fill="none"
-                          stroke="#425C59"
+                          stroke="#c01616"
                           strokeWidth="4"
                           strokeDasharray="70 100"
                           strokeLinecap="round"
@@ -215,7 +215,7 @@ export default function Home() {
                           cy="18"
                           r="14"
                           fill="none"
-                          stroke="#E5E7EB"
+                          stroke="#425C59/35"
                           strokeWidth="4"
                         />
                         <circle
@@ -249,7 +249,7 @@ export default function Home() {
                           cy="18"
                           r="14"
                           fill="none"
-                          stroke="#E5E7EB"
+                          stroke="#425C59/35"
                           strokeWidth="4"
                         />
                         <circle
