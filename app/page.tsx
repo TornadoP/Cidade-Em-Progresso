@@ -159,6 +159,18 @@ export default function Home() {
                     Título da obra
                   </h2>
 
+                  {/* Barra de progresso */}
+                  <div className="mt-4">
+                    <div className="mb-1 flex items-center justify-between text-xs text-white/80">
+                      <span>Progresso</span>
+                      <span>72%</span>
+                    </div>
+
+                    <div className="h-3 w-full overflow-hidden rounded-full bg-white/20">
+                      <div className="h-full w-[72%] animate-pulse rounded-full bg-[#CBDfde]"></div>
+                    </div>
+                  </div>
+
                   <p className="mt-2 text-sm leading-6 text-white/80">
                     Aqui você pode colocar uma descrição sobre a obra,
                     andamento, localização ou informações importantes para o
