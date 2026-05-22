@@ -170,7 +170,7 @@ export default function Home() {
                 <div className="flex gap-4 overflow-x-auto lg:flex-1 lg:flex-col lg:justify-between lg:overflow-visible">
                   {/* Gráfico 1 */}
                   <div className="flex h-[160px] min-w-[160px] flex-col items-center justify-center rounded-lg bg-white lg:h-auto lg:min-w-0 lg:flex-1">
-                    <p className="mb-2 text-sm font-medium text-[#425C59]">
+                    <p className="mb-2 text-sm font-medium text-black">
                       Rua Maneco Rego
                     </p>
 
@@ -181,7 +181,7 @@ export default function Home() {
                           cy="18"
                           r="14"
                           fill="none"
-                          stroke="#425C59/35"
+                          stroke="#425C59"
                           strokeWidth="4"
                         />
                         <circle
@@ -196,7 +196,7 @@ export default function Home() {
                         />
                       </svg>
 
-                      <span className="absolute text-sm font-semibold text-[#425C59]">
+                      <span className="absolute text-sm font-semibold text-black">
                         70%
                       </span>
                     </div>
@@ -204,7 +204,7 @@ export default function Home() {
 
                   {/* Gráfico 2 */}
                   <div className="flex h-[160px] min-w-[160px] flex-col items-center justify-center rounded-lg bg-white lg:h-auto lg:min-w-0 lg:flex-1">
-                    <p className="mb-2 text-sm font-medium text-[#425C59]">
+                    <p className="mb-2 text-sm font-medium text-black">
                       Rua João Pessoa
                     </p>
 
@@ -215,7 +215,7 @@ export default function Home() {
                           cy="18"
                           r="14"
                           fill="none"
-                          stroke="#425C59/35"
+                          stroke="#425C59"
                           strokeWidth="4"
                         />
                         <circle
@@ -230,7 +230,7 @@ export default function Home() {
                         />
                       </svg>
 
-                      <span className="absolute text-sm font-semibold text-[#425C59]">
+                      <span className="absolute text-sm font-semibold text-black">
                         45%
                       </span>
                     </div>
@@ -238,7 +238,7 @@ export default function Home() {
 
                   {/* Gráfico 3 */}
                   <div className="flex h-[160px] min-w-[160px] flex-col items-center justify-center rounded-lg bg-white lg:h-auto lg:min-w-0 lg:flex-1">
-                    <p className="mb-2 text-sm font-medium text-[#425C59]">
+                    <p className="mb-2 text-sm font-medium text-black">
                       Rua do Ifma de terra
                     </p>
 
@@ -249,7 +249,7 @@ export default function Home() {
                           cy="18"
                           r="14"
                           fill="none"
-                          stroke="#425C59/35"
+                          stroke="#425C59"
                           strokeWidth="4"
                         />
                         <circle
@@ -264,7 +264,7 @@ export default function Home() {
                         />
                       </svg>
 
-                      <span className="absolute text-sm font-semibold text-[#425C59]">
+                      <span className="absolute text-sm font-semibold text-black">
                         85%
                       </span>
                     </div>
