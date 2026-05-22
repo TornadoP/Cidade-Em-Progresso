@@ -213,8 +213,9 @@ export default function Home() {
                           fill="none"
                           stroke="#c01616"
                           strokeWidth="4"
-                          strokeDasharray="70 100"
                           strokeLinecap="round"
+                          className="rosca-progresso-animada"
+                          style={{ "--progresso-rosca": "70" } as CSSProperties}
                         />
                       </svg>
 
@@ -247,8 +248,9 @@ export default function Home() {
                           fill="none"
                           stroke="#22C55E"
                           strokeWidth="4"
-                          strokeDasharray="45 100"
                           strokeLinecap="round"
+                          className="rosca-progresso-animada"
+                          style={{ "--progresso-rosca": "45" } as CSSProperties}
                         />
                       </svg>
 
@@ -281,8 +283,9 @@ export default function Home() {
                           fill="none"
                           stroke="#F59E0B"
                           strokeWidth="4"
-                          strokeDasharray="85 100"
                           strokeLinecap="round"
+                          className="rosca-progresso-animada"
+                          style={{ "--progresso-rosca": "85" } as CSSProperties}
                         />
                       </svg>
 
