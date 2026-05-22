@@ -6,7 +6,7 @@ import Image from "next/image";
 export default function Home() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-[#E3F1F1] to-[#CBDfde] font-sans p-6">
-      <main className="flex min-h-[650px] min-w-[550px] max-w-5xl overflow-hidden rounded-3xl bg-gradient-to-b from-[#F3EAE2] to-[#E0D1D4] shadow-2xl">
+      <main className="flex min-h-[450px] min-w-[450px] max-w-5xl overflow-hidden rounded-3xl bg-gradient-to-b from-[#F3EAE2] to-[#E0D1D4] shadow-2xl">
         {/* SIDEBAR ESQUERDA - a cor #4B3348 é um tom de roxo, ou lilas */}
         <aside className="flex w-56 flex-col bg-[#EFE7E2] px-5 py-6 text-[#4B3348]">
           <h1 className="mb-8 text-xl font-semibold">Cidade em Progresso</h1>
@@ -100,7 +100,7 @@ export default function Home() {
           {/* Daqui para baixo fica o resto do seu conteúdo */}
         </section>
         {/* Quadrados Verticais */}
-        <div className="my-8 mr-8 self-start rounded-3xl border border-white/20 bg-[#4B3348]/35 p-6 shadow-xl">
+        <div className="my-8 mr-8 self-start rounded-3xl border border-white/10 bg-[#4B3348]/35 p-5 shadow-xl">
           <div className="flex  flex-col gap-6 ">
             <div className="h-50 w-50 rounded-lg border border-zinc-300 bg-white"></div>
             <div className="h-50 w-50 rounded-lg border border-zinc-300 bg-white"></div>
