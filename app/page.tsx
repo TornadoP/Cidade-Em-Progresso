@@ -95,13 +95,14 @@ export default function Home() {
                 </p>
               </div>
             </div>
+            {/* Quadrados Verticais */}
+            <div className="flex w-[190px] flex-col justify-between rounded-3xl border border-white/10 bg-[#4B3348]/35 p-5 shadow-xl">
+              <div className="h-[170px] w-full rounded-lg border border-zinc-300 bg-white"></div>
+              <div className="h-[170px] w-full rounded-lg border border-zinc-300 bg-white"></div>
+              <div className="h-[170px] w-full rounded-lg border border-zinc-300 bg-white"></div>
+            </div>
           </div>
-          {/* Quadrados Verticais */}
-          <div className="flex w-[190px] flex-col justify-between rounded-3xl border border-white/10 bg-[#4B3348]/35 p-5 shadow-xl">
-            <div className="h-[170px] w-full rounded-lg border border-zinc-300 bg-white"></div>
-            <div className="h-[170px] w-full rounded-lg border border-zinc-300 bg-white"></div>
-            <div className="h-[170px] w-full rounded-lg border border-zinc-300 bg-white"></div>
-          </div>
+
           {/* Daqui para baixo fica o resto do seu conteúdo */}
         </section>
         ;
