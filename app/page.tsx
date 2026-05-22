@@ -89,8 +89,8 @@ export default function Home() {
             </div>
           </div>
           {/* Card central com imagem e descrição */}
-          <div className="flex flex-1 items-stretch justify-center gap-8">
-            <div className="w-full rounded-3xl bg-[#425C59] p-5 shadow-xl md:w-[420px]">
+          <div className="flex flex-1 flex-col items-stretch justify-center gap-6 lg:flex-row lg:gap-8">
+            <div className="w-full rounded-3xl bg-[#425C59] p-5 shadow-xl lg:w-[420px]">
               {/* Área da imagem */}
               <div className="flex h-[260px] w-full items-center justify-center rounded-2xl bg-white/20 sm:h-[320px] md:h-[360px]">
                 <span className="text-sm text-white/70">Imagem aqui</span>
@@ -109,10 +109,10 @@ export default function Home() {
               </div>
             </div>
             {/* Quadrados Verticais */}
-            <div className="grid w-full grid-cols-1 gap-5 rounded-3xl border border-white/10 bg-[#425C59] p-5 shadow-xl sm:grid-cols-3 md:flex md:w-[210px] md:flex-col md:justify-between">
-              <div className="h-[160px] w-full rounded-lg border border-zinc-300 bg-white md:h-[180px]"></div>
-              <div className="h-[160px] w-full rounded-lg border border-zinc-300 bg-white md:h-[180px]"></div>
-              <div className="h-[160px] w-full rounded-lg border border-zinc-300 bg-white md:h-[180px]"></div>
+            <div className="grid w-full grid-cols-1 gap-5 rounded-3xl border border-white/10 bg-[#425C59] p-5 shadow-xl sm:grid-cols-3 lg:flex lg:w-[210px] lg:flex-col lg:justify-between">
+              <div className="h-[160px] w-full rounded-lg border border-zinc-300 bg-white lg:h-[180px]"></div>
+              <div className="h-[160px] w-full rounded-lg border border-zinc-300 bg-white lg:h-[180px]"></div>
+              <div className="h-[160px] w-full rounded-lg border border-zinc-300 bg-white lg:h-[180px]"></div>
             </div>
           </div>
 
