@@ -7,7 +7,7 @@ export default function Home() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-[#E3F1F1] to-[#CBDfde] font-sans p-6">
       <main className="flex min-h-[650px] min-w-[650px] max-w-5xl overflow-hidden rounded-3xl bg-[#4B5563]/10 shadow-2xl">
-        {/* SIDEBAR ESQUERDA - a cor #CBDfde é um tom de roxo, ou lilas  #4B5563 #425C59*/}
+        {/* SIDEBAR ESQUERDA - a cor #CBDfde é #D8CBD4 um tom de roxo, ou lilas  #4B5563 #425C59*/}
         <aside className="flex w-56 flex-col bg-[#425C59] px-5 py-6 text-black">
           <h1 className="mb-8 text-xl font-semibold">Cidade em Progresso</h1>
 
@@ -27,35 +27,35 @@ export default function Home() {
 
           <nav className="flex flex-col gap-3 text-sm">
             <a
-              className="rounded-xl bg-[#D8CBD4] px-4 py-3 font-medium"
+              className="rounded-xl bg-[#4B5563]/10 px-4 py-3 font-medium"
               href="#"
             >
               Inicio
             </a>
 
             <a
-              className="rounded-xl px-4 py-3 transition hover:bg-[#D8CBD4]"
+              className="rounded-xl px-4 py-3 transition hover:bg-[#4B5563]/10"
               href="#"
             >
               Obras
             </a>
 
             <a
-              className="rounded-xl px-4 py-3 transition hover:bg-[#D8CBD4]"
+              className="rounded-xl px-4 py-3 transition hover:bg-[#4B5563]/10"
               href="#"
             >
               Participar
             </a>
 
             <a
-              className="rounded-xl px-4 py-3 transition hover:bg-[#D8CBD4]"
+              className="rounded-xl px-4 py-3 transition hover:bg-[#4B5563]/10"
               href="#"
             >
               Ranking
             </a>
 
             <a
-              className="rounded-xl px-4 py-3 transition hover:bg-[#D8CBD4]"
+              className="rounded-xl px-4 py-3 transition hover:bg-[#4B5563]/10"
               href="#"
             >
               Sobre
