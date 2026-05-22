@@ -110,9 +110,7 @@ export default function Home() {
             </div>
             {/* Quadrados Verticais */}
             <div className="grid w-full grid-cols-1 gap-5 rounded-3xl border border-white/10 bg-[#425C59] p-5 shadow-xl sm:grid-cols-3 lg:flex lg:w-[210px] lg:flex-col lg:justify-between">
-              <p className="mt-5 min-h-[160px] rounded-2xl bg-white/10 p-4 md:h-[200px]">
-                Outras Obras
-              </p>
+              <p className="text-xl font-semibold text-white">Outras Obras</p>
               <div className="h-[160px] w-full rounded-lg border border-zinc-300 bg-white lg:h-[180px]"></div>
               <div className="h-[160px] w-full rounded-lg border border-zinc-300 bg-white lg:h-[180px]"></div>
               <div className="h-[160px] w-full rounded-lg border border-zinc-300 bg-white lg:h-[180px]"></div>
