@@ -27,35 +27,35 @@ export default function Home() {
 
           <nav className="flex flex-col gap-3 text-sm">
             <a
-              className="rounded-xl bg-[#D8CBD4] px-4 py-3 font-medium"
+              className="rounded-xl bg-[#CBDfde] px-4 py-3 font-medium"
               href="#"
             >
               Inicio
             </a>
 
             <a
-              className="rounded-xl px-4 py-3 transition hover:bg-[#D8CBD4]"
+              className="rounded-xl px-4 py-3 transition hover:bg-[#CBDfde]"
               href="#"
             >
               Obras
             </a>
 
             <a
-              className="rounded-xl px-4 py-3 transition hover:bg-[#D8CBD4]"
+              className="rounded-xl px-4 py-3 transition hover:bg-[#CBDfde]"
               href="#"
             >
               Participar
             </a>
 
             <a
-              className="rounded-xl px-4 py-3 transition hover:bg-[#D8CBD4]"
+              className="rounded-xl px-4 py-3 transition hover:bg-[#CBDfde]"
               href="#"
             >
               Ranking
             </a>
 
             <a
-              className="rounded-xl px-4 py-3 transition hover:bg-[#D8CBD4]"
+              className="rounded-xl px-4 py-3 transition hover:bg-[#CBDfde]"
               href="#"
             >
               Sobre
