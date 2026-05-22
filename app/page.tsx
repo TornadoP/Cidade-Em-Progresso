@@ -75,7 +75,7 @@ export default function Home() {
           </div>
           {/* Card central com imagem e descrição */}
           <div className="flex flex-1 items-center justify-center">
-            <div className="w-[420px] rounded-3xl bg-[#4B3348] p-5 shadow-xl">
+            <div className="w-[520px] rounded-3xl bg-[#4B3348] p-5 shadow-xl">
               {/* Área da imagem */}
               <div className="flex h-[260px] w-full items-center justify-center rounded-2xl bg-white/20">
                 <span className="text-sm text-white/70">Imagem aqui</span>
@@ -88,8 +88,8 @@ export default function Home() {
                 </h2>
 
                 <p className="mt-2 text-sm leading-6 text-white/80">
-                  {/*Aqui você pode colocar uma descrição sobre a obra, andamento,
-                  localização ou informações importantes para o cidadão.*/}
+                  Aqui você pode colocar uma descrição sobre a obra, andamento,
+                  localização ou informações importantes para o cidadão.
                 </p>
               </div>
             </div>
