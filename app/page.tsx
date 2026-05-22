@@ -77,8 +77,8 @@ export default function Home() {
           {/* Daqui para baixo fica o resto do seu conteúdo */}
         </section>
         {/* Quadrados Verticais */}
-        <div className="rounded-3xl border border-white/20 bg-black/10 p-6 shadow-xl ml-auto">
-          <div className="flex  flex-col gap-6 ml-auto">
+        <div className="my-8 mr-8 self-start rounded-3xl border border-white/20 bg-black/10 p-6 shadow-xl">
+          <div className="flex  flex-col gap-6 ">
             <div className="h-50 w-50 rounded-lg border border-zinc-300 bg-white"></div>
             <div className="h-50 w-50 rounded-lg border border-zinc-300 bg-white"></div>
             <div className="h-50 w-50 rounded-lg border border-zinc-300 bg-white"></div>
