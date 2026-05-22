@@ -56,27 +56,30 @@ export default function Home() {
           </div>
         </div>
         {/* Barra de pesquisa */}
-        <div className="flex items-center gap-3 rounded-full border border-zinc-300 bg-dark px-4 py-2 shadow-xl w-[300px]"></div>
-        <div className="flex items-center gap-3 rounded-full border border-zinc-300 bg-white px-4 py-2 shadow-sm w-[300px]"></div>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-5 w-5 text-zinc-400"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M21 21l-4.35-4.35m1.85-5.15a7 7 0 11-14 0 7 7 0 0114 0z"
+        <div className="ml-auto">
+          <div className="flex items-center gap-3 rounded-full border border-zinc-300 bg-dark px-4 py-2 shadow-xl w-[300px]"></div>
+          <div className="flex justify-end w-full mb-6"></div>
+          <div className="flex items-center gap-3 rounded-full border border-zinc-300 bg-white px-4 py-2 shadow-sm w-[300px]"></div>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-5 w-5 text-zinc-400"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M21 21l-4.35-4.35m1.85-5.15a7 7 0 11-14 0 7 7 0 0114 0z"
+            />
+          </svg>
+          <input
+            type="text"
+            placeholder="Search"
+            className="w-full bg-transparent outline-none text-sm text-zinc-700 placeholder:text-zinc-400"
           />
-        </svg>
-        <input
-          type="text"
-          placeholder="Search"
-          className="w-full bg-transparent outline-none text-sm text-zinc-700 placeholder:text-zinc-400"
-        />
+        </div>
         <div className="flex-1 py-10">
           <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black">
             Que droga
