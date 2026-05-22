@@ -8,7 +8,7 @@ export default function Home() {
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-[#E3F1F1] to-[#CBDfde] font-sans p-6">
       <main className="flex min-h-[650px] min-w-[650px] max-w-5xl overflow-hidden rounded-3xl bg-[#C9D9DB] shadow-[0_25px_80px_rgba(0,0,0,0.45)]">
         {/* SIDEBAR ESQUERDA - a cor #CBDfde é #D8CBD4 um tom de roxo, ou lilas  #4B5563 #425C59  #C9D9DB*/}
-        <aside className="flex w-56 flex-col bg-[#425C59]/35 px-5 py-6 text-#000000">
+        <aside className="flex w-56 flex-col bg-[#425C59]/35 px-5 py-6 text-black">
           <h1 className="mb-8 text-xl font-semibold">Cidade em Progresso</h1>
 
           {/* logo */}
@@ -111,7 +111,7 @@ export default function Home() {
             </div>
             {/* Quadrados Verticais */}
             <div className="flex w-[210px] flex-col justify-between rounded-3xl border border-white/10 bg-[#425C59] p-5 shadow-xl">
-              <div className="h-[180px] w-full rounded-lg border border-zinc-300 bg-white"></div>
+              <div className="h-[180px] w-full rounded-lg border border-zinc-300 bg-[#FFFFFF]"></div>
               <div className="h-[180px] w-full rounded-lg border border-zinc-300 bg-white"></div>
               <div className="h-[180px] w-full rounded-lg border border-zinc-300 bg-white"></div>
             </div>
