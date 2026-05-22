@@ -13,7 +13,7 @@ export default function Home() {
 
           {/* logo */}
           <div className="mb-8 flex items-center gap-3">
-            <div className="relative h-24 w-24 overflow-hidden rounded-full bg-[#D9B8C4]">
+            <div className="relative h-36 w-36 overflow-hidden rounded-full bg-[#D9B8C4]">
               <Image
                 src="/logo.png"
                 alt="Logo Cidade em Progresso"
