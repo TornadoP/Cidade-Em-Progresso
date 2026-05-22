@@ -144,7 +144,13 @@ export default function Home() {
               <div className="w-full rounded-3xl bg-[#425C59] p-5 shadow-xl lg:w-[420px]">
                 {/* Área da imagem */}
                 <div className="flex h-[260px] w-full items-center justify-center rounded-2xl bg-white/20 sm:h-[320px] md:h-[360px]">
-                  <span className="text-sm text-white/70">Imagem aqui</span>
+                  <Image
+                    src="/obra-principal.png"
+                    alt="Imagem da obra principal"
+                    fill
+                    sizes="(max-width: 768px) 100vw, 420px"
+                    className="object-cover"
+                  />
                 </div>
 
                 {/* Área da descrição */}
