@@ -18,6 +18,7 @@ export default function Home() {
                 src="/logo.png"
                 alt="Logo Cidade em Progresso"
                 fill
+                sizes="144px"
                 className="object-cover"
               />
             </div>
