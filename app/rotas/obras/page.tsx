@@ -209,7 +209,7 @@ function ObrasContent() {
                   </div>
 
                   <div className="flex flex-1 flex-col p-5">
-                    <h3 className="text-lg font-bold text-black">
+                    <h3 className="min-h-[56px] text-lg font-bold text-black">
                       {obra.titulo}
                     </h3>
 
