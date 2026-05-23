@@ -2,8 +2,9 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Suspense } from "react";
+import { Suspense, useState } from "react";
 import { useSearchParams } from "next/navigation";
+
 {
   /* P A G I N A    D E    N A V E G A Ç Ã O*/
 }
@@ -41,7 +42,8 @@ const obras = [
 
 function ObrasContent() {
   const searchParams = useSearchParams();
-  const pesquisa = searchParams.get("pesquisa") || "";
+  const pesquisaInicial = searchParams.get("pesquisa") || "";
+  const [pesquisa, setPesquisa] = useState(pesquisaInicial);
 
   const obrasFiltradas = obras.filter((obra) => {
     const texto = pesquisa.toLowerCase();
@@ -187,7 +189,8 @@ function ObrasContent() {
                 <input
                   type="text"
                   placeholder="Pesquisar obra"
-                  defaultValue={pesquisa}
+                  value={pesquisa}
+                  onChange={(event) => setPesquisa(event.target.value)}
                   className="w-full bg-transparent text-sm text-zinc-700 outline-none placeholder:text-zinc-400"
                 />
               </div>
