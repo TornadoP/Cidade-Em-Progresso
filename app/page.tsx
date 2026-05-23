@@ -21,6 +21,17 @@ export default function Home() {
 
     router.push(`/rotas/obras?pesquisa=${encodeURIComponent(pesquisa)}`);
   }
+  function corProgresso(progresso: number) {
+    if (progresso < 50) {
+      return "bg-gradient-to-r from-[#EF4444] to-[#FACC15]";
+    }
+
+    if (progresso < 75) {
+      return "bg-gradient-to-r from-[#FACC15] to-[#84CC16]";
+    }
+
+    return "bg-gradient-to-r from-[#86EFAC] to-[#425C59]";
+  }
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-[#E3F1F1] to-[#CBDfde] p-4 font-sans sm:p-6">
       <main className="flex w-full max-w-5xl flex-col overflow-hidden rounded-3xl bg-[#C9D9DB] shadow-[0_25px_80px_rgba(0,0,0,0.45)] md:min-h-[650px] md:flex-row">
@@ -192,7 +203,7 @@ export default function Home() {
 
                     <div className="h-3 w-full overflow-hidden rounded-full bg-white/20">
                       <div
-                        className="h-full rounded-full bg-gradient-to-r from-[#EF4444] via-[#FACC15] to-[#22C55E] barra-progresso-animada"
+                        className={`h-full rounded-full barra-progresso-animada ${corProgresso(72)}`}
                         style={{ "--progresso": "72%" } as CSSProperties}
                       ></div>
                     </div>
@@ -221,6 +232,18 @@ export default function Home() {
 
                     <div className="relative flex h-20 w-20 items-center justify-center">
                       <svg className="h-20 w-20 -rotate-90" viewBox="0 0 36 36">
+                        <defs>
+                          <linearGradient
+                            id="gradRosca1"
+                            x1="0%"
+                            y1="0%"
+                            x2="100%"
+                            y2="0%"
+                          >
+                            <stop offset="0%" stopColor="#FACC15" />
+                            <stop offset="100%" stopColor="#84CC16" />
+                          </linearGradient>
+                        </defs>
                         <circle
                           cx="18"
                           cy="18"
@@ -234,7 +257,7 @@ export default function Home() {
                           cy="18"
                           r="14"
                           fill="none"
-                          stroke="#c01616"
+                          stroke="url(#gradRosca1)"
                           strokeWidth="4"
                           strokeLinecap="round"
                           className="rosca-progresso-animada"
@@ -256,6 +279,18 @@ export default function Home() {
 
                     <div className="relative flex h-20 w-20 items-center justify-center">
                       <svg className="h-20 w-20 -rotate-90" viewBox="0 0 36 36">
+                        <defs>
+                          <linearGradient
+                            id="gradRosca2"
+                            x1="0%"
+                            y1="0%"
+                            x2="100%"
+                            y2="0%"
+                          >
+                            <stop offset="0%" stopColor="#EF4444" />
+                            <stop offset="100%" stopColor="#FACC15" />
+                          </linearGradient>
+                        </defs>
                         <circle
                           cx="18"
                           cy="18"
@@ -269,7 +304,7 @@ export default function Home() {
                           cy="18"
                           r="14"
                           fill="none"
-                          stroke="#22C55E"
+                          stroke="url(#gradRosca2)"
                           strokeWidth="4"
                           strokeLinecap="round"
                           className="rosca-progresso-animada"
@@ -291,6 +326,18 @@ export default function Home() {
 
                     <div className="relative flex h-20 w-20 items-center justify-center">
                       <svg className="h-20 w-20 -rotate-90" viewBox="0 0 36 36">
+                        <defs>
+                          <linearGradient
+                            id="gradRosca3"
+                            x1="0%"
+                            y1="0%"
+                            x2="100%"
+                            y2="0%"
+                          >
+                            <stop offset="0%" stopColor="#86EFAC" />
+                            <stop offset="100%" stopColor="#425C59" />
+                          </linearGradient>
+                        </defs>
                         <circle
                           cx="18"
                           cy="18"
@@ -304,7 +351,7 @@ export default function Home() {
                           cy="18"
                           r="14"
                           fill="none"
-                          stroke="#F59E0B"
+                          stroke="url(#gradRosca3)"
                           strokeWidth="4"
                           strokeLinecap="round"
                           className="rosca-progresso-animada"
