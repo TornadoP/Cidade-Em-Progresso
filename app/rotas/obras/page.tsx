@@ -64,35 +64,35 @@ function ObrasContent() {
           <nav className="flex flex-wrap gap-3 text-sm">
             <Link
               href="/"
-              className="rounded-xl bg-[#CBDfde] px-4 py-3 font-medium text-black transition hover:bg-white/70"
+              className="rounded-xl bg-[##FFC222] px-4 py-3 font-medium text-black transition hover:bg-white/70"
             >
               Início
             </Link>
 
             <Link
               href="/rotas/obras"
-              className="rounded-xl bg-[#425C59] px-4 py-3 font-medium text-white transition hover:bg-[#334846]"
+              className="rounded-xl bg-[#FFC222] px-4 py-3 font-medium text-white transition hover:bg-[#334846]"
             >
               Obras
             </Link>
 
             <Link
               href="#"
-              className="rounded-xl px-4 py-3 font-medium text-black transition hover:bg-[#CBDfde]"
+              className="rounded-xl px-4 py-3 font-medium text-black transition hover:bg-[#FFC222]"
             >
               Participar
             </Link>
 
             <Link
               href="#"
-              className="rounded-xl px-4 py-3 font-medium text-black transition hover:bg-[#CBDfde]"
+              className="rounded-xl px-4 py-3 font-medium text-black transition hover:bg-[#FFC222]"
             >
               Ranking
             </Link>
 
             <Link
               href="#"
-              className="rounded-xl px-4 py-3 font-medium text-black transition hover:bg-[#CBDfde]"
+              className="rounded-xl px-4 py-3 font-medium text-black transition hover:bg-[#FFC222]"
             >
               Sobre
             </Link>
