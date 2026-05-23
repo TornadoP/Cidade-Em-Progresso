@@ -64,14 +64,14 @@ function ObrasContent() {
           <nav className="flex flex-wrap gap-3 text-sm">
             <Link
               href="/"
-              className="rounded-xl bg-[##FFC222] px-4 py-3 font-medium text-black transition hover:bg-white/70"
+              className="rounded-xl bg-[#FFC222] px-4 py-3 font-medium text-black transition hover:bg-white/70"
             >
               Início
             </Link>
 
             <Link
               href="/rotas/obras"
-              className="rounded-xl bg-[#FFC222] px-4 py-3 font-medium text-white transition hover:bg-[#334846]"
+              className="rounded-xl bg-[#FFC222] px-4 py-3 font-medium text-white transition hover:bg-[#FFC222]"
             >
               Obras
             </Link>
