@@ -67,6 +67,20 @@ function ObrasContent() {
       obra.status.toLowerCase().includes(texto)
     );
   });
+  function corProgresso(progresso: string) {
+    const valor = Number(progresso.replace("%", ""));
+
+    if (valor < 50) {
+      return "bg-gradient-to-r from-[#EF4444] to-[#FACC15]";
+    }
+
+    if (valor < 75) {
+      return "bg-gradient-to-r from-[#FACC15] to-[#84CC16]";
+    }
+
+    return "bg-gradient-to-r from-[#86EFAC] to-[#425C59]";
+  }
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-[#E3F1F1] to-[#CBDfde] p-4 font-sans sm:p-6">
       <main className="w-full max-w-6xl overflow-hidden rounded-3xl bg-[#C9D9DB] p-6 shadow-[0_25px_80px_rgba(0,0,0,0.45)]">
@@ -237,7 +251,7 @@ function ObrasContent() {
 
                       <div className="h-3 w-full overflow-hidden rounded-full bg-[#E5E7EB]">
                         <div
-                          className="h-full rounded-full bg-gradient-to-r from-[#EF4444] via-[#FACC15] to-[#22C55E]"
+                          className={`h-full rounded-full ${corProgresso(obra.progresso)}`}
                           style={{ width: obra.progresso }}
                         ></div>
                       </div>
