@@ -2,9 +2,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Suspense } from "react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-
+import { Suspense, useState } from "react";
+import { useSearchParams } from "next/navigation";
 {
   /* P A G I N A    D E    N A V E G A Ç Ã O*/
 }
@@ -41,25 +40,9 @@ const obras = [
 ];
 
 function ObrasContent() {
-  const router = useRouter();
-  const pathname = usePathname();
   const searchParams = useSearchParams();
-  const pesquisa = searchParams.get("pesquisa") || "";
-
-  function atualizarPesquisa(valor: string) {
-    const params = new URLSearchParams(searchParams.toString());
-
-    if (valor.trim()) {
-      params.set("pesquisa", valor);
-    } else {
-      params.delete("pesquisa");
-    }
-
-    const query = params.toString();
-    router.replace(query ? `${pathname}?${query}` : pathname, {
-      scroll: false,
-    });
-  }
+  const pesquisaInicial = searchParams.get("pesquisa") || "";
+  const [pesquisa, setPesquisa] = useState(pesquisaInicial);
 
   const obrasFiltradas = obras.filter((obra) => {
     const texto = pesquisa.toLowerCase();
@@ -203,7 +186,7 @@ function ObrasContent() {
                   type="text"
                   placeholder="Pesquisar obra"
                   value={pesquisa}
-                  onChange={(event) => atualizarPesquisa(event.target.value)}
+                  onChange={(event) => setPesquisa(event.target.value)}
                   className="w-full bg-transparent text-sm text-zinc-700 outline-none placeholder:text-zinc-400"
                 />
               </div>
