@@ -44,7 +44,7 @@ export default function Home() {
             </a>
             <Link
               className="rounded-xl px-4 py-3 transition hover:bg-[#FFC222]"
-              href="/obras"
+              href="/app/obras"
             >
               Obras
             </Link>
