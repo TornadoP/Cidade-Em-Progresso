@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 {
   /* P A G I N A    D E    N A V E G A Ç Ã O*/
@@ -38,7 +39,7 @@ const obras = [
   },
 ];
 
-export default function ObrasPage() {
+function ObrasContent() {
   const searchParams = useSearchParams();
   const pesquisa = searchParams.get("pesquisa") || "";
 
@@ -240,5 +241,12 @@ export default function ObrasPage() {
         </div>
       </main>
     </div>
+  );
+}
+export default function ObrasPage() {
+  return (
+    <Suspense fallback={<div>Carregando obras...</div>}>
+      <ObrasContent />
+    </Suspense>
   );
 }
