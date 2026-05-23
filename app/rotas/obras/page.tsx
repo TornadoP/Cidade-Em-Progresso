@@ -39,15 +39,15 @@ const obras = [
     imagem: "/obra-principal.png",
   },
   {
-    titulo: "Alexandre virou pai",
+    titulo: "cochilo pós-almoço",
     local: "Bairro Mutirão",
     progresso: "99%",
     status: "Quase concluída",
     imagem: "/obra-principal.png",
   },
   {
-    titulo: "Upp trocar tiro",
-    local: "Bairro Mutirão",
+    titulo: "sono",
+    local: "Bairro do cochilo",
     progresso: "10%",
     status: "Quase começando",
     imagem: "/obra-principal.png",
