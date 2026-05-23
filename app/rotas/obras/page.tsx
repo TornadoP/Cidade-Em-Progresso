@@ -37,6 +37,20 @@ const obras = [
     status: "Quase concluída",
     imagem: "/obra-principal.png",
   },
+  {
+    titulo: "Alexandre virou pai",
+    local: "Bairro Mutirão",
+    progresso: "99%",
+    status: "Quase concluída",
+    imagem: "/obra-principal.png",
+  },
+  {
+    titulo: "Upp trocar tiro",
+    local: "Bairro Mutirão",
+    progresso: "10%",
+    status: "Quase começando",
+    imagem: "/obra-principal.png",
+  },
 ];
 
 function ObrasContent() {
