@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Suspense, useState } from "react";
+import type { CSSProperties } from "react";
 import { useSearchParams } from "next/navigation";
 {
   /* P A G I N A    D E    N A V E G A Ç Ã O*/
@@ -251,8 +252,14 @@ function ObrasContent() {
 
                       <div className="h-3 w-full overflow-hidden rounded-full bg-[#E5E7EB]">
                         <div
-                          className={`h-full rounded-full ${corProgresso(obra.progresso)}`}
-                          style={{ width: obra.progresso }}
+                          className={`h-full rounded-full barra-progresso-animada ${corProgresso(
+                            obra.progresso,
+                          )}`}
+                          style={
+                            {
+                              "--progresso": obra.progresso,
+                            } as React.CSSProperties
+                          }
                         ></div>
                       </div>
                     </div>
