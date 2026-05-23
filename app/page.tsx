@@ -3,7 +3,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { CSSProperties } from "react";
-
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 {
   /* P A G I N A    P R I N C I P A L*/
 }
@@ -12,6 +13,14 @@ import type { CSSProperties } from "react";
 
 // Aqui é o código para o sistema funcionar, não mexa aqui comece após o main
 export default function Home() {
+  const [pesquisa, setPesquisa] = useState("");
+  const router = useRouter();
+
+  function buscarObra() {
+    if (!pesquisa.trim()) return;
+
+    router.push(`/rotas/obras?pesquisa=${encodeURIComponent(pesquisa)}`);
+  }
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-[#E3F1F1] to-[#CBDfde] p-4 font-sans sm:p-6">
       <main className="flex w-full max-w-5xl flex-col overflow-hidden rounded-3xl bg-[#C9D9DB] shadow-[0_25px_80px_rgba(0,0,0,0.45)] md:min-h-[650px] md:flex-row">
@@ -93,6 +102,13 @@ export default function Home() {
                 <input
                   type="text"
                   placeholder="Pesquisar"
+                  value={pesquisa}
+                  onChange={(event) => setPesquisa(event.target.value)}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter") {
+                      buscarObra();
+                    }
+                  }}
                   className="w-full bg-transparent text-sm text-zinc-700 outline-none placeholder:text-zinc-400"
                 />
               </div>

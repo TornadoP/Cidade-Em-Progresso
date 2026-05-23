@@ -1,6 +1,8 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
-
+import { useSearchParams } from "next/navigation";
 {
   /* P A G I N A    D E    N A V E G A Ç Ã O*/
 }
@@ -37,6 +39,18 @@ const obras = [
 ];
 
 export default function ObrasPage() {
+  const searchParams = useSearchParams();
+  const pesquisa = searchParams.get("pesquisa") || "";
+
+  const obrasFiltradas = obras.filter((obra) => {
+    const texto = pesquisa.toLowerCase();
+
+    return (
+      obra.titulo.toLowerCase().includes(texto) ||
+      obra.local.toLowerCase().includes(texto) ||
+      obra.status.toLowerCase().includes(texto)
+    );
+  });
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-[#E3F1F1] to-[#CBDfde] p-4 font-sans sm:p-6">
       <main className="w-full max-w-6xl overflow-hidden rounded-3xl bg-[#C9D9DB] p-6 shadow-[0_25px_80px_rgba(0,0,0,0.45)]">
@@ -172,13 +186,14 @@ export default function ObrasPage() {
                 <input
                   type="text"
                   placeholder="Pesquisar obra"
+                  defaultValue={pesquisa}
                   className="w-full bg-transparent text-sm text-zinc-700 outline-none placeholder:text-zinc-400"
                 />
               </div>
             </div>
 
             <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
-              {obras.map((obra) => (
+              {obrasFiltradas.map((obra) => (
                 <article
                   key={obra.titulo}
                   className="overflow-hidden rounded-3xl bg-white shadow-xl transition hover:-translate-y-1 hover:shadow-2xl"
