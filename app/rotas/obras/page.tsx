@@ -215,7 +215,7 @@ function ObrasContent() {
 
                     <p className="mt-1 text-sm text-black/70">{obra.local}</p>
 
-                    <div className="mt-4">
+                    <div className="mt-4 mb-5">
                       <div className="mb-1 flex items-center justify-between text-xs text-black/70">
                         <span>{obra.status}</span>
                         <span>{obra.progresso}</span>
