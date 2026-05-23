@@ -196,7 +196,7 @@ function ObrasContent() {
               {obrasFiltradas.map((obra) => (
                 <article
                   key={obra.titulo}
-                  className="overflow-hidden rounded-3xl bg-white shadow-xl transition hover:-translate-y-1 hover:shadow-2xl"
+                  className="flex h-full flex-col overflow-hidden rounded-3xl bg-white shadow-xl transition hover:-translate-y-1 hover:shadow-2xl"
                 >
                   <div className="relative h-44 w-full bg-[#425C59]/20">
                     <Image
@@ -208,7 +208,7 @@ function ObrasContent() {
                     />
                   </div>
 
-                  <div className="p-5">
+                  <div className="flex flex-1 flex-col p-5">
                     <h3 className="text-lg font-bold text-black">
                       {obra.titulo}
                     </h3>
@@ -229,7 +229,7 @@ function ObrasContent() {
                       </div>
                     </div>
 
-                    <button className="mt-5 w-full rounded-xl bg-[#425C59] px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#334846]">
+                    <button className="mt-auto w-full rounded-xl bg-[#425C59] px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#334846]">
                       Ver detalhes
                     </button>
                   </div>
