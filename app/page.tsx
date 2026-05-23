@@ -3,6 +3,10 @@
 import Image from "next/image";
 import type { CSSProperties } from "react";
 
+{
+  /* P A G I N A    P R I N C I P A L*/
+}
+
 //Tornar clicavel, tanto foto nome ou qualquer parte dentro do quadrado ou seja div, para encaminhar para o link
 
 // Aqui é o código para o sistema funcionar, não mexa aqui comece após o main
