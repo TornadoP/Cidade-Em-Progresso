@@ -53,7 +53,7 @@ export default function ObrasPage() {
             </Link>
 
             <Link
-              href="/obras"
+              href="/rotas/obras"
               className="rounded-xl bg-[#425C59] px-4 py-3 font-medium text-white transition hover:bg-[#334846]"
             >
               Obras
