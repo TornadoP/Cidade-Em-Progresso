@@ -38,6 +38,7 @@ body {
 }
 
 .rosca-progresso-animada {
-  stroke-dasharray: 0 100;
-  animation: carregarRosca 1.5s ease-out forwards;
+  stroke-dasharray: 87.96;
+  stroke-dashoffset: calc(87.96 - (87.96 * var(--progresso-rosca)) / 100);
+  transition: stroke-dashoffset 1s ease;
 }
