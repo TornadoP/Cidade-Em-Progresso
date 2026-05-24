@@ -169,13 +169,13 @@ function ObrasContent() {
                 <label className="mb-2 flex items-center gap-2 text-sm">
                   <input
                     type="checkbox"
-                    className="h-4 w-4"
+                    className="h-4 w-4 accent-[#FFC222] cursor-pointer"
                     checked={statusSelecionados.includes("Em andamento")}
                     onChange={() =>
                       alternarFiltro(
                         "Em andamento",
                         statusSelecionados,
-                        setTiposSelecionados,
+                        setStatusSelecionados,
                       )
                     }
                   />
@@ -203,22 +203,6 @@ function ObrasContent() {
                 <h3 className="mb-3 text-sm font-semibold text-white/90">
                   Tipo de obra
                 </h3>
-
-                <label className="mb-2 flex items-center gap-2 text-sm">
-                  <input
-                    type="checkbox"
-                    className="h-4 w-4 accent-[#FFC222] cursor-pointer"
-                    checked={statusSelecionados.includes("Concluída")}
-                    onChange={() =>
-                      alternarFiltro(
-                        "Concluída",
-                        statusSelecionados,
-                        setStatusSelecionados,
-                      )
-                    }
-                  />
-                  Concluída
-                </label>
 
                 <label className="mb-2 flex items-center gap-2 text-sm">
                   <input
