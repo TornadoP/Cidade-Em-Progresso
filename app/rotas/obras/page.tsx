@@ -163,7 +163,7 @@ function ObrasContent() {
                       alternarFiltro(
                         "Em andamento",
                         statusSelecionados,
-                        setStatusSelecionados,
+                        setTiposSelecionados,
                       )
                     }
                   />
@@ -178,8 +178,8 @@ function ObrasContent() {
                     onChange={() =>
                       alternarFiltro(
                         "Em andamento",
-                        statusSelecionados,
-                        setStatusSelecionados,
+                        tiposSelecionados,
+                        setTiposSelecionados,
                       )
                     }
                   />
@@ -190,12 +190,12 @@ function ObrasContent() {
                   <input
                     type="checkbox"
                     className="h-4 w-4"
-                    checked={statusSelecionados.includes("Em andamento")}
+                    checked={statusSelecionados.includes("Planejada")}
                     onChange={() =>
                       alternarFiltro(
-                        "Em andamento",
-                        statusSelecionados,
-                        setStatusSelecionados,
+                        "Planejada",
+                        tiposSelecionados,
+                        setTiposSelecionados,
                       )
                     }
                   />
@@ -212,12 +212,12 @@ function ObrasContent() {
                   <input
                     type="checkbox"
                     className="h-4 w-4"
-                    checked={statusSelecionados.includes("Em andamento")}
+                    checked={statusSelecionados.includes("Concluída")}
                     onChange={() =>
                       alternarFiltro(
-                        "Em andamento",
-                        statusSelecionados,
-                        setStatusSelecionados,
+                        "Concluída",
+                        tiposSelecionados,
+                        setTiposSelecionados,
                       )
                     }
                   />
@@ -228,12 +228,12 @@ function ObrasContent() {
                   <input
                     type="checkbox"
                     className="h-4 w-4"
-                    checked={statusSelecionados.includes("Em andamento")}
+                    checked={tiposSelecionados.includes("Pavimentação")}
                     onChange={() =>
                       alternarFiltro(
-                        "Em andamento",
-                        statusSelecionados,
-                        setStatusSelecionados,
+                        "Pavimentação",
+                        tiposSelecionados,
+                        setTiposSelecionados,
                       )
                     }
                   />
@@ -244,12 +244,12 @@ function ObrasContent() {
                   <input
                     type="checkbox"
                     className="h-4 w-4"
-                    checked={statusSelecionados.includes("Em andamento")}
+                    checked={statusSelecionados.includes("Saúde")}
                     onChange={() =>
                       alternarFiltro(
-                        "Em andamento",
-                        statusSelecionados,
-                        setStatusSelecionados,
+                        "Saúde",
+                        tiposSelecionados,
+                        setTiposSelecionados,
                       )
                     }
                   />
@@ -260,12 +260,12 @@ function ObrasContent() {
                   <input
                     type="checkbox"
                     className="h-4 w-4"
-                    checked={statusSelecionados.includes("Em andamento")}
+                    checked={statusSelecionados.includes("Educação")}
                     onChange={() =>
                       alternarFiltro(
-                        "Em andamento",
-                        statusSelecionados,
-                        setStatusSelecionados,
+                        "Educação",
+                        tiposSelecionados,
+                        setTiposSelecionados,
                       )
                     }
                   />
