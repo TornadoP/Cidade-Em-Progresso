@@ -354,31 +354,32 @@ function ObrasContent() {
                     <div className="mt-3 grid gap-2 text-sm text-black/70">
                       <p>
                         <span className="font-semibold text-black">
-                          Localização:
+                          📍 Localização:
                         </span>{" "}
                         {obra.local}
                       </p>
 
                       <p>
                         <span className="font-semibold text-black">
-                          Investimento:
+                          🏦 Investimento:
                         </span>{" "}
                         {obra.investimento}
                       </p>
 
                       <p>
                         <span className="font-semibold text-black">
-                          Início:
+                          🚧 Início:
                         </span>{" "}
                         {obra.inicio}
                       </p>
 
                       <p>
-                        <span className="font-semibold text-black">Prazo:</span>{" "}
+                        <span className="font-semibold text-black">
+                          📅 Prazo:
+                        </span>{" "}
                         {obra.prazo}
                       </p>
                     </div>
-
                     <div className="mt-4 mb-5">
                       <div className="mb-1 flex items-center justify-between text-xs text-black/70">
                         <span>{obra.status}</span>
