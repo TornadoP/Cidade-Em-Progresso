@@ -314,7 +314,7 @@ function ObrasContent() {
               {obrasFiltradas.map((obra) => (
                 <article
                   key={obra.titulo}
-                  className="flex h-full flex-col overflow-hidden rounded-3xl bg-white shadow-xl transition hover:-translate-y-1 hover:shadow-2xl"
+                  className="flex h-full flex-col overflow-hidden rounded-3xl bg-white shadow-[0_18px_45px_rgba(0,0,0,0.28)] ring-1 ring-black/5 transition-all duration-300 hover:-translate-y-2 hover:scale-[1.01] hover:shadow-[0_30px_70px_rgba(0,0,0,0.42)]"
                 >
                   <div className="relative h-44 w-full bg-[#425C59]/20">
                     <Image
