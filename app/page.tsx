@@ -12,6 +12,48 @@ import { useRouter } from "next/navigation";
 //Tornar clicavel, tanto foto nome ou qualquer parte dentro do quadrado ou seja div, para encaminhar para o link
 
 // Aqui é o código para o sistema funcionar, não mexa aqui comece após o main
+
+//function coresRosca -- configurações das cores dos graficos do card vertical
+// function roscaProgresso -- configurações do gráfico de rosca do card vertical
+
+function coresRosca(progresso: number) {
+  if (progresso < 50) {
+    return {
+      inicio: "#EF4444",
+      fim: "#FACC15",
+    };
+  }
+
+  if (progresso < 75) {
+    return {
+      inicio: "#FACC15",
+      fim: "#84CC16",
+    };
+  }
+
+  return {
+    inicio: "#86EFAC",
+    fim: "#425C59",
+  };
+}
+function RoscaProgresso({ progresso }: { progresso: number }) {
+  const cores = coresRosca(progresso);
+
+  return (
+    <div
+      className="relative flex h-20 w-20 items-center justify-center rounded-full"
+      style={{
+        background: `conic-gradient(from -90deg, ${cores.inicio} 0%, ${cores.fim} ${progresso}%, #E5E7EB ${progresso}% 100%)`,
+      }}
+    >
+      <div className="absolute h-14 w-14 rounded-full bg-white"></div>
+
+      <span className="absolute text-sm font-semibold text-black">
+        {progresso}%
+      </span>
+    </div>
+  );
+}
 export default function Home() {
   const [pesquisa, setPesquisa] = useState("");
   const router = useRouter();
@@ -32,6 +74,7 @@ export default function Home() {
 
     return "bg-gradient-to-r from-[#86EFAC] to-[#425C59]";
   }
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-[#E3F1F1] to-[#CBDfde] p-4 font-sans sm:p-6">
       <main className="flex w-full max-w-5xl flex-col overflow-hidden rounded-3xl bg-[#C9D9DB] shadow-[0_25px_80px_rgba(0,0,0,0.45)] md:min-h-[650px] md:flex-row">
@@ -189,7 +232,7 @@ export default function Home() {
                 </div>
 
                 {/* Área da descrição */}
-                <div className="mt-5 min-h-[160px] rounded-2xl bg-white/10 p-4 md:h-[200px]">
+                <div className="mt-5 rounded-2xl bg-white/10 p-4">
                   <h2 className="text-xl font-semibold text-white">
                     Título da obra
                   </h2>
@@ -215,6 +258,13 @@ export default function Home() {
                     cidadão.
                   </p>
                 </div>
+
+                <Link
+                  href="/rotas/obras/reforma-praca-central"
+                  className="mt-5 block w-full rounded-xl bg-[#FFC222] px-4 py-3 text-center text-sm font-semibold text-black transition hover:bg-[#eab308]"
+                >
+                  Ver detalhes
+                </Link>
               </div>
 
               {/* Outras Obras */}
@@ -230,6 +280,7 @@ export default function Home() {
                       Rua Maneco Rego
                     </p>
 
+<<<<<<< HEAD
                     <div className="relative flex h-20 w-20 items-center justify-center">
                       <svg className="h-20 w-20 -rotate-90" viewBox="0 0 36 36">
                         <defs>
@@ -269,6 +320,9 @@ export default function Home() {
                         70%
                       </span>
                     </div>
+=======
+                    <RoscaProgresso progresso={70} />
+>>>>>>> 3a6c179fedaf801b124347112e83cb8cb9c9c365
                   </div>
 
                   {/* Gráfico 2 */}
@@ -277,6 +331,7 @@ export default function Home() {
                       Rua João Pessoa
                     </p>
 
+<<<<<<< HEAD
                     <div className="relative flex h-20 w-20 items-center justify-center">
                       <svg className="h-20 w-20 -rotate-90" viewBox="0 0 36 36">
                         <defs>
@@ -316,6 +371,9 @@ export default function Home() {
                         45%
                       </span>
                     </div>
+=======
+                    <RoscaProgresso progresso={99} />
+>>>>>>> 3a6c179fedaf801b124347112e83cb8cb9c9c365
                   </div>
 
                   {/* Gráfico 3 */}
@@ -324,6 +382,7 @@ export default function Home() {
                       Rua do Ifma de terra
                     </p>
 
+<<<<<<< HEAD
                     <div className="relative flex h-20 w-20 items-center justify-center">
                       <svg className="h-20 w-20 -rotate-90" viewBox="0 0 36 36">
                         <defs>
@@ -363,6 +422,9 @@ export default function Home() {
                         85%
                       </span>
                     </div>
+=======
+                    <RoscaProgresso progresso={1} />
+>>>>>>> 3a6c179fedaf801b124347112e83cb8cb9c9c365
                   </div>
                 </div>
               </div>
