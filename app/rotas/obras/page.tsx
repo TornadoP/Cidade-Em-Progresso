@@ -173,13 +173,13 @@ function ObrasContent() {
                 <label className="mb-2 flex items-center gap-2 text-sm">
                   <input
                     type="checkbox"
-                    className="h-4 w-4"
+                    className="h-4 w-4 accent-[#FFC222] cursor-pointer"
                     checked={statusSelecionados.includes("Em andamento")}
                     onChange={() =>
                       alternarFiltro(
                         "Em andamento",
-                        tiposSelecionados,
-                        setTiposSelecionados,
+                        statusSelecionados,
+                        setStatusSelecionados,
                       )
                     }
                   />
@@ -189,13 +189,13 @@ function ObrasContent() {
                 <label className="mb-2 flex items-center gap-2 text-sm">
                   <input
                     type="checkbox"
-                    className="h-4 w-4"
+                    className="h-4 w-4 accent-[#FFC222] cursor-pointer"
                     checked={statusSelecionados.includes("Planejada")}
                     onChange={() =>
                       alternarFiltro(
                         "Planejada",
-                        tiposSelecionados,
-                        setTiposSelecionados,
+                        statusSelecionados,
+                        setStatusSelecionados,
                       )
                     }
                   />
@@ -211,13 +211,13 @@ function ObrasContent() {
                 <label className="mb-2 flex items-center gap-2 text-sm">
                   <input
                     type="checkbox"
-                    className="h-4 w-4"
+                    className="h-4 w-4 accent-[#FFC222] cursor-pointer"
                     checked={statusSelecionados.includes("Concluída")}
                     onChange={() =>
                       alternarFiltro(
                         "Concluída",
-                        tiposSelecionados,
-                        setTiposSelecionados,
+                        statusSelecionados,
+                        setStatusSelecionados,
                       )
                     }
                   />
@@ -227,7 +227,7 @@ function ObrasContent() {
                 <label className="mb-2 flex items-center gap-2 text-sm">
                   <input
                     type="checkbox"
-                    className="h-4 w-4"
+                    className="h-4 w-4 accent-[#FFC222] cursor-pointer"
                     checked={tiposSelecionados.includes("Pavimentação")}
                     onChange={() =>
                       alternarFiltro(
@@ -243,7 +243,7 @@ function ObrasContent() {
                 <label className="mb-2 flex items-center gap-2 text-sm">
                   <input
                     type="checkbox"
-                    className="h-4 w-4"
+                    className="h-4 w-4 accent-[#FFC222] cursor-pointer"
                     checked={statusSelecionados.includes("Saúde")}
                     onChange={() =>
                       alternarFiltro(
@@ -259,7 +259,7 @@ function ObrasContent() {
                 <label className="mb-2 flex items-center gap-2 text-sm">
                   <input
                     type="checkbox"
-                    className="h-4 w-4"
+                    className="h-4 w-4 accent-[#FFC222] cursor-pointer"
                     checked={statusSelecionados.includes("Educação")}
                     onChange={() =>
                       alternarFiltro(
