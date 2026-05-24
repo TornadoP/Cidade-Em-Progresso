@@ -119,7 +119,7 @@ export default function Home() {
               className="rounded-xl px-4 py-3 transition hover:bg-[#FFC222]"
               href="#"
             >
-              Participar
+              Votar
             </a>
             <a
               className="rounded-xl px-4 py-3 transition hover:bg-[#FFC222]"
