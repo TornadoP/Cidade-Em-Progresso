@@ -257,36 +257,35 @@ function ObrasContent() {
                 </label>
 
                 <label className="mb-2 flex items-center gap-2 text-sm">
-  <input
-    type="checkbox"
-    className="h-4 w-4 accent-[#FFC222] cursor-pointer"
-    checked={tiposSelecionados.includes("Educação")}
-    onChange={() =>
-      alternarFiltro(
-        "Educação",
-        tiposSelecionados,
-        setTiposSelecionados,
-      )
-    }
-  />
-  Educação
-</label>
+                  <input
+                    type="checkbox"
+                    className="h-4 w-4 accent-[#FFC222] cursor-pointer"
+                    checked={tiposSelecionados.includes("Educação")}
+                    onChange={() =>
+                      alternarFiltro(
+                        "Educação",
+                        tiposSelecionados,
+                        setTiposSelecionados,
+                      )
+                    }
+                  />
+                  Educação
+                </label>
 
-                  <label className="mb-2 flex items-center gap-2 text-sm">
-                    <input
-                      type="checkbox"
-                      className="h-4 w-4 accent-[#FFC222] cursor-pointer"
-                      checked={tiposSelecionados.includes("Lazer")}
-                      onChange={() =>
-                        alternarFiltro(
-                          "Lazer",
-                          tiposSelecionados,
-                          setTiposSelecionados,
-                        )
-                      }
-                    />
-                    Lazer
-                  </label>
+                <label className="mb-2 flex items-center gap-2 text-sm">
+                  <input
+                    type="checkbox"
+                    className="h-4 w-4 accent-[#FFC222] cursor-pointer"
+                    checked={tiposSelecionados.includes("Lazer")}
+                    onChange={() =>
+                      alternarFiltro(
+                        "Lazer",
+                        tiposSelecionados,
+                        setTiposSelecionados,
+                      )
+                    }
+                  />
+                  Lazer
                 </label>
               </div>
 
