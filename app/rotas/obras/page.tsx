@@ -15,41 +15,34 @@ const obras = [
     local: "Centro, Pedreiras",
     progresso: "72%",
     status: "Em andamento",
+    tipo: "Lazer",
     imagem: "/obra-principal.png",
   },
+
   {
     titulo: "Pavimentação Rua Maneco Rego",
     local: "Bairro Centro",
     progresso: "70%",
     status: "Em andamento",
+    tipo: "Pavimentação",
     imagem: "/obra-principal.png",
   },
+
   {
     titulo: "Construção de Escola Municipal",
     local: "Bairro Novo",
     progresso: "45%",
     status: "Planejada",
+    tipo: "Educação",
     imagem: "/obra-principal.png",
   },
+
   {
     titulo: "Reforma da UBS",
     local: "Bairro Mutirão",
     progresso: "85%",
     status: "Quase concluída",
-    imagem: "/obra-principal.png",
-  },
-  {
-    titulo: "cochilo pós-almoço",
-    local: "Bairro Mutirão",
-    progresso: "99%",
-    status: "Quase concluída",
-    imagem: "/obra-principal.png",
-  },
-  {
-    titulo: "sono",
-    local: "Bairro do cochilo",
-    progresso: "10%",
-    status: "Quase começando",
+    tipo: "Saúde",
     imagem: "/obra-principal.png",
   },
 ];
@@ -59,14 +52,26 @@ function ObrasContent() {
   const pesquisaInicial = searchParams.get("pesquisa") || "";
   const [pesquisa, setPesquisa] = useState(pesquisaInicial);
 
+  const [statusSelecionados, setStatusSelecionados] = useState<string[]>([]);
+
+  const [tiposSelecionados, setTiposSelecionados] = useState<string[]>([]);
+
   const obrasFiltradas = obras.filter((obra) => {
     const texto = pesquisa.toLowerCase();
 
-    return (
+    const correspondePesquisa =
       obra.titulo.toLowerCase().includes(texto) ||
       obra.local.toLowerCase().includes(texto) ||
-      obra.status.toLowerCase().includes(texto)
-    );
+      obra.status.toLowerCase().includes(texto);
+
+    const correspondeStatus =
+      statusSelecionados.length === 0 ||
+      statusSelecionados.includes(obra.status);
+
+    const correspondeTipo =
+      tiposSelecionados.length === 0 || tiposSelecionados.includes(obra.tipo);
+
+    return correspondePesquisa && correspondeStatus && correspondeTipo;
   });
   function corProgresso(progresso: string) {
     const valor = Number(progresso.replace("%", ""));
@@ -80,6 +85,17 @@ function ObrasContent() {
     }
 
     return "bg-gradient-to-r from-[#86EFAC] to-[#425C59]";
+  }
+  function alternarFiltro(
+    valor: string,
+    lista: string[],
+    atualizarLista: React.Dispatch<React.SetStateAction<string[]>>,
+  ) {
+    if (lista.includes(valor)) {
+      atualizarLista(lista.filter((item) => item !== valor));
+    } else {
+      atualizarLista([...lista, valor]);
+    }
   }
 
   return (
@@ -139,17 +155,50 @@ function ObrasContent() {
                 </h3>
 
                 <label className="mb-2 flex items-center gap-2 text-sm">
-                  <input type="checkbox" className="h-4 w-4" />
+                  <input
+                    type="checkbox"
+                    className="h-4 w-4"
+                    checked={statusSelecionados.includes("Em andamento")}
+                    onChange={() =>
+                      alternarFiltro(
+                        "Em andamento",
+                        statusSelecionados,
+                        setStatusSelecionados,
+                      )
+                    }
+                  />
                   Em andamento
                 </label>
 
                 <label className="mb-2 flex items-center gap-2 text-sm">
-                  <input type="checkbox" className="h-4 w-4" />
+                  <input
+                    type="checkbox"
+                    className="h-4 w-4"
+                    checked={statusSelecionados.includes("Em andamento")}
+                    onChange={() =>
+                      alternarFiltro(
+                        "Em andamento",
+                        statusSelecionados,
+                        setStatusSelecionados,
+                      )
+                    }
+                  />
                   Planejada
                 </label>
 
                 <label className="mb-2 flex items-center gap-2 text-sm">
-                  <input type="checkbox" className="h-4 w-4" />
+                  <input
+                    type="checkbox"
+                    className="h-4 w-4"
+                    checked={statusSelecionados.includes("Em andamento")}
+                    onChange={() =>
+                      alternarFiltro(
+                        "Em andamento",
+                        statusSelecionados,
+                        setStatusSelecionados,
+                      )
+                    }
+                  />
                   Concluída
                 </label>
               </div>
@@ -160,22 +209,66 @@ function ObrasContent() {
                 </h3>
 
                 <label className="mb-2 flex items-center gap-2 text-sm">
-                  <input type="checkbox" className="h-4 w-4" />
+                  <input
+                    type="checkbox"
+                    className="h-4 w-4"
+                    checked={statusSelecionados.includes("Em andamento")}
+                    onChange={() =>
+                      alternarFiltro(
+                        "Em andamento",
+                        statusSelecionados,
+                        setStatusSelecionados,
+                      )
+                    }
+                  />
                   Pavimentação
                 </label>
 
                 <label className="mb-2 flex items-center gap-2 text-sm">
-                  <input type="checkbox" className="h-4 w-4" />
+                  <input
+                    type="checkbox"
+                    className="h-4 w-4"
+                    checked={statusSelecionados.includes("Em andamento")}
+                    onChange={() =>
+                      alternarFiltro(
+                        "Em andamento",
+                        statusSelecionados,
+                        setStatusSelecionados,
+                      )
+                    }
+                  />
                   Saúde
                 </label>
 
                 <label className="mb-2 flex items-center gap-2 text-sm">
-                  <input type="checkbox" className="h-4 w-4" />
+                  <input
+                    type="checkbox"
+                    className="h-4 w-4"
+                    checked={statusSelecionados.includes("Em andamento")}
+                    onChange={() =>
+                      alternarFiltro(
+                        "Em andamento",
+                        statusSelecionados,
+                        setStatusSelecionados,
+                      )
+                    }
+                  />
                   Educação
                 </label>
 
                 <label className="mb-2 flex items-center gap-2 text-sm">
-                  <input type="checkbox" className="h-4 w-4" />
+                  <input
+                    type="checkbox"
+                    className="h-4 w-4"
+                    checked={statusSelecionados.includes("Em andamento")}
+                    onChange={() =>
+                      alternarFiltro(
+                        "Em andamento",
+                        statusSelecionados,
+                        setStatusSelecionados,
+                      )
+                    }
+                  />
                   Lazer
                 </label>
               </div>
