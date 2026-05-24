@@ -319,12 +319,12 @@ export default function Home() {
                           strokeWidth="4"
                           strokeLinecap="round"
                           className="rosca-progresso-animada"
-                          style={{ "--progresso-rosca": "45" } as CSSProperties}
+                          style={{ "--progresso-rosca": "99" } as CSSProperties}
                         />
                       </svg>
 
                       <span className="absolute text-sm font-semibold text-black">
-                        45%
+                        99%
                       </span>
                     </div>
                   </div>
@@ -368,12 +368,12 @@ export default function Home() {
                           strokeWidth="4"
                           strokeLinecap="round"
                           className="rosca-progresso-animada"
-                          style={{ "--progresso-rosca": "85" } as CSSProperties}
+                          style={{ "--progresso-rosca": "1" } as CSSProperties}
                         />
                       </svg>
 
                       <span className="absolute text-sm font-semibold text-black">
-                        85%
+                        1%
                       </span>
                     </div>
                   </div>
