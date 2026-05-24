@@ -5,63 +5,10 @@ import Link from "next/link";
 import { Suspense, useState } from "react";
 import type { CSSProperties } from "react";
 import { useSearchParams } from "next/navigation";
+import { obras } from "@/app/data/obras";
 {
   /* P A G I N A    D E    N A V E G A Ç Ã O*/
 }
-
-const obras = [
-  {
-    id: "reforma-praca-central",
-    titulo: "Reforma da Praça Central",
-    local: "Centro, Pedreiras",
-    investimento: "R$ 250 mil",
-    inicio: "10/03/2026",
-    prazo: "30/09/2026",
-    progresso: "72%",
-    status: "Em andamento",
-    tipo: "Lazer",
-    imagem: "/obra-principal.png",
-  },
-
-  {
-    id: "pavimentacao-rua-maneco-rego",
-    titulo: "Pavimentação Rua Maneco Rego",
-    local: "Bairro Centro",
-    investimento: "R$ 150 mil",
-    inicio: "15/02/2026",
-    prazo: "15/08/2026",
-    progresso: "70%",
-    status: "Em andamento",
-    tipo: "Pavimentação",
-    imagem: "/obra-principal.png",
-  },
-
-  {
-    id: "construcao-escola-municipal",
-    titulo: "Construção de Escola Municipal",
-    local: "Bairro Novo",
-    investimento: "R$ 200 mil",
-    inicio: "01/01/2026",
-    prazo: "30/06/2026",
-    progresso: "45%",
-    status: "Planejada",
-    tipo: "Educação",
-    imagem: "/obra-principal.png",
-  },
-
-  {
-    id: "reforma-ubs",
-    titulo: "Reforma da UBS",
-    local: "Bairro Mutirão",
-    investimento: "R$ 100 mil",
-    inicio: "20/03/2026",
-    prazo: "20/09/2026",
-    progresso: "85%",
-    status: "Quase concluída",
-    tipo: "Saúde",
-    imagem: "/obra-principal.png",
-  },
-];
 
 function ObrasContent() {
   const searchParams = useSearchParams();

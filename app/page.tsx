@@ -5,6 +5,7 @@ import Link from "next/link";
 import type { CSSProperties } from "react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { obras } from "@/app/data/obras";
 {
   /* P A G I N A    P R I N C I P A L*/
 }
@@ -61,6 +62,9 @@ function RoscaProgresso({ progresso }: { progresso: number }) {
 export default function Home() {
   const [pesquisa, setPesquisa] = useState("");
   const router = useRouter();
+
+  const obraPrincipal = obras[0];
+  const outrasObras = obras.slice(1, 4);
 
   function buscarObra() {
     if (!pesquisa.trim()) return;
@@ -227,8 +231,8 @@ export default function Home() {
                 {/* Área da imagem */}
                 <div className="relative h-[260px] w-full overflow-hidden rounded-2xl bg-white/20 sm:h-[320px] md:h-[360px]">
                   <Image
-                    src="/obra-principal.png"
-                    alt="Imagem da obra principal"
+                    src={obraPrincipal.imagem}
+                    alt={obraPrincipal.titulo}
                     fill
                     sizes="(max-width: 768px) 100vw, 420px"
                     className="object-cover"
@@ -238,33 +242,37 @@ export default function Home() {
                 {/* Área da descrição */}
                 <div className="mt-5 rounded-2xl bg-white/10 p-4">
                   <h2 className="text-xl font-semibold text-white">
-                    Título da obra
+                    {obraPrincipal.titulo}
                   </h2>
 
                   {/* Barra de progresso */}
                   <div className="mt-4">
                     <div className="mb-1 flex items-center justify-between text-xs text-white/80">
                       <span>Progresso</span>
-                      <span>72%</span>
+                      <span>{obraPrincipal.progresso}</span>
                     </div>
 
                     <div className="h-3 w-full overflow-hidden rounded-full bg-white/20">
                       <div
-                        className={`h-full rounded-full barra-progresso-animada ${corProgresso(72)}`}
-                        style={{ "--progresso": "72%" } as CSSProperties}
+                        className={`h-full rounded-full barra-progresso-animada ${corProgresso(
+                          Number(obraPrincipal.progresso.replace("%", "")),
+                        )}`}
+                        style={
+                          {
+                            "--progresso": obraPrincipal.progresso,
+                          } as CSSProperties
+                        }
                       ></div>
                     </div>
                   </div>
 
                   <p className="mt-2 text-sm leading-6 text-white/80">
-                    Aqui você pode colocar uma descrição sobre a obra,
-                    andamento, localização ou informações importantes para o
-                    cidadão.
+                    {obraPrincipal.descricao}
                   </p>
                 </div>
 
                 <Link
-                  href="/rotas/obras/reforma-praca-central"
+                  href={`/rotas/obras/${obraPrincipal.id}`}
                   className="mt-5 block w-full rounded-xl bg-[#FFC222] px-4 py-3 text-center text-sm font-semibold text-black transition hover:bg-[#eab308]"
                 >
                   Ver detalhes
@@ -272,38 +280,27 @@ export default function Home() {
               </div>
 
               {/* Outras Obras */}
-              <div className="flex w-full flex-col rounded-3xl bg-[#425C59] p-5 shadow-[0_25px_60px_rgba(0,0,0,0.60)] ring-1 ring-white/20 transition-all duration-300 hover:-translate-y-2 hover:scale-[1.01] hover:shadow-[0_35px_80px_rgba(0,0,0,0.55)] lg:w-[210px]">
+              <div className="flex w-full flex-col rounded-3xl bg-[#425C59] p-5 shadow-xl lg:w-[210px]">
                 <p className="mb-4 text-xl font-semibold text-white">
                   Outras Obras
                 </p>
 
                 <div className="flex gap-4 overflow-x-auto lg:flex-1 lg:flex-col lg:justify-between lg:overflow-visible">
-                  {/* Gráfico 1 */}
-                  <div className="flex h-[160px] min-w-[160px] flex-col items-center justify-center rounded-lg bg-white lg:h-auto lg:min-w-0 lg:flex-1">
-                    <p className="mb-2 text-sm font-medium text-black">
-                      Rua Maneco Rego
-                    </p>
+                  {outrasObras.map((obra) => (
+                    <Link
+                      key={obra.id}
+                      href={`/rotas/obras/${obra.id}`}
+                      className="flex h-[160px] min-w-[160px] flex-col items-center justify-center rounded-lg bg-white px-3 text-center shadow-sm transition-all duration-300 hover:-translate-y-1 hover:scale-[1.02] hover:shadow-xl lg:h-auto lg:min-w-0 lg:flex-1"
+                    >
+                      <p className="mb-2 line-clamp-2 text-sm font-medium text-black">
+                        {obra.titulo}
+                      </p>
 
-                    <RoscaProgresso progresso={70} />
-                  </div>
-
-                  {/* Gráfico 2 */}
-                  <div className="flex h-[160px] min-w-[160px] flex-col items-center justify-center rounded-lg bg-white lg:h-auto lg:min-w-0 lg:flex-1">
-                    <p className="mb-2 text-sm font-medium text-black">
-                      Rua João Pessoa
-                    </p>
-
-                    <RoscaProgresso progresso={99} />
-                  </div>
-
-                  {/* Gráfico 3 */}
-                  <div className="flex h-[160px] min-w-[160px] flex-col items-center justify-center rounded-lg bg-white lg:h-auto lg:min-w-0 lg:flex-1">
-                    <p className="mb-2 text-sm font-medium text-black">
-                      Rua do Ifma de terra
-                    </p>
-
-                    <RoscaProgresso progresso={49} />
-                  </div>
+                      <RoscaProgresso
+                        progresso={Number(obra.progresso.replace("%", ""))}
+                      />
+                    </Link>
+                  ))}
                 </div>
               </div>
             </div>
