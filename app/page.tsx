@@ -218,7 +218,7 @@ export default function Home() {
 
                 <Link
                   href="/rotas/obras/reforma-praca-central"
-                  className="mt-auto block w-full rounded-xl bg-[#FFC222] px-4 py-3 text-center text-sm font-semibold text-black transition hover:bg-[#eab308]"
+                  className="mt-5 block w-full rounded-xl bg-[#FFC222] px-4 py-3 text-center text-sm font-semibold text-black transition hover:bg-[#eab308]"
                 >
                   Ver detalhes
                 </Link>
