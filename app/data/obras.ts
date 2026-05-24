@@ -27,7 +27,8 @@ export const obras: Obra[] = [
     progresso: "72%",
     status: "Em andamento",
     tipo: "Lazer",
-    imagem: "/obra-principal.png",
+    imagem:
+      "https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=900&q=80",
     descricao:
       "Revitalização da Praça Central para melhorar o espaço de convivência, lazer e acessibilidade da população.",
     detalhes:
@@ -46,7 +47,8 @@ export const obras: Obra[] = [
     progresso: "70%",
     status: "Em andamento",
     tipo: "Pavimentação",
-    imagem: "/obra-principal.png",
+    imagem:
+      "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=900&q=80",
     descricao:
       "Pavimentação da Rua Maneco Rego para melhorar o tráfego, reduzir poeira e facilitar o deslocamento dos moradores.",
     detalhes:
@@ -65,7 +67,8 @@ export const obras: Obra[] = [
     progresso: "45%",
     status: "Em andamento",
     tipo: "Educação",
-    imagem: "/obra-principal.png",
+    imagem:
+      "https://images.unsplash.com/photo-1581094794329-c8112a89af12?auto=format&fit=crop&w=900&q=80",
     descricao:
       "Construção de uma nova escola municipal para ampliar o acesso à educação básica no município.",
     detalhes:
@@ -84,7 +87,8 @@ export const obras: Obra[] = [
     progresso: "85%",
     status: "Quase concluída",
     tipo: "Saúde",
-    imagem: "/obra-principal.png",
+    imagem:
+      "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=80",
     descricao:
       "Reforma da Unidade Básica de Saúde para melhorar o atendimento médico e a estrutura oferecida à população.",
     detalhes:
@@ -103,7 +107,8 @@ export const obras: Obra[] = [
     progresso: "38%",
     status: "Em andamento",
     tipo: "Drenagem",
-    imagem: "/obra-principal.png",
+    imagem:
+      "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=900&q=80",
     descricao:
       "Implantação de sistema de drenagem para reduzir alagamentos em períodos de chuva.",
     detalhes:
@@ -122,7 +127,9 @@ export const obras: Obra[] = [
     progresso: "60%",
     status: "Em andamento",
     tipo: "Esporte",
-    imagem: "/obra-principal.png",
+    imagem:
+      "https://images.unsplash.com/photo-1586773860418-d37222d8fce3?auto=format&fit=crop&w=900&q=80",
+
     descricao:
       "Construção de quadra poliesportiva para incentivar esporte, lazer e atividades comunitárias.",
     detalhes:
@@ -141,7 +148,8 @@ export const obras: Obra[] = [
     progresso: "15%",
     status: "Iniciada",
     tipo: "Comércio",
-    imagem: "/obra-principal.png",
+    imagem:
+      "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=900&q=80",
     descricao:
       "Reforma estrutural do Mercado Municipal para melhorar a organização, higiene e circulação de feirantes e consumidores.",
     detalhes:
@@ -160,7 +168,8 @@ export const obras: Obra[] = [
     progresso: "100%",
     status: "Concluída",
     tipo: "Iluminação",
-    imagem: "/obra-principal.png",
+    imagem:
+      "https://images.unsplash.com/photo-1519501025264-65ba15a82390?auto=format&fit=crop&w=900&q=80",
     descricao:
       "Modernização da iluminação pública com instalação de lâmpadas de LED em ruas da comunidade.",
     detalhes:
@@ -168,5 +177,45 @@ export const obras: Obra[] = [
     orgao: "Secretaria Municipal de Obras",
     empresa: "Luz Forte Serviços Ltda.",
     ultimaAtualizacao: "11/04/2026 às 17:25",
+  },
+  {
+    id: "revitalizacao-calcada-centro",
+    titulo: "Revitalização das Calçadas do Centro",
+    local: "Centro, Pedreiras - MA",
+    investimento: "R$ 180 mil",
+    inicio: "18/04/2026",
+    prazo: "18/09/2026",
+    progresso: "52%",
+    status: "Em andamento",
+    tipo: "Acessibilidade",
+    imagem:
+      "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=80",
+    descricao:
+      "Revitalização das calçadas do centro da cidade para melhorar a mobilidade urbana e a acessibilidade dos pedestres.",
+    detalhes:
+      "O projeto inclui nivelamento de calçadas, instalação de rampas de acessibilidade, recuperação de trechos danificados e sinalização para pedestres.",
+    orgao: "Secretaria Municipal de Urbanismo",
+    empresa: "Urbaniza Pedreiras Ltda.",
+    ultimaAtualizacao: "20/05/2026 às 13:45",
+  },
+  {
+    id: "construcao-praca-vila-palmeiras",
+    titulo: "Construção da Praça Vila das Palmeiras",
+    local: "Vila das Palmeiras, Pedreiras - MA",
+    investimento: "R$ 360 mil",
+    inicio: "02/05/2026",
+    prazo: "02/12/2026",
+    progresso: "28%",
+    status: "Em andamento",
+    tipo: "Lazer",
+    imagem:
+      "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=900&q=80",
+    descricao:
+      "Construção de uma nova praça pública para oferecer mais opções de lazer, convivência e atividades ao ar livre para os moradores.",
+    detalhes:
+      "A obra prevê implantação de área verde, bancos, iluminação em LED, playground, espaço para caminhada e acessibilidade.",
+    orgao: "Secretaria Municipal de Obras",
+    empresa: "Construtora Espaço Verde Ltda.",
+    ultimaAtualizacao: "22/05/2026 às 16:10",
   },
 ];
