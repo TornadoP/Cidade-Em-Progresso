@@ -42,3 +42,28 @@ body {
   stroke-dashoffset: calc(87.96 - (87.96 * var(--progresso-rosca)) / 100);
   transition: stroke-dashoffset 1s ease;
 }
+@property --valor-rosca {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 0%;
+}
+
+@keyframes carregarRoscaConic {
+  from {
+    --valor-rosca: 0%;
+  }
+  to {
+    --valor-rosca: var(--progresso-rosca);
+  }
+}
+
+.rosca-conic-animada {
+  --valor-rosca: 0%;
+  animation: carregarRoscaConic 1.5s ease-out forwards;
+  background: conic-gradient(
+    from -90deg,
+    var(--cor-inicio) 0%,
+    var(--cor-fim) var(--valor-rosca),
+    #e5e7eb var(--valor-rosca) 100%
+  );
+}

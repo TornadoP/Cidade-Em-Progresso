@@ -41,10 +41,14 @@ function RoscaProgresso({ progresso }: { progresso: number }) {
 
   return (
     <div
-      className="relative flex h-20 w-20 items-center justify-center rounded-full"
-      style={{
-        background: `conic-gradient(from -90deg, ${cores.inicio} 0%, ${cores.fim} ${progresso}%, #E5E7EB ${progresso}% 100%)`,
-      }}
+      className="rosca-conic-animada relative flex h-20 w-20 items-center justify-center rounded-full"
+      style={
+        {
+          "--progresso-rosca": `${progresso}%`,
+          "--cor-inicio": cores.inicio,
+          "--cor-fim": cores.fim,
+        } as CSSProperties
+      }
     >
       <div className="absolute h-14 w-14 rounded-full bg-white"></div>
 
