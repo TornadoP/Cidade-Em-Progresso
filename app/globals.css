@@ -4,23 +4,41 @@
   --background: #ffffff;
   --foreground: #171717;
 }
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  color-scheme: light only;
 }
 
 body {
-  background: var(--background);
+  background: linear-gradient(to bottom, #e3f1f1, #cbdfde);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+@keyframes carregarProgresso {
+  from {
+    width: 0%;
+  }
+  to {
+    width: var(--progresso);
+  }
+}
+
+.barra-progresso-animada {
+  width: 0%;
+  animation: carregarProgresso 1.5s ease-out forwards;
+}
+
+@keyframes carregarRosca {
+  from {
+    stroke-dasharray: 0 100;
+  }
+  to {
+    stroke-dasharray: var(--progresso-rosca) 100;
+  }
+}
+
+.rosca-progresso-animada {
+  stroke-dasharray: 87.96;
+  stroke-dashoffset: calc(87.96 - (87.96 * var(--progresso-rosca)) / 100);
+  transition: stroke-dashoffset 1s ease;
 }

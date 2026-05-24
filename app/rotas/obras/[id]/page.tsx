@@ -1,5 +1,9 @@
 import Link from "next/link";
 
+{
+  /* P A G I N A    D E    D E T A L H E    D A    O B R A*/
+}
+
 export default async function ObraPage(params: { id: string }) {
   const { id } = await params;
 
