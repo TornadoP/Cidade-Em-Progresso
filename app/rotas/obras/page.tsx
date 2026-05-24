@@ -274,8 +274,9 @@ function ObrasContent() {
 
             <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
               {obrasFiltradas.map((obra) => (
-                <article
-                  key={obra.titulo}
+                <Link
+                  key={obra.id}
+                  href={`/rotas/obras/${obra.id}`}
                   className="flex h-full flex-col overflow-hidden rounded-3xl bg-white shadow-[0_18px_45px_rgba(0,0,0,0.28)] ring-1 ring-black/5 transition-all duration-300 hover:-translate-y-2 hover:scale-[1.01] hover:shadow-[0_30px_70px_rgba(0,0,0,0.42)]"
                 >
                   <div className="relative h-44 w-full bg-[#425C59]/20">
@@ -346,14 +347,11 @@ function ObrasContent() {
                       </div>
                     </div>
 
-                    <Link
-                      href={`/rotas/obras/${obra.id}`}
-                      className="mt-auto block w-full rounded-xl bg-[#425C59] px-4 py-3 text-center text-sm font-semibold text-white transition hover:bg-[#334846]"
-                    >
+                    <span className="mt-auto block w-full rounded-xl bg-[#425C59] px-4 py-3 text-center text-sm font-semibold text-white transition hover:bg-[#334846]">
                       Ver detalhes
-                    </Link>
+                    </span>
                   </div>
-                </article>
+                </Link>
               ))}
             </div>
           </section>
