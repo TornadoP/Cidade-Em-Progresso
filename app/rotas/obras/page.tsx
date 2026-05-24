@@ -219,10 +219,6 @@ function ObrasContent() {
                   Lazer
                 </label>
               </div>
-
-              <button className="mt-4 w-full rounded-xl bg-[#CBDfde] px-4 py-3 text-sm font-semibold text-black transition hover:bg-white">
-                Aplicar filtros
-              </button>
             </div>
           </aside>
 
