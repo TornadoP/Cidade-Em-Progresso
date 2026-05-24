@@ -18,6 +18,7 @@ const obras = [
     prazo: "30/09/2026",
     progresso: "72%",
     status: "Em andamento",
+    tipo: "Lazer",
     imagem: "/obra-principal.png",
   },
 
