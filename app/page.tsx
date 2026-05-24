@@ -189,7 +189,7 @@ export default function Home() {
                 </div>
 
                 {/* Área da descrição */}
-                <div className="mt-5 flex min-h-[160px] flex-col rounded-2xl bg-white/10 p-4 md:h-[200px]">
+                <div className="mt-5 rounded-2xl bg-white/10 p-4">
                   <h2 className="text-xl font-semibold text-white">
                     Título da obra
                   </h2>
@@ -214,14 +214,14 @@ export default function Home() {
                     andamento, localização ou informações importantes para o
                     cidadão.
                   </p>
-
-                  <Link
-                    href="/rotas/obras/reforma-praca-central"
-                    className="mt-auto block w-full rounded-xl bg-[#FFC222] px-4 py-3 text-center text-sm font-semibold text-black transition hover:bg-[#eab308]"
-                  >
-                    Ver detalhes
-                  </Link>
                 </div>
+
+                <Link
+                  href="/rotas/obras/reforma-praca-central"
+                  className="mt-auto block w-full rounded-xl bg-[#FFC222] px-4 py-3 text-center text-sm font-semibold text-black transition hover:bg-[#eab308]"
+                >
+                  Ver detalhes
+                </Link>
               </div>
 
               {/* Outras Obras */}
