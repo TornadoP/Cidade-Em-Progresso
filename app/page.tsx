@@ -255,6 +255,7 @@ export default function Home() {
                           cx="18"
                           cy="18"
                           r="14"
+                          pathLength="100"
                           fill="none"
                           stroke="#E5E7EB"
                           strokeWidth="4"
@@ -263,12 +264,13 @@ export default function Home() {
                           cx="18"
                           cy="18"
                           r="14"
+                          pathLength="100"
                           fill="none"
                           stroke="url(#gradRosca1)"
                           strokeWidth="4"
                           strokeLinecap="round"
                           className="rosca-progresso-animada"
-                          style={{ "--progresso-rosca": "79" } as CSSProperties}
+                          style={{ "--progresso-rosca": "70" } as CSSProperties}
                         />
                       </svg>
 
@@ -302,6 +304,7 @@ export default function Home() {
                           cx="18"
                           cy="18"
                           r="14"
+                          pathLength="100"
                           fill="none"
                           stroke="#E5E7EB"
                           strokeWidth="4"
@@ -310,12 +313,13 @@ export default function Home() {
                           cx="18"
                           cy="18"
                           r="14"
+                          pathLength="100"
                           fill="none"
                           stroke="url(#gradRosca2)"
                           strokeWidth="4"
                           strokeLinecap="round"
                           className="rosca-progresso-animada"
-                          style={{ "--progresso-rosca": "98" } as CSSProperties}
+                          style={{ "--progresso-rosca": "45" } as CSSProperties}
                         />
                       </svg>
 
@@ -349,6 +353,7 @@ export default function Home() {
                           cx="18"
                           cy="18"
                           r="14"
+                          pathLength="100"
                           fill="none"
                           stroke="#E5E7EB"
                           strokeWidth="4"
@@ -357,12 +362,13 @@ export default function Home() {
                           cx="18"
                           cy="18"
                           r="14"
+                          pathLength="100"
                           fill="none"
                           stroke="url(#gradRosca3)"
                           strokeWidth="4"
                           strokeLinecap="round"
                           className="rosca-progresso-animada"
-                          style={{ "--progresso-rosca": "3" } as CSSProperties}
+                          style={{ "--progresso-rosca": "85" } as CSSProperties}
                         />
                       </svg>
 
