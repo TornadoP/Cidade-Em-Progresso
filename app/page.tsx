@@ -223,7 +223,7 @@ export default function Home() {
             {/* Card central com imagem e descrição + Outras obras */}
             <div className="flex flex-1 flex-col items-stretch justify-center gap-6 lg:flex-row lg:gap-8">
               {/* Card principal */}
-              <div className="w-full rounded-3xl bg-[#425C59] p-5 shadow-[0_18px_45px_rgba(0,0,0,0.35)] ring-1 ring-white/20 lg:w-[420px]">
+              <div className="w-full rounded-3xl bg-[#425C59] p-5 shadow-[0_18px_45px_rgba(0,0,0,0.60)] ring-1 ring-white/20 lg:w-[420px]">
                 {/* Área da imagem */}
                 <div className="relative h-[260px] w-full overflow-hidden rounded-2xl bg-white/20 sm:h-[320px] md:h-[360px]">
                   <Image
@@ -272,7 +272,7 @@ export default function Home() {
               </div>
 
               {/* Outras Obras */}
-              <div className="flex w-full flex-col rounded-3xl bg-[#425C59] p-5 shadow-[0_18px_45px_rgba(0,0,0,0.35)] ring-1 ring-white/20 lg:w-[210px]">
+              <div className="flex w-full flex-col rounded-3xl bg-[#425C59] p-5 shadow-[0_18px_45px_rgba(0,0,0,0.60)] ring-1 ring-white/20 lg:w-[210px]">
                 <p className="mb-4 text-xl font-semibold text-white">
                   Outras Obras
                 </p>
