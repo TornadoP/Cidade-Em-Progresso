@@ -241,8 +241,9 @@ export default function Home() {
             <div className="flex flex-1 flex-col items-stretch justify-center gap-6 lg:flex-row lg:gap-8">
               {/* Card principal */}
               <Link
+                key={obraPrincipal.id}
                 href={`/rotas/obras/${obraPrincipal.id}`}
-                className="block w-full rounded-3xl bg-[#425C59] p-5 shadow-xl transition-all duration-300 hover:-translate-y-2 hover:scale-[1.01] hover:shadow-[0_35px_80px_rgba(0,0,0,0.55)] lg:w-[420px]"
+                className="animacao-troca-obra block w-full rounded-3xl bg-[#425C59] p-5 shadow-xl transition-all duration-300 hover:-translate-y-2 hover:scale-[1.01] hover:shadow-[0_35px_80px_rgba(0,0,0,0.55)] lg:w-[420px]"
               >
                 {/* Área da imagem */}
                 <div className="relative h-[260px] w-full overflow-hidden rounded-2xl bg-white/20 sm:h-[320px] md:h-[360px]">
@@ -302,7 +303,7 @@ export default function Home() {
                     <Link
                       key={obra.id}
                       href={`/rotas/obras/${obra.id}`}
-                      className="flex h-[160px] min-w-[160px] flex-col items-center justify-center rounded-lg bg-white px-3 text-center shadow-sm transition-all duration-300 hover:-translate-y-1 hover:scale-[1.02] hover:shadow-xl lg:h-auto lg:min-w-0 lg:flex-1"
+                      className="animacao-troca-obra flex h-[160px] min-w-[160px] flex-col items-center justify-center rounded-lg bg-white px-3 text-center shadow-sm transition-all duration-300 hover:-translate-y-1 hover:scale-[1.02] hover:shadow-xl lg:h-auto lg:min-w-0 lg:flex-1"
                     >
                       <p className="mb-2 line-clamp-2 text-sm font-medium text-black">
                         {obra.titulo}
