@@ -1,89 +1,458 @@
+import Image from "next/image";
 import Link from "next/link";
+import { notFound } from "next/navigation";
+import type { CSSProperties } from "react";
 
-{
-  /* P A G I N A    D E    D E T A L H E    D A    O B R A*/
+//P A G I N A    D E   D E T A L H E S  O B R A S
+
+const obras = [
+  {
+    id: "reforma-praca-central",
+    titulo: "Reforma da Praça Central",
+    local: "Centro, Pedreiras - MA",
+    investimento: "R$ 250 mil",
+    inicio: "10/03/2026",
+    prazo: "30/09/2026",
+    progresso: "72%",
+    status: "Em andamento",
+    tipo: "Lazer",
+    imagem: "/obra-principal.png",
+    descricao:
+      "A reforma da Praça Central tem como objetivo revitalizar o principal espaço público de convivência da cidade, promovendo mais lazer, acessibilidade, segurança e qualidade de vida para a população.",
+    detalhes:
+      "O projeto inclui requalificação do piso, novo paisagismo, iluminação em LED, bancos, lixeiras, área infantil e melhorias na acessibilidade.",
+    orgao: "Secretaria Municipal de Obras",
+    empresa: "Construtora Boa Vista Ltda.",
+    ultimaAtualizacao: "10/05/2026 às 14:30",
+  },
+  {
+    id: "pavimentacao-rua-maneco-rego",
+    titulo: "Pavimentação Rua Maneco Rego",
+    local: "Bairro Centro, Pedreiras - MA",
+    investimento: "R$ 150 mil",
+    inicio: "15/02/2026",
+    prazo: "15/08/2026",
+    progresso: "70%",
+    status: "Em andamento",
+    tipo: "Pavimentação",
+    imagem: "/obra-principal.png",
+    descricao:
+      "Obra de pavimentação voltada para melhorar o tráfego, reduzir poeira e facilitar o deslocamento dos moradores.",
+    detalhes:
+      "A intervenção prevê preparação do solo, drenagem, pavimentação e sinalização básica.",
+    orgao: "Secretaria Municipal de Infraestrutura",
+    empresa: "Pavimenta Maranhão Ltda.",
+    ultimaAtualizacao: "08/05/2026 às 09:20",
+  },
+  {
+    id: "construcao-escola-municipal",
+    titulo: "Construção de Escola Municipal",
+    local: "Bairro Novo, Pedreiras - MA",
+    investimento: "R$ 200 mil",
+    inicio: "01/01/2026",
+    prazo: "30/06/2026",
+    progresso: "45%",
+    status: "Planejada",
+    tipo: "Educação",
+    imagem: "/obra-principal.png",
+    descricao:
+      "Construção de uma nova unidade escolar para ampliar o acesso à educação básica no município.",
+    detalhes:
+      "O projeto prevê salas de aula, área administrativa, banheiros, pátio coberto e estrutura acessível.",
+    orgao: "Secretaria Municipal de Educação",
+    empresa: "Construtora Educar Ltda.",
+    ultimaAtualizacao: "01/05/2026 às 11:10",
+  },
+  {
+    id: "reforma-ubs",
+    titulo: "Reforma da UBS",
+    local: "Bairro Mutirão, Pedreiras - MA",
+    investimento: "R$ 100 mil",
+    inicio: "20/03/2026",
+    prazo: "20/09/2026",
+    progresso: "85%",
+    status: "Quase concluída",
+    tipo: "Saúde",
+    imagem: "/obra-principal.png",
+    descricao:
+      "Reforma da Unidade Básica de Saúde para melhorar o atendimento à população local.",
+    detalhes:
+      "A obra inclui pintura, troca de instalações, melhorias nas salas de atendimento e adequações estruturais.",
+    orgao: "Secretaria Municipal de Saúde",
+    empresa: "Saúde Obras Ltda.",
+    ultimaAtualizacao: "12/05/2026 às 16:40",
+  },
+];
+
+function corProgresso(progresso: string) {
+  const valor = Number(progresso.replace("%", ""));
+
+  if (valor < 50) {
+    return "bg-gradient-to-r from-[#EF4444] to-[#FACC15]";
+  }
+
+  if (valor < 75) {
+    return "bg-gradient-to-r from-[#FACC15] to-[#84CC16]";
+  }
+
+  return "bg-gradient-to-r from-[#86EFAC] to-[#425C59]";
 }
 
-export default async function ObraPage(params: { id: string }) {
+export async function generateStaticParams() {
+  return obras.map((obra) => ({
+    id: obra.id,
+  }));
+}
+
+export default async function DetalhesObraPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
   const { id } = await params;
 
-  return (
-    <main className="min-h-screen bg-white p-8">
-      <h1 className="text-3xl font-bold text-black">detalhe da obra</h1>
-    </main>
-  );
-  type Obra = {
-    id: number;
-    nome: string;
-    endereço: string;
-    investimento: string;
-    inicio: string;
-    conclusão: string;
-    descricao: string;
-    progresso: number;
-    imagem: string;
-  };
+  const obra = obras.find((item) => item.id === id);
 
-  const obras: Obra[] = [
-    {
-      id: 1,
-      nome: "ESBURACAMENTO DE RUAS",
-      endereço: "Rua das Flores, Bairro Jardim",
-      investimento: "R$ 500.000,00",
-      inicio: "01/01/2024",
-      conclusão: "30/06/2024",
-      progresso: 75,
-      imagem: "https://www.pedreiras.ma.gov.br/fotos/738/Img0_600x400.jpg",
-      descricao:
-        "Destruir completamente as ruas, até que não sobre mais asfalto Destruir completamente as ruas, até que não sobre mais asfalto, taca uma bomba logo, até que não sobre mais nada não precisa ter rua, só lama já serve.",
-    },
-    {
-      id: 2,
-      nome: "Escola Municipal",
-      endereço: "Avenida Central, Bairro Centro",
-      investimento: "R$ 2.000.000,00",
-      inicio: "15/02/2024",
-      conclusão: "15/12/2024",
-      progresso: 48,
-      imagem:
-        "https://www.folhabv.com.br/wp-content/uploads/2024/04/ESCOLA-PROFESSOR-DIOMEDES-FOTO-NILZETE-FRANCO-3-1024x683.jpg",
-      descricao: "Construção de novas salas.",
-    },
-    {
-      id: 3,
-      nome: "Asfalto Bairro Novo",
-      endereço: "Rua Nova, Bairro Novo",
-      investimento: "R$ 1.200.000,00",
-      inicio: "10/03/2024",
-      conclusão: "10/09/2024",
-      progresso: 33,
-      imagem:
-        "https://f.i.uol.com.br/fotografia/2023/12/04/1701724804656e4284e0098_1701724804_3x2_rt.jpg",
-      descricao: "Pavimentação completa.",
-    },
-    {
-      id: 4,
-      nome: "atirar uma pedra derruba um 7.62",
-      endereço: "Rua do Caos, Bairro Selvagem",
-      investimento: "R$ 999.999,99",
-      inicio: "01/04/2024",
-      conclusão: "01/10/2024",
-      progresso: 33,
-      imagem:
-        "https://s2.glbimg.com/LvSZ_Ig3NxNvTgA1dbzSf6cP0f8=/e.glbimg.com/og/ed/f/original/2018/01/12/73633385_ri-rio-de-janeiro-rj-13-12-2017-crise-no-estado-governo-do-estado-corta-o-orcamento-da-pm-e.jpg",
-      descricao: "Pavimentação completa.",
-    },
-    {
-      id: 5,
-      nome: "Construção de Parque",
-      endereço: "Avenida Verde, Bairro Ecológico",
-      investimento: "R$ 800.000,00",
-      inicio: "20/01/2024",
-      conclusão: "20/07/2024",
-      progresso: 60,
-      imagem: "/parque.jpg",
-      descricao: "Criação de áreas verdes e lazer.",
-    },
-  ];
-  const obra = obras.find((item) => item.id === Number(id));
+  if (!obra) {
+    notFound();
+  }
+
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-[#E3F1F1] to-[#CBDfde] p-4 font-sans sm:p-6">
+      <main className="mx-auto w-full max-w-7xl rounded-3xl bg-[#C9D9DB] p-6 shadow-[0_25px_80px_rgba(0,0,0,0.45)]">
+        {/* Topo */}
+        <header className="mb-8 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+          <div>
+            <h1 className="text-2xl font-bold text-black">
+              Cidade em Progresso
+            </h1>
+
+            <p className="mt-6 text-sm text-black/70">
+              <Link href="/rotas/obras" className="hover:underline">
+                Obras
+              </Link>{" "}
+              / Detalhes da obra
+            </p>
+          </div>
+
+          <nav className="flex flex-wrap gap-3 text-sm">
+            <Link
+              href="/"
+              className="rounded-xl px-4 py-3 font-medium text-black transition hover:bg-[#FFC222]"
+            >
+              Início
+            </Link>
+
+            <Link
+              href="/rotas/obras"
+              className="rounded-xl bg-[#FFC222] px-4 py-3 font-medium text-black transition hover:bg-[#eab308]"
+            >
+              Obras
+            </Link>
+
+            <Link
+              href="#"
+              className="rounded-xl px-4 py-3 font-medium text-black transition hover:bg-[#FFC222]"
+            >
+              Participar
+            </Link>
+
+            <Link
+              href="#"
+              className="rounded-xl px-4 py-3 font-medium text-black transition hover:bg-[#FFC222]"
+            >
+              Ranking
+            </Link>
+
+            <Link
+              href="#"
+              className="rounded-xl px-4 py-3 font-medium text-black transition hover:bg-[#FFC222]"
+            >
+              Sobre
+            </Link>
+          </nav>
+        </header>
+
+        {/* Área principal */}
+        <section className="grid gap-6 lg:grid-cols-[1.35fr_0.9fr]">
+          {/* Imagem grande */}
+          <div className="relative min-h-[280px] overflow-hidden rounded-3xl bg-[#425C59]/20 shadow-xl ring-1 ring-white/30 sm:min-h-[360px] lg:min-h-[420px]">
+            <Image
+              src={obra.imagem}
+              alt={obra.titulo}
+              fill
+              priority
+              sizes="(max-width: 1024px) 100vw, 720px"
+              className="object-cover"
+            />
+          </div>
+
+          {/* Card resumo */}
+          <aside className="rounded-3xl bg-[#425C59] p-6 text-white shadow-[0_25px_60px_rgba(0,0,0,0.35)] ring-1 ring-white/20">
+            <h2 className="text-2xl font-bold">{obra.titulo}</h2>
+
+            <span className="mt-4 inline-flex rounded-full bg-white/90 px-4 py-2 text-sm font-semibold text-[#425C59]">
+              ● {obra.status}
+            </span>
+
+            <div className="mt-6">
+              <div className="mb-2 flex items-center justify-between text-sm text-white/90">
+                <span>Progresso da obra</span>
+                <span className="text-xl font-bold">{obra.progresso}</span>
+              </div>
+
+              <div className="h-3 w-full overflow-hidden rounded-full bg-white/20">
+                <div
+                  className={`h-full rounded-full barra-progresso-animada ${corProgresso(
+                    obra.progresso,
+                  )}`}
+                  style={
+                    {
+                      "--progresso": obra.progresso,
+                    } as CSSProperties
+                  }
+                ></div>
+              </div>
+            </div>
+
+            <div className="mt-6 h-px bg-white/20"></div>
+
+            <div className="mt-6 grid gap-4 text-sm">
+              <div className="grid grid-cols-[150px_1fr] gap-3">
+                <span className="font-semibold text-white">📍 Localização</span>
+                <span className="text-white/85">{obra.local}</span>
+              </div>
+
+              <div className="grid grid-cols-[150px_1fr] gap-3">
+                <span className="font-semibold text-white">
+                  🏦 Investimento
+                </span>
+                <span className="text-white/85">{obra.investimento}</span>
+              </div>
+
+              <div className="grid grid-cols-[150px_1fr] gap-3">
+                <span className="font-semibold text-white">
+                  🚧 Data de início
+                </span>
+                <span className="text-white/85">{obra.inicio}</span>
+              </div>
+
+              <div className="grid grid-cols-[150px_1fr] gap-3">
+                <span className="font-semibold text-white">📅 Prazo</span>
+                <span className="text-white/85">{obra.prazo}</span>
+              </div>
+
+              <div className="grid grid-cols-[150px_1fr] gap-3">
+                <span className="font-semibold text-white">🏗️ Tipo</span>
+                <span className="text-white/85">{obra.tipo}</span>
+              </div>
+            </div>
+          </aside>
+        </section>
+
+        {/* Cards inferiores */}
+        <section className="mt-6 grid gap-6 lg:grid-cols-[1.2fr_0.65fr_0.8fr]">
+          {/* Sobre */}
+          <div className="rounded-3xl bg-white/80 p-6 shadow-xl ring-1 ring-black/5">
+            <div className="mb-4 flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#425C59] text-white">
+                📄
+              </div>
+
+              <h3 className="text-lg font-bold text-black">Sobre a obra</h3>
+            </div>
+
+            <p className="text-sm leading-7 text-black/70">{obra.descricao}</p>
+
+            <p className="mt-4 text-sm leading-7 text-black/70">
+              {obra.detalhes}
+            </p>
+          </div>
+
+          {/* Etapas */}
+          <div className="rounded-3xl bg-white/80 p-6 shadow-xl ring-1 ring-black/5">
+            <h3 className="mb-5 text-lg font-bold text-black">
+              Etapas da obra
+            </h3>
+
+            <div className="space-y-5">
+              <div className="flex gap-3">
+                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#FFC222] text-sm font-bold text-white">
+                  ✓
+                </span>
+
+                <div>
+                  <p className="font-semibold text-black">
+                    Planejamento e projeto
+                  </p>
+                  <p className="text-sm text-black/60">
+                    Concluída em 10/02/2026
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex gap-3">
+                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#FFC222] text-sm font-bold text-white">
+                  ✓
+                </span>
+
+                <div>
+                  <p className="font-semibold text-black">
+                    Licitação e contratação
+                  </p>
+                  <p className="text-sm text-black/60">
+                    Concluída em 01/03/2026
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex gap-3">
+                <span className="flex h-7 w-7 items-center justify-center rounded-full border-4 border-[#FFC222] bg-white"></span>
+
+                <div>
+                  <p className="font-semibold text-black">Execução da obra</p>
+                  <p className="text-sm text-black/60">{obra.status}</p>
+                </div>
+              </div>
+
+              <div className="flex gap-3">
+                <span className="flex h-7 w-7 items-center justify-center rounded-full border-4 border-zinc-300 bg-white"></span>
+
+                <div>
+                  <p className="font-semibold text-black">
+                    Conclusão e entrega
+                  </p>
+                  <p className="text-sm text-black/60">
+                    Previsto para {obra.prazo}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Localização */}
+          <div className="rounded-3xl bg-white/80 p-6 shadow-xl ring-1 ring-black/5">
+            <div className="mb-4 flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#425C59] text-white">
+                📍
+              </div>
+
+              <h3 className="text-lg font-bold text-black">Localização</h3>
+            </div>
+
+            <div className="flex h-40 items-center justify-center rounded-2xl bg-[#E3F1F1] text-center text-sm text-black/60">
+              Mapa ilustrativo da obra
+              <br />
+              {obra.local}
+            </div>
+
+            <a
+              href="https://www.google.com/maps"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-4 block rounded-xl bg-[#CBDfde] px-4 py-3 text-center text-sm font-semibold text-black transition hover:bg-white"
+            >
+              Abrir no Google Maps ↗
+            </a>
+          </div>
+        </section>
+
+        {/* Segunda linha */}
+        <section className="mt-6 grid gap-6 lg:grid-cols-[1.2fr_0.65fr_0.8fr]">
+          {/* Galeria */}
+          <div className="rounded-3xl bg-white/80 p-6 shadow-xl ring-1 ring-black/5">
+            <div className="mb-4 flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#425C59] text-white">
+                📷
+              </div>
+
+              <h3 className="text-lg font-bold text-black">
+                Galeria de atualizações
+              </h3>
+            </div>
+
+            <div className="grid gap-3 sm:grid-cols-3">
+              {[1, 2, 3].map((item) => (
+                <div
+                  key={item}
+                  className="relative h-28 overflow-hidden rounded-2xl bg-[#425C59]/20"
+                >
+                  <Image
+                    src={obra.imagem}
+                    alt={`Atualização ${item} da obra`}
+                    fill
+                    sizes="180px"
+                    className="object-cover"
+                  />
+                </div>
+              ))}
+            </div>
+
+            <button className="mt-4 w-full rounded-xl bg-[#CBDfde] px-4 py-3 text-sm font-semibold text-black transition hover:bg-white">
+              Ver todas as fotos
+            </button>
+          </div>
+
+          {/* Transparência */}
+          <div className="rounded-3xl bg-white/80 p-6 shadow-xl ring-1 ring-black/5">
+            <div className="mb-4 flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#425C59] text-white">
+                🛡️
+              </div>
+
+              <h3 className="text-lg font-bold text-black">Transparência</h3>
+            </div>
+
+            <div className="space-y-4 text-sm text-black/70">
+              <div>
+                <p className="font-semibold text-black">Órgão responsável</p>
+                <p>{obra.orgao}</p>
+              </div>
+
+              <div>
+                <p className="font-semibold text-black">Empresa executora</p>
+                <p>{obra.empresa}</p>
+              </div>
+
+              <div>
+                <p className="font-semibold text-black">Última atualização</p>
+                <p>{obra.ultimaAtualizacao}</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Participar */}
+          <div className="rounded-3xl bg-white/80 p-6 shadow-xl ring-1 ring-black/5">
+            <div className="mb-4 flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#425C59] text-white">
+                👥
+              </div>
+
+              <h3 className="text-lg font-bold text-black">
+                Acompanhe e participe
+              </h3>
+            </div>
+
+            <p className="text-sm leading-7 text-black/70">
+              Receba atualizações sobre o andamento desta obra e contribua com
+              observações da comunidade.
+            </p>
+
+            <button className="mt-5 w-full rounded-xl bg-[#FFC222] px-4 py-3 text-sm font-semibold text-black transition hover:bg-[#eab308]">
+              Acompanhar atualizações 🔔
+            </button>
+
+            <button className="mt-3 w-full rounded-xl border border-black/20 px-4 py-3 text-sm font-semibold text-black transition hover:bg-black/5">
+              Registrar observação 💬
+            </button>
+          </div>
+        </section>
+
+        <div className="mt-6 rounded-2xl border border-[#425C59]/20 bg-[#DFF0DF] px-5 py-4 text-sm text-[#425C59]">
+          ℹ️ Transparência e participação cidadã constroem uma cidade melhor
+          para todos.
+        </div>
+      </main>
+    </div>
+  );
 }

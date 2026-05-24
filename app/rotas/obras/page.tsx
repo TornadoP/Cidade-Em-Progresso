@@ -11,6 +11,7 @@ import { useSearchParams } from "next/navigation";
 
 const obras = [
   {
+    id: "reforma-praca-central",
     titulo: "Reforma da Praça Central",
     local: "Centro, Pedreiras",
     investimento: "R$ 250 mil",
@@ -23,6 +24,7 @@ const obras = [
   },
 
   {
+    id: "pavimentacao-rua-maneco-rego",
     titulo: "Pavimentação Rua Maneco Rego",
     local: "Bairro Centro",
     investimento: "R$ 150 mil",
@@ -35,6 +37,7 @@ const obras = [
   },
 
   {
+    id: "reforma-ubs",
     titulo: "Construção de Escola Municipal",
     local: "Bairro Novo",
     investimento: "R$ 200 mil",
@@ -47,6 +50,7 @@ const obras = [
   },
 
   {
+    id: "4",
     titulo: "Reforma da UBS",
     local: "Bairro Mutirão",
     investimento: "R$ 100 mil",
@@ -384,9 +388,12 @@ function ObrasContent() {
                       </div>
                     </div>
 
-                    <button className="mt-auto w-full rounded-xl bg-[#425C59] px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#334846]">
+                    <Link
+                      href={`/rotas/obras/${obra.id}`}
+                      className="mt-auto block w-full rounded-xl bg-[#425C59] px-4 py-3 text-center text-sm font-semibold text-white transition hover:bg-[#334846]"
+                    >
                       Ver detalhes
-                    </button>
+                    </Link>
                   </div>
                 </article>
               ))}
