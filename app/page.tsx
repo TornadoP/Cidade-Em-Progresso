@@ -298,7 +298,7 @@ export default function Home() {
                       Rua do Ifma de terra
                     </p>
 
-                    <RoscaProgresso progresso={1} />
+                    <RoscaProgresso progresso={49} />
                   </div>
                 </div>
               </div>
