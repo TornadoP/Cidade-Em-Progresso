@@ -37,7 +37,7 @@ const obras = [
   },
 
   {
-    id: "reforma-ubs",
+    id: "construcao-escola-municipal",
     titulo: "Construção de Escola Municipal",
     local: "Bairro Novo",
     investimento: "R$ 200 mil",
@@ -50,7 +50,7 @@ const obras = [
   },
 
   {
-    id: "4",
+    id: "reforma-ubs",
     titulo: "Reforma da UBS",
     local: "Bairro Mutirão",
     investimento: "R$ 100 mil",
