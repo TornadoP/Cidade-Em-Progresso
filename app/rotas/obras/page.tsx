@@ -13,6 +13,9 @@ const obras = [
   {
     titulo: "Reforma da Praça Central",
     local: "Centro, Pedreiras",
+    investimento: "R$ 250 mil",
+    inicio: "10/03/2026",
+    prazo: "30/09/2026",
     progresso: "72%",
     status: "Em andamento",
     tipo: "Lazer",
@@ -22,6 +25,9 @@ const obras = [
   {
     titulo: "Pavimentação Rua Maneco Rego",
     local: "Bairro Centro",
+    investimento: "R$ 150 mil",
+    inicio: "15/02/2026",
+    prazo: "15/08/2026",
     progresso: "70%",
     status: "Em andamento",
     tipo: "Pavimentação",
@@ -31,6 +37,9 @@ const obras = [
   {
     titulo: "Construção de Escola Municipal",
     local: "Bairro Novo",
+    investimento: "R$ 200 mil",
+    inicio: "01/01/2026",
+    prazo: "30/06/2026",
     progresso: "45%",
     status: "Planejada",
     tipo: "Educação",
@@ -40,6 +49,9 @@ const obras = [
   {
     titulo: "Reforma da UBS",
     local: "Bairro Mutirão",
+    investimento: "R$ 100 mil",
+    inicio: "20/03/2026",
+    prazo: "20/09/2026",
     progresso: "85%",
     status: "Quase concluída",
     tipo: "Saúde",
