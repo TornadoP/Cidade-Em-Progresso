@@ -214,6 +214,12 @@ export default function Home() {
                     andamento, localização ou informações importantes para o
                     cidadão.
                   </p>
+                  <Link
+                    href="/rotas/obras/reforma-praca-central"
+                    className="mt-4 block w-full rounded-xl bg-[#FFC222] px-4 py-3 text-center text-sm font-semibold text-black transition hover:bg-[#eab308]"
+                  >
+                    Ver detalhes
+                  </Link>
                 </div>
               </div>
 
