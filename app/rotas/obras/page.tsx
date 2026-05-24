@@ -13,9 +13,11 @@ const obras = [
   {
     titulo: "Reforma da Praça Central",
     local: "Centro, Pedreiras",
+    investimento: "R$ 250 mil",
+    inicio: "10/03/2026",
+    prazo: "30/09/2026",
     progresso: "72%",
     status: "Em andamento",
-    tipo: "Lazer",
     imagem: "/obra-principal.png",
   },
 
@@ -335,7 +337,37 @@ function ObrasContent() {
                       {obra.titulo}
                     </h3>
 
-                    <p className="mt-1 text-sm text-black/70">{obra.local}</p>
+                    <p className="mt-1 text-sm font-medium text-[#425C59]">
+                      {obra.status}
+                    </p>
+
+                    <div className="mt-3 grid gap-2 text-sm text-black/70">
+                      <p>
+                        <span className="font-semibold text-black">
+                          Localização:
+                        </span>{" "}
+                        {obra.local}
+                      </p>
+
+                      <p>
+                        <span className="font-semibold text-black">
+                          Investimento:
+                        </span>{" "}
+                        {obra.investimento}
+                      </p>
+
+                      <p>
+                        <span className="font-semibold text-black">
+                          Início:
+                        </span>{" "}
+                        {obra.inicio}
+                      </p>
+
+                      <p>
+                        <span className="font-semibold text-black">Prazo:</span>{" "}
+                        {obra.prazo}
+                      </p>
+                    </div>
 
                     <div className="mt-4 mb-5">
                       <div className="mb-1 flex items-center justify-between text-xs text-black/70">
