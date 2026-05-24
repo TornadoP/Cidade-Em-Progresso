@@ -13,20 +13,15 @@ const obras = [
   {
     titulo: "Reforma da Praça Central",
     local: "Centro, Pedreiras",
-    investimento: "R$ 250 mil",
-    inicio: "10/03/2026",
-    prazo: "30/09/2026",
     progresso: "72%",
     status: "Em andamento",
+    tipo: "Lazer",
     imagem: "/obra-principal.png",
   },
 
   {
     titulo: "Pavimentação Rua Maneco Rego",
     local: "Bairro Centro",
-    investimento: "R$ 150 mil",
-    inicio: "15/02/2026",
-    prazo: "15/08/2026",
     progresso: "70%",
     status: "Em andamento",
     tipo: "Pavimentação",
@@ -36,9 +31,6 @@ const obras = [
   {
     titulo: "Construção de Escola Municipal",
     local: "Bairro Novo",
-    investimento: "R$ 200 mil",
-    inicio: "01/01/2026",
-    prazo: "30/06/2026",
     progresso: "45%",
     status: "Planejada",
     tipo: "Educação",
@@ -48,9 +40,6 @@ const obras = [
   {
     titulo: "Reforma da UBS",
     local: "Bairro Mutirão",
-    investimento: "R$ 100 mil",
-    inicio: "20/03/2026",
-    prazo: "20/09/2026",
     progresso: "85%",
     status: "Quase concluída",
     tipo: "Saúde",
@@ -189,12 +178,12 @@ function ObrasContent() {
                     onChange={() =>
                       alternarFiltro(
                         "Em andamento",
-                        tiposSelecionados,
-                        setTiposSelecionados,
+                        statusSelecionados,
+                        setStatusSelecionados,
                       )
                     }
                   />
-                  Planejada
+                  Em andamento
                 </label>
 
                 <label className="mb-2 flex items-center gap-2 text-sm">
@@ -227,12 +216,12 @@ function ObrasContent() {
                     onChange={() =>
                       alternarFiltro(
                         "Concluída",
-                        tiposSelecionados,
-                        setTiposSelecionados,
+                        statusSelecionados,
+                        setStatusSelecionados,
                       )
                     }
                   />
-                  Pavimentação
+                  Concluída
                 </label>
 
                 <label className="mb-2 flex items-center gap-2 text-sm">
@@ -248,14 +237,14 @@ function ObrasContent() {
                       )
                     }
                   />
-                  Saúde
+                  Pavimentação
                 </label>
 
                 <label className="mb-2 flex items-center gap-2 text-sm">
                   <input
                     type="checkbox"
                     className="h-4 w-4 accent-[#FFC222] cursor-pointer"
-                    checked={statusSelecionados.includes("Saúde")}
+                    checked={tiposSelecionados.includes("Saúde")}
                     onChange={() =>
                       alternarFiltro(
                         "Saúde",
@@ -264,23 +253,40 @@ function ObrasContent() {
                       )
                     }
                   />
-                  Educação
+                  Saúde
                 </label>
 
                 <label className="mb-2 flex items-center gap-2 text-sm">
-                  <input
-                    type="checkbox"
-                    className="h-4 w-4 accent-[#FFC222] cursor-pointer"
-                    checked={statusSelecionados.includes("Educação")}
-                    onChange={() =>
-                      alternarFiltro(
-                        "Educação",
-                        tiposSelecionados,
-                        setTiposSelecionados,
-                      )
-                    }
-                  />
-                  Lazer
+  <input
+    type="checkbox"
+    className="h-4 w-4 accent-[#FFC222] cursor-pointer"
+    checked={tiposSelecionados.includes("Educação")}
+    onChange={() =>
+      alternarFiltro(
+        "Educação",
+        tiposSelecionados,
+        setTiposSelecionados,
+      )
+    }
+  />
+  Educação
+</label>
+
+                  <label className="mb-2 flex items-center gap-2 text-sm">
+                    <input
+                      type="checkbox"
+                      className="h-4 w-4 accent-[#FFC222] cursor-pointer"
+                      checked={tiposSelecionados.includes("Lazer")}
+                      onChange={() =>
+                        alternarFiltro(
+                          "Lazer",
+                          tiposSelecionados,
+                          setTiposSelecionados,
+                        )
+                      }
+                    />
+                    Lazer
+                  </label>
                 </label>
               </div>
 
@@ -346,37 +352,7 @@ function ObrasContent() {
                       {obra.titulo}
                     </h3>
 
-                    <p className="mt-1 text-sm font-medium text-[#425C59]">
-                      {obra.status}
-                    </p>
-
-                    <div className="mt-3 grid gap-2 text-sm text-black/70">
-                      <p>
-                        <span className="font-semibold text-black">
-                          Localização:
-                        </span>{" "}
-                        {obra.local}
-                      </p>
-
-                      <p>
-                        <span className="font-semibold text-black">
-                          Investimento:
-                        </span>{" "}
-                        {obra.investimento}
-                      </p>
-
-                      <p>
-                        <span className="font-semibold text-black">
-                          Início:
-                        </span>{" "}
-                        {obra.inicio}
-                      </p>
-
-                      <p>
-                        <span className="font-semibold text-black">Prazo:</span>{" "}
-                        {obra.prazo}
-                      </p>
-                    </div>
+                    <p className="mt-1 text-sm text-black/70">{obra.local}</p>
 
                     <div className="mt-4 mb-5">
                       <div className="mb-1 flex items-center justify-between text-xs text-black/70">
