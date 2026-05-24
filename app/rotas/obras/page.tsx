@@ -190,8 +190,8 @@ function ObrasContent() {
                     onChange={() =>
                       alternarFiltro(
                         "Em andamento",
-                        statusSelecionados,
-                        setStatusSelecionados,
+                        tiposSelecionados,
+                        setTiposSelecionados,
                       )
                     }
                   />
@@ -206,8 +206,8 @@ function ObrasContent() {
                     onChange={() =>
                       alternarFiltro(
                         "Planejada",
-                        statusSelecionados,
-                        setStatusSelecionados,
+                        tiposSelecionados,
+                        setTiposSelecionados,
                       )
                     }
                   />
@@ -228,8 +228,8 @@ function ObrasContent() {
                     onChange={() =>
                       alternarFiltro(
                         "Concluída",
-                        statusSelecionados,
-                        setStatusSelecionados,
+                        tiposSelecionados,
+                        setTiposSelecionados,
                       )
                     }
                   />
