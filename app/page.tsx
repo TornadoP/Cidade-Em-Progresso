@@ -227,7 +227,10 @@ export default function Home() {
             {/* Card central com imagem e descrição + Outras obras */}
             <div className="flex flex-1 flex-col items-stretch justify-center gap-6 lg:flex-row lg:gap-8">
               {/* Card principal */}
-              <div className="w-full rounded-3xl bg-[#425C59] p-5 shadow-[0_25px_60px_rgba(0,0,0,0.60)] ring-1 ring-white/20 transition-all duration-300 hover:-translate-y-2 hover:scale-[1.01] hover:shadow-[0_35px_80px_rgba(0,0,0,0.55)] lg:w-[420px]">
+              <Link
+                href={`/rotas/obras/${obraPrincipal.id}`}
+                className="block w-full rounded-3xl bg-[#425C59] p-5 shadow-xl transition-all duration-300 hover:-translate-y-2 hover:scale-[1.01] hover:shadow-[0_35px_80px_rgba(0,0,0,0.55)] lg:w-[420px]"
+              >
                 {/* Área da imagem */}
                 <div className="relative h-[260px] w-full overflow-hidden rounded-2xl bg-white/20 sm:h-[320px] md:h-[360px]">
                   <Image
@@ -270,14 +273,10 @@ export default function Home() {
                     {obraPrincipal.descricao}
                   </p>
                 </div>
-
-                <Link
-                  href={`/rotas/obras/${obraPrincipal.id}`}
-                  className="mt-5 block w-full rounded-xl bg-[#FFC222] px-4 py-3 text-center text-sm font-semibold text-black transition hover:bg-[#eab308]"
-                >
+                <span className="mt-5 block w-full rounded-xl bg-[#FFC222] px-4 py-3 text-center text-sm font-semibold text-black transition hover:bg-[#eab308]">
                   Ver detalhes
-                </Link>
-              </div>
+                </span>
+              </Link>
 
               {/* Outras Obras */}
               <div className="flex w-full flex-col rounded-3xl bg-[#425C59] p-5 shadow-xl lg:w-[210px]">
