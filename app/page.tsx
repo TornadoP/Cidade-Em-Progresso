@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { CSSProperties } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { obras } from "@/app/data/obras";
 {
@@ -61,10 +61,23 @@ function RoscaProgresso({ progresso }: { progresso: number }) {
 }
 export default function Home() {
   const [pesquisa, setPesquisa] = useState("");
+  const [indiceObraPrincipal, setIndiceObraPrincipal] = useState(0);
   const router = useRouter();
 
-  const obraPrincipal = obras[0];
-  const outrasObras = obras.slice(1, 4);
+  const obraPrincipal = obras[indiceObraPrincipal];
+
+  const outrasObras = obras
+    .filter((obra) => obra.id !== obraPrincipal.id)
+    .slice(0, 3);
+  useEffect(() => {
+    const intervalo = setInterval(() => {
+      setIndiceObraPrincipal((indiceAtual) =>
+        indiceAtual + 1 >= obras.length ? 0 : indiceAtual + 1,
+      );
+    }, 6000);
+
+    return () => clearInterval(intervalo);
+  }, []);
 
   function buscarObra() {
     if (!pesquisa.trim()) return;
