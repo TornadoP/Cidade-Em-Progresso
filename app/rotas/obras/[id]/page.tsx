@@ -68,7 +68,7 @@ export default async function DetalhesObraPage({
   const { id } = await params;
 
   const { data: obra, error } = await supabase
-    .from("obras")
+    .from("obras_com_votos")
     .select("*")
     .eq("fonte_id", id)
     .single();
@@ -162,6 +162,10 @@ export default async function DetalhesObraPage({
                 {obra.status || "Em planejamento"}
               </span>
               <BotaoVotar fonteId={obra.fonte_id || ""} />
+              <p className="text-sm font-medium text-white/90">
+                {obra.total_votos || 0} voto
+                {Number(obra.total_votos || 0) === 1 ? "" : "s"}
+              </p>
             </div>
 
             <div className="mt-6">
