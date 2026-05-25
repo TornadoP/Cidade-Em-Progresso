@@ -177,7 +177,7 @@ export default async function DetalhesObraPage({
           {/* Sobre */}
           <div className="rounded-3xl bg-white/80 p-6 shadow-xl ring-1 ring-black/5">
             <div className="mb-4 flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#425C59] text-white">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#E3F1F1] text-[#425C59] shadow-sm ring-1 ring-[#425C59]/10">
                 📄
               </div>
 
@@ -255,7 +255,7 @@ export default async function DetalhesObraPage({
           {/* Localização */}
           <div className="rounded-3xl bg-white/80 p-6 shadow-xl ring-1 ring-black/5">
             <div className="mb-4 flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#425C59] text-white">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#E3F1F1] text-[#425C59] shadow-sm ring-1 ring-[#425C59]/10">
                 📍
               </div>
 
@@ -284,7 +284,7 @@ export default async function DetalhesObraPage({
           {/* Galeria */}
           <div className="rounded-3xl bg-white/80 p-6 shadow-xl ring-1 ring-black/5">
             <div className="mb-4 flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#425C59] text-white">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#E3F1F1] text-[#425C59] shadow-sm ring-1 ring-[#425C59]/10">
                 📷
               </div>
 
@@ -318,7 +318,7 @@ export default async function DetalhesObraPage({
           {/* Transparência */}
           <div className="rounded-3xl bg-white/80 p-6 shadow-xl ring-1 ring-black/5">
             <div className="mb-4 flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#425C59] text-white">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#E3F1F1] text-[#425C59] shadow-sm ring-1 ring-[#425C59]/10">
                 🛡️
               </div>
 
@@ -346,7 +346,7 @@ export default async function DetalhesObraPage({
           {/* Participar */}
           <div className="rounded-3xl bg-white/80 p-6 shadow-xl ring-1 ring-black/5">
             <div className="mb-4 flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#425C59] text-white">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#E3F1F1] text-[#425C59] shadow-sm ring-1 ring-[#425C59]/10">
                 👥
               </div>
 
