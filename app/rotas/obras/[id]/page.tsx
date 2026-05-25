@@ -153,12 +153,12 @@ export default async function DetalhesObraPage({
                 {obra.status}
               </span>
 
-              <button
-                type="button"
-                className="inline-flex items-center gap-2 rounded-full bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-md transition hover:bg-blue-700 hover:shadow-lg"
+              <Link
+                href={`/rotas/obras/${obra.id}/votar`}
+                className="inline-flex items-center justify-center gap-2 rounded-2xl bg-blue-600 px-6 py-3 text-base font-bold text-white shadow-lg transition-all duration-300 hover:-translate-y-1 hover:scale-[1.03] hover:bg-blue-700 hover:shadow-xl"
               >
-                Votar
-              </button>
+                👍 Votar nesta obra
+              </Link>
             </div>
 
             <div className="mt-6">
