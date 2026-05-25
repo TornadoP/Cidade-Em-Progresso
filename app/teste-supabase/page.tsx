@@ -14,7 +14,7 @@ export default async function TesteSupabasePage() {
 
   return (
     <div className="p-10">
-      <h1 className="mb-4 text-2xl font-bold">Teste Supabase</h1>
+      <h1 className="mb-4 text-2xl font-bold">Teste Supabase Funcionando</h1>
 
       <pre>{JSON.stringify(obras, null, 2)}</pre>
     </div>
