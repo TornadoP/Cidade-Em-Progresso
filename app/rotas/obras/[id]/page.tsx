@@ -143,14 +143,23 @@ export default async function DetalhesObraPage({
           <aside className="rounded-3xl bg-[#425C59] p-6 text-white shadow-[0_25px_60px_rgba(0,0,0,0.35)] ring-1 ring-white/20">
             <h2 className="text-2xl font-bold">{obra.titulo}</h2>
 
-            <span
-              className={`mt-4 inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold ${statusCores.fundo} ${statusCores.texto}`}
-            >
+            <div className="mt-4 flex flex-wrap items-center gap-3">
               <span
-                className={`h-2.5 w-2.5 rounded-full ${statusCores.bolinha}`}
-              ></span>
-              {obra.status}
-            </span>
+                className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold ${statusCores.fundo} ${statusCores.texto}`}
+              >
+                <span
+                  className={`h-2.5 w-2.5 rounded-full ${statusCores.bolinha}`}
+                ></span>
+                {obra.status}
+              </span>
+
+              <button
+                type="button"
+                className="inline-flex items-center gap-2 rounded-full bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-md transition hover:bg-blue-700 hover:shadow-lg"
+              >
+                Votar
+              </button>
+            </div>
 
             <div className="mt-6">
               <div className="mb-2 flex items-center justify-between text-sm text-white/90">
