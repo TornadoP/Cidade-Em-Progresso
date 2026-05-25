@@ -243,7 +243,7 @@ export default async function DetalhesObraPage({
 
             <div className="relative space-y-6">
               {/* Linha vertical */}
-              <div className="absolute left-[13px] top-3 h-[calc(100%-24px)] w-0.5 bg-zinc-300"></div>
+              <div className="absolute left-[13px] top-3 h-[calc(100%-20px)] w-0.5 bg-zinc-300"></div>
 
               {/* Etapa 1 */}
               <div className="relative flex gap-3">
