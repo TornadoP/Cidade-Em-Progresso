@@ -137,16 +137,16 @@ function ObrasContent() {
                   <input
                     type="checkbox"
                     className="h-4 w-4 accent-[#FFC222] cursor-pointer"
-                    checked={statusSelecionados.includes("Planejada")}
+                    checked={statusSelecionados.includes("Em Planejamento")}
                     onChange={() =>
                       alternarFiltro(
-                        "Planejada",
+                        "Em Planejamento",
                         statusSelecionados,
                         setStatusSelecionados,
                       )
                     }
                   />
-                  Planejada
+                  Em Planejamento
                 </label>
                 <label className="mb-2 flex items-center gap-2 text-sm">
                   <input

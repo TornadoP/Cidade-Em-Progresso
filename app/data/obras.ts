@@ -85,7 +85,7 @@ export const obras: Obra[] = [
     inicio: "20/03/2026",
     prazo: "20/09/2026",
     progresso: "85%",
-    status: "Quase concluída",
+    status: "Em andamento",
     tipo: "Saúde",
     imagem:
       "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=80",
@@ -146,7 +146,7 @@ export const obras: Obra[] = [
     inicio: "01/06/2026",
     prazo: "20/12/2026",
     progresso: "15%",
-    status: "Iniciada",
+    status: "Em andamento",
     tipo: "Comércio",
     imagem:
       "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=900&q=80",
