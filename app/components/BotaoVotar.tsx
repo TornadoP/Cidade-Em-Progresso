@@ -50,6 +50,8 @@ export default function BotaoVotar({
   const [carregando, setCarregando] = useState(false);
   const [votosAtuais, setVotosAtuais] = useState(totalVotos);
   const [mostrarModalLogin, setMostrarModalLogin] = useState(false);
+  const [mostrarModalErro, setMostrarModalErro] = useState(false);
+  const [mensagemErroModal, setMensagemErroModal] = useState("");
 
   const router = useRouter();
 
@@ -86,7 +88,8 @@ export default function BotaoVotar({
     const dados = await resposta.json();
 
     if (!resposta.ok) {
-      setMensagem(dados.erro || "Erro ao votar.");
+      setMensagemErroModal(dados.erro || "Erro ao votar.");
+      setMostrarModalErro(true);
       setCarregando(false);
       return;
     }
@@ -165,6 +168,39 @@ export default function BotaoVotar({
                 className="flex-1 rounded-2xl border border-black/20 px-4 py-3 text-sm font-bold text-black transition hover:bg-black/5"
               >
                 Cancelar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      {mostrarModalErro && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+          <div className="w-full max-w-md rounded-3xl bg-white p-6 text-black shadow-[0_25px_80px_rgba(0,0,0,0.45)]">
+            <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-red-100 text-2xl">
+              ⚠️
+            </div>
+
+            <h2 className="text-2xl font-bold">Não foi possível votar</h2>
+
+            <p className="mt-3 text-sm leading-6 text-black/70">
+              {mensagemErroModal}
+            </p>
+
+            <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+              <button
+                type="button"
+                onClick={() => setMostrarModalErro(false)}
+                className="flex-1 rounded-2xl bg-[#425C59] px-4 py-3 text-sm font-bold text-white transition hover:bg-[#334846]"
+              >
+                Entendi
+              </button>
+
+              <button
+                type="button"
+                onClick={() => router.push("/rotas/ranking")}
+                className="flex-1 rounded-2xl border border-black/20 px-4 py-3 text-sm font-bold text-black transition hover:bg-black/5"
+              >
+                Ver ranking
               </button>
             </div>
           </div>
