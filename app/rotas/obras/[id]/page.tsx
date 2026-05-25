@@ -157,7 +157,7 @@ export default async function DetalhesObraPage({
                 href={`/rotas/obras/${obra.id}/votar`}
                 className="inline-flex items-center justify-center gap-2 rounded-2xl bg-blue-600 px-6 py-3 text-base font-bold text-white shadow-lg transition-all duration-300 hover:-translate-y-1 hover:scale-[1.03] hover:bg-blue-700 hover:shadow-xl"
               >
-                👍 Votar nesta obra
+                Votar nesta obra
               </Link>
             </div>
 
@@ -241,9 +241,13 @@ export default async function DetalhesObraPage({
               Etapas da obra
             </h3>
 
-            <div className="space-y-5">
-              <div className="flex gap-3">
-                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#FFC222] text-sm font-bold text-white">
+            <div className="relative space-y-6">
+              {/* Linha vertical */}
+              <div className="absolute left-[13px] top-3 h-[calc(100%-24px)] w-0.5 bg-zinc-300"></div>
+
+              {/* Etapa 1 */}
+              <div className="relative flex gap-3">
+                <span className="z-10 flex h-7 w-7 items-center justify-center rounded-full bg-[#FFC222] text-sm font-bold text-white shadow-md">
                   ✓
                 </span>
 
@@ -257,8 +261,9 @@ export default async function DetalhesObraPage({
                 </div>
               </div>
 
-              <div className="flex gap-3">
-                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#FFC222] text-sm font-bold text-white">
+              {/* Etapa 2 */}
+              <div className="relative flex gap-3">
+                <span className="z-10 flex h-7 w-7 items-center justify-center rounded-full bg-[#FFC222] text-sm font-bold text-white shadow-md">
                   ✓
                 </span>
 
@@ -272,8 +277,9 @@ export default async function DetalhesObraPage({
                 </div>
               </div>
 
-              <div className="flex gap-3">
-                <span className="flex h-7 w-7 items-center justify-center rounded-full border-4 border-[#FFC222] bg-white"></span>
+              {/* Etapa 3 */}
+              <div className="relative flex gap-3">
+                <span className="z-10 flex h-7 w-7 items-center justify-center rounded-full border-4 border-[#FFC222] bg-white shadow-md"></span>
 
                 <div>
                   <p className="font-semibold text-black">Execução da obra</p>
@@ -281,8 +287,9 @@ export default async function DetalhesObraPage({
                 </div>
               </div>
 
-              <div className="flex gap-3">
-                <span className="flex h-7 w-7 items-center justify-center rounded-full border-4 border-zinc-300 bg-white"></span>
+              {/* Etapa 4 */}
+              <div className="relative flex gap-3">
+                <span className="z-10 flex h-7 w-7 items-center justify-center rounded-full border-4 border-zinc-300 bg-white shadow-md"></span>
 
                 <div>
                   <p className="font-semibold text-black">
