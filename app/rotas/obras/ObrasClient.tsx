@@ -352,7 +352,7 @@ export default function ObrasClient({
 
                     <div className="mt-4 mb-5">
                       <div className="mb-1 flex items-center justify-between text-xs text-black/70">
-                        <span>{obra.status || "Em planejamento"}</span>
+                        <span>Progresso</span>
                         <span>
                           {progressoReal(obra.status, obra.progresso)}
                         </span>
