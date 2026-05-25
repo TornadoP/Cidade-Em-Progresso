@@ -178,7 +178,7 @@ export default function HomeClient({ obras }: { obras: Obra[] }) {
               className="rounded-xl px-4 py-3 transition hover:bg-[#FFC222]"
               href="#"
             >
-              Votar
+              Participar
             </a>
             <Link
               className="rounded-xl px-4 py-3 transition hover:bg-[#FFC222]"
