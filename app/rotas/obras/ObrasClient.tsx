@@ -90,11 +90,13 @@ export default function ObrasClient({
     }
   }
   function alternarFiltroStatus(valor: string) {
-    if (statusSelecionados.includes(valor)) {
-      setStatusSelecionados([]);
-    } else {
-      setStatusSelecionados([valor]);
-    }
+    setStatusSelecionados((statusAtual) => {
+      if (statusAtual.includes(valor)) {
+        return [];
+      }
+
+      return [valor];
+    });
   }
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-[#E3F1F1] to-[#CBDfde] p-4 font-sans sm:p-6">
