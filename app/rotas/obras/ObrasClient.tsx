@@ -88,7 +88,13 @@ export default function ObrasClient({
       atualizarLista([...lista, valor]);
     }
   }
-
+  function alternarFiltroStatus(valor: string) {
+    if (statusSelecionados.includes(valor)) {
+      setStatusSelecionados([]);
+    } else {
+      setStatusSelecionados([valor]);
+    }
+  }
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-[#E3F1F1] to-[#CBDfde] p-4 font-sans sm:p-6">
       <main className="w-full max-w-6xl overflow-hidden rounded-3xl bg-[#C9D9DB] p-6 shadow-[0_25px_80px_rgba(0,0,0,0.45)]">
@@ -150,13 +156,7 @@ export default function ObrasClient({
                     type="checkbox"
                     className="h-4 w-4 cursor-pointer accent-[#FFC222]"
                     checked={statusSelecionados.includes("Em andamento")}
-                    onChange={() =>
-                      alternarFiltro(
-                        "Em andamento",
-                        statusSelecionados,
-                        setStatusSelecionados,
-                      )
-                    }
+                    onChange={() => alternarFiltroStatus("Em andamento")}
                   />
                   Em andamento
                 </label>
@@ -166,13 +166,7 @@ export default function ObrasClient({
                     type="checkbox"
                     className="h-4 w-4 cursor-pointer accent-[#FFC222]"
                     checked={statusSelecionados.includes("Em planejamento")}
-                    onChange={() =>
-                      alternarFiltro(
-                        "Em planejamento",
-                        statusSelecionados,
-                        setStatusSelecionados,
-                      )
-                    }
+                    onChange={() => alternarFiltroStatus("Em planejamento")}
                   />
                   Em planejamento
                 </label>
@@ -182,13 +176,7 @@ export default function ObrasClient({
                     type="checkbox"
                     className="h-4 w-4 cursor-pointer accent-[#FFC222]"
                     checked={statusSelecionados.includes("Concluída")}
-                    onChange={() =>
-                      alternarFiltro(
-                        "Concluída",
-                        statusSelecionados,
-                        setStatusSelecionados,
-                      )
-                    }
+                    onChange={() => alternarFiltroStatus("Concluída")}
                   />
                   Concluída
                 </label>
