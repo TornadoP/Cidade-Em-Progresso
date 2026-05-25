@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import type { CSSProperties } from "react";
 import { supabase } from "@/app/lib/supabaseClient";
 
 type ObraRanking = {
@@ -38,6 +39,27 @@ function corPosicao(posicao: number) {
   }
 
   return "bg-[#425C59] text-white";
+}
+function progressoReal(status: string | null, progresso: string | null) {
+  if (status === "Em planejamento") {
+    return "0%";
+  }
+
+  return progresso || "0%";
+}
+
+function corProgresso(progresso: string | null) {
+  const valor = Number((progresso || "0%").replace("%", ""));
+
+  if (valor < 50) {
+    return "bg-gradient-to-r from-[#EF4444] to-[#FACC15]";
+  }
+
+  if (valor < 75) {
+    return "bg-gradient-to-r from-[#FACC15] to-[#84CC16]";
+  }
+
+  return "bg-gradient-to-r from-[#86EFAC] to-[#425C59]";
 }
 
 export default async function RankingPage() {
@@ -178,6 +200,31 @@ export default async function RankingPage() {
                         <span className="rounded-full bg-[#E3F1F1] px-3 py-1 font-semibold text-[#425C59]">
                           {obra.tipo || "Tipo não informado"}
                         </span>
+                      </div>
+
+                      <div className="mt-4">
+                        <div className="mb-1 flex items-center justify-between text-xs text-black/70">
+                          <span>Progresso</span>
+                          <span>
+                            {progressoReal(obra.status, obra.progresso)}
+                          </span>
+                        </div>
+
+                        <div className="h-3 w-full overflow-hidden rounded-full bg-[#E5E7EB]">
+                          <div
+                            className={`h-full rounded-full barra-progresso-animada ${corProgresso(
+                              progressoReal(obra.status, obra.progresso),
+                            )}`}
+                            style={
+                              {
+                                "--progresso": progressoReal(
+                                  obra.status,
+                                  obra.progresso,
+                                ),
+                              } as CSSProperties
+                            }
+                          ></div>
+                        </div>
                       </div>
                     </div>
 
