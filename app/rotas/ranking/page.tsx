@@ -21,6 +21,11 @@ type ObraRanking = {
   empresa: string | null;
   ultima_atualizacao: string | null;
   total_votos: number | null;
+  votos_ativos: number | null;
+  pessoas_beneficiadas: number | null;
+  impacto_social: number | null;
+  urgencia: number | null;
+  pontuacao_prioridade: number | null;
 };
 
 export const dynamic = "force-dynamic";
@@ -64,11 +69,10 @@ function corProgresso(progresso: string | null) {
 
 export default async function RankingPage() {
   const { data: obras, error } = await supabase
-    .from("obras_com_votos")
+    .from("ranking_prioridades")
     .select("*")
-    .neq("status", "Concluída")
-    .order("total_votos", { ascending: false })
-    .order("created_at", { ascending: false });
+    .order("pontuacao_prioridade", { ascending: false })
+    .order("votos_ativos", { ascending: false });
 
   if (error) {
     return (
@@ -140,7 +144,9 @@ export default async function RankingPage() {
 
         <section className="rounded-3xl bg-[#425C59] p-5 text-white shadow-xl">
           <div className="mb-6 flex flex-col gap-2">
-            <h2 className="text-2xl font-bold">Obras mais votadas</h2>
+            <h2 className="text-2xl font-bold">
+              Ranking de Prioridade Popular
+            </h2>
 
             <p className="text-sm text-white/80">
               Este ranking mostra as obras em planejamento ou andamento com
@@ -158,6 +164,8 @@ export default async function RankingPage() {
               {obrasRanking.map((obra, index) => {
                 const posicao = index + 1;
                 const totalVotos = Number(obra.total_votos || 0);
+                const votosAtivos = Number(obra.votos_ativos || 0);
+                const pontuacao = Number(obra.pontuacao_prioridade || 0);
 
                 return (
                   <Link
@@ -229,8 +237,20 @@ export default async function RankingPage() {
                     </div>
 
                     <div className="flex items-center justify-start md:justify-end">
-                      <div className="rounded-2xl bg-[#FFC222] px-5 py-3 text-center font-bold text-black shadow-sm">
-                        🗳️ {totalVotos} voto{totalVotos === 1 ? "" : "s"}
+                      <div className="space-y-2 text-center">
+                        <div className="rounded-2xl bg-[#FFC222] px-5 py-3 font-bold text-black shadow-sm">
+                          ⭐ {pontuacao.toFixed(1)} pts
+                        </div>
+
+                        <div className="rounded-2xl bg-[#E3F1F1] px-5 py-3 text-sm font-bold text-[#425C59] shadow-sm">
+                          🗳️ {votosAtivos} voto{votosAtivos === 1 ? "" : "s"}{" "}
+                          ativo
+                          {votosAtivos === 1 ? "" : "s"}
+                        </div>
+
+                        <p className="text-xs text-black/60">
+                          Total histórico: {totalVotos}
+                        </p>
                       </div>
                     </div>
                   </Link>
