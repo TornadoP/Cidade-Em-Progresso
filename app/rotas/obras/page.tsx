@@ -9,7 +9,7 @@ export default async function ObrasPage({
   const params = await searchParams;
 
   const { data: obras, error } = await supabase
-    .from("obras")
+    .from("obras_com_votos")
     .select("*")
     .order("created_at", { ascending: false });
 

@@ -22,6 +22,7 @@ type Obra = {
   orgao: string | null;
   empresa: string | null;
   ultima_atualizacao: string | null;
+  total_votos: number | null;
 };
 
 export default function ObrasClient({
@@ -313,6 +314,10 @@ export default function ObrasClient({
 
                     <p className="mt-1 text-sm font-medium text-[#425C59]">
                       {obra.status || "Em planejamento"}
+                    </p>
+                    <p className="mt-1 text-sm font-semibold text-black/70">
+                      🗳️ {obra.total_votos || 0} voto
+                      {Number(obra.total_votos || 0) === 1 ? "" : "s"}
                     </p>
 
                     <div className="mt-3 grid gap-2 text-sm text-black/70">
