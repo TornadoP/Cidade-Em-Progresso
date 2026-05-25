@@ -52,25 +52,21 @@ export default function BotaoVotar({
   const statusCores = corStatus(status);
   const obraConcluida = status === "Concluída" || progresso === "100%";
 
-  function obterUsuarioId() {
-    const chave = "cidade_progresso_usuario_id";
-    const usuarioExistente = localStorage.getItem(chave);
-
-    if (usuarioExistente) {
-      return usuarioExistente;
-    }
-
-    const novoUsuario = crypto.randomUUID();
-    localStorage.setItem(chave, novoUsuario);
-
-    return novoUsuario;
+  function obterUsuarioUuid() {
+    return localStorage.getItem("cidade_progresso_usuario_uuid");
   }
 
   async function votar() {
     setCarregando(true);
     setMensagem("");
 
-    const usuarioId = obterUsuarioId();
+    const usuarioUuid = obterUsuarioUuid();
+
+    if (!usuarioUuid) {
+      setMensagem("Você precisa entrar ou se cadastrar para votar.");
+      setCarregando(false);
+      return;
+    }
 
     const resposta = await fetch("/api/votos", {
       method: "POST",
@@ -79,7 +75,7 @@ export default function BotaoVotar({
       },
       body: JSON.stringify({
         fonte_id: fonteId,
-        usuario_id: usuarioId,
+        usuario_uuid: usuarioUuid,
       }),
     });
 

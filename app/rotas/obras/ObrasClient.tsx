@@ -124,7 +124,7 @@ export default function ObrasClient({
               href="#"
               className="rounded-xl px-4 py-3 font-medium text-black transition hover:bg-[#FFC222]"
             >
-              Votar
+              Participar
             </Link>
 
             <Link
