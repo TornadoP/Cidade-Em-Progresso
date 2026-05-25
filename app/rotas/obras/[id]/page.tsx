@@ -2,12 +2,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { CSSProperties } from "react";
-import { obras } from "@/app/data/obras";
+import { supabase } from "@/app/lib/supabaseClient";
 
 //P A G I N A    D E   D E T A L H E S  O B R A S
 
-function corProgresso(progresso: string) {
-  const valor = Number(progresso.replace("%", ""));
+function corProgresso(progresso: string | null) {
+  const valor = Number((progresso || "0%").replace("%", ""));
 
   if (valor < 50) {
     return "bg-gradient-to-r from-[#EF4444] to-[#FACC15]";
@@ -50,11 +50,7 @@ function corStatus(status: string) {
     bolinha: "bg-zinc-500",
   };
 }
-export async function generateStaticParams() {
-  return obras.map((obra) => ({
-    id: obra.id,
-  }));
-}
+export const dynamic = "force-dynamic";
 
 export default async function DetalhesObraPage({
   params,
@@ -63,12 +59,17 @@ export default async function DetalhesObraPage({
 }) {
   const { id } = await params;
 
-  const obra = obras.find((item) => item.id === id);
+  const { data: obra, error } = await supabase
+    .from("obras")
+    .select("*")
+    .eq("fonte_id", id)
+    .single();
 
-  if (!obra) {
+  if (error || !obra) {
     notFound();
   }
-  const statusCores = corStatus(obra.status);
+
+  const statusCores = corStatus(obra.status || "Em planejamento");
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#E3F1F1] to-[#CBDfde] p-4 font-sans sm:p-6">
       <main className="mx-auto w-full max-w-7xl rounded-3xl bg-[#C9D9DB] p-6 shadow-[0_25px_80px_rgba(0,0,0,0.45)]">
@@ -130,7 +131,7 @@ export default async function DetalhesObraPage({
           {/* Imagem grande */}
           <div className="relative min-h-[280px] overflow-hidden rounded-3xl bg-[#425C59]/20 shadow-xl ring-1 ring-white/30 sm:min-h-[360px] lg:min-h-[420px]">
             <Image
-              src={obra.imagem}
+              src={obra.imagem || "/obra-principal.png"}
               alt={obra.titulo}
               fill
               priority
@@ -150,11 +151,11 @@ export default async function DetalhesObraPage({
                 <span
                   className={`h-2.5 w-2.5 rounded-full ${statusCores.bolinha}`}
                 ></span>
-                {obra.status}
+                {obra.status || "Em planejamento"}
               </span>
 
               <Link
-                href={`/rotas/obras/${obra.id}/votar`}
+                href={`/rotas/obras/${obra.fonte_id || obra.id}/votar`}
                 className="inline-flex items-center justify-center gap-2 rounded-2xl bg-blue-600 px-6 py-3 text-base font-bold text-white shadow-lg transition-all duration-300 hover:-translate-y-1 hover:scale-[1.03] hover:bg-blue-700 hover:shadow-xl"
               >
                 Votar nesta obra
@@ -164,7 +165,9 @@ export default async function DetalhesObraPage({
             <div className="mt-6">
               <div className="mb-2 flex items-center justify-between text-sm text-white/90">
                 <span>Progresso da obra</span>
-                <span className="text-xl font-bold">{obra.progresso}</span>
+                <span className="text-xl font-bold">
+                  {obra.progresso || "0%"}
+                </span>
               </div>
 
               <div className="h-3 w-full overflow-hidden rounded-full bg-white/20">
@@ -174,7 +177,7 @@ export default async function DetalhesObraPage({
                   )}`}
                   style={
                     {
-                      "--progresso": obra.progresso,
+                      "--progresso": obra.progresso || "0%",
                     } as CSSProperties
                   }
                 ></div>
@@ -186,31 +189,41 @@ export default async function DetalhesObraPage({
             <div className="mt-6 grid gap-4 text-sm">
               <div className="grid grid-cols-[150px_1fr] gap-3">
                 <span className="font-semibold text-white">📍 Localização</span>
-                <span className="text-white/85">{obra.local}</span>
+                <span className="text-white/85">
+                  {obra.local || "Local não informado"}
+                </span>
               </div>
 
               <div className="grid grid-cols-[150px_1fr] gap-3">
                 <span className="font-semibold text-white">
                   🏦 Investimento
                 </span>
-                <span className="text-white/85">{obra.investimento}</span>
+                <span className="text-white/85">
+                  {obra.investimento || "Não informado"}
+                </span>
               </div>
 
               <div className="grid grid-cols-[150px_1fr] gap-3">
                 <span className="font-semibold text-white">
                   🚧 Data de início
                 </span>
-                <span className="text-white/85">{obra.inicio}</span>
+                <span className="text-white/85">
+                  {obra.inicio || "Não informado"}
+                </span>
               </div>
 
               <div className="grid grid-cols-[150px_1fr] gap-3">
                 <span className="font-semibold text-white">📅 Prazo</span>
-                <span className="text-white/85">{obra.prazo}</span>
+                <span className="text-white/85">
+                  {obra.prazo || "Não informado"}
+                </span>
               </div>
 
               <div className="grid grid-cols-[150px_1fr] gap-3">
                 <span className="font-semibold text-white">🏗️ Tipo</span>
-                <span className="text-white/85">{obra.tipo}</span>
+                <span className="text-white/85">
+                  {obra.tipo || "Não informado"}
+                </span>
               </div>
             </div>
           </aside>
@@ -228,10 +241,12 @@ export default async function DetalhesObraPage({
               <h3 className="text-lg font-bold text-black">Sobre a obra</h3>
             </div>
 
-            <p className="text-sm leading-7 text-black/70">{obra.descricao}</p>
+            <p className="text-sm leading-7 text-black/70">
+              {obra.descricao || "Descrição não informada."}
+            </p>
 
             <p className="mt-4 text-sm leading-7 text-black/70">
-              {obra.detalhes}
+              {obra.detalhes || "Detalhes não informados."}
             </p>
           </div>
 
@@ -283,7 +298,9 @@ export default async function DetalhesObraPage({
 
                 <div>
                   <p className="font-semibold text-black">Execução da obra</p>
-                  <p className="text-sm text-black/60">{obra.status}</p>
+                  <p className="text-sm text-black/60">
+                    {obra.status || "Em planejamento"}
+                  </p>
                 </div>
               </div>
 
@@ -316,7 +333,7 @@ export default async function DetalhesObraPage({
             <div className="flex h-40 items-center justify-center rounded-2xl bg-[#E3F1F1] text-center text-sm text-black/60">
               Mapa ilustrativo da obra
               <br />
-              {obra.local}
+              {obra.local || "Local não informado"}
             </div>
 
             <a
@@ -351,7 +368,7 @@ export default async function DetalhesObraPage({
                   className="relative h-28 overflow-hidden rounded-2xl bg-[#425C59]/20"
                 >
                   <Image
-                    src={obra.imagem}
+                    src={obra.imagem || "/obra-principal.png"}
                     alt={`Atualização ${item} da obra`}
                     fill
                     sizes="180px"
@@ -379,17 +396,17 @@ export default async function DetalhesObraPage({
             <div className="space-y-4 text-sm text-black/70">
               <div>
                 <p className="font-semibold text-black">Órgão responsável</p>
-                <p>{obra.orgao}</p>
+                <p>{obra.orgao || "Não informado"}</p>
               </div>
 
               <div>
                 <p className="font-semibold text-black">Empresa executora</p>
-                <p>{obra.empresa}</p>
+                <p>{obra.empresa || "Não informado"}</p>
               </div>
 
               <div>
                 <p className="font-semibold text-black">Última atualização</p>
-                <p>{obra.ultimaAtualizacao}</p>
+                <p>{obra.ultima_atualizacao || "Não informado"}</p>
               </div>
             </div>
           </div>
