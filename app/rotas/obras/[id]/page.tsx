@@ -19,7 +19,37 @@ function corProgresso(progresso: string) {
 
   return "bg-gradient-to-r from-[#86EFAC] to-[#425C59]";
 }
+function corStatus(status: string) {
+  if (status === "Concluída") {
+    return {
+      fundo: "bg-green-100",
+      texto: "text-green-800",
+      bolinha: "bg-green-500",
+    };
+  }
 
+  if (status === "Em andamento") {
+    return {
+      fundo: "bg-yellow-100",
+      texto: "text-yellow-800",
+      bolinha: "bg-yellow-500",
+    };
+  }
+
+  if (status === "Em planejamento") {
+    return {
+      fundo: "bg-blue-100",
+      texto: "text-blue-800",
+      bolinha: "bg-blue-500",
+    };
+  }
+
+  return {
+    fundo: "bg-zinc-100",
+    texto: "text-zinc-800",
+    bolinha: "bg-zinc-500",
+  };
+}
 export async function generateStaticParams() {
   return obras.map((obra) => ({
     id: obra.id,
@@ -38,7 +68,7 @@ export default async function DetalhesObraPage({
   if (!obra) {
     notFound();
   }
-
+  const statusCores = corStatus(obra.status);
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#E3F1F1] to-[#CBDfde] p-4 font-sans sm:p-6">
       <main className="mx-auto w-full max-w-7xl rounded-3xl bg-[#C9D9DB] p-6 shadow-[0_25px_80px_rgba(0,0,0,0.45)]">
@@ -113,8 +143,13 @@ export default async function DetalhesObraPage({
           <aside className="rounded-3xl bg-[#425C59] p-6 text-white shadow-[0_25px_60px_rgba(0,0,0,0.35)] ring-1 ring-white/20">
             <h2 className="text-2xl font-bold">{obra.titulo}</h2>
 
-            <span className="mt-4 inline-flex rounded-full bg-white/90 px-4 py-2 text-sm font-semibold text-[#425C59]">
-              ● {obra.status}
+            <span
+              className={`mt-4 inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold ${statusCores.fundo} ${statusCores.texto}`}
+            >
+              <span
+                className={`h-2.5 w-2.5 rounded-full ${statusCores.bolinha}`}
+              ></span>
+              {obra.status}
             </span>
 
             <div className="mt-6">
