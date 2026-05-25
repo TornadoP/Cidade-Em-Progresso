@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import { Suspense, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
 
 function formatarTelefone(valor: string) {
   return valor
@@ -21,7 +21,7 @@ function formatarCPF(valor: string) {
     .slice(0, 14);
 }
 
-export default function LoginPage() {
+function LoginContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -212,5 +212,22 @@ export default function LoginPage() {
         </div>
       </main>
     </div>
+  );
+}
+export default function LoginPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-[#E3F1F1] to-[#CBDfde] p-4 font-sans sm:p-6">
+          <main className="w-full max-w-md rounded-3xl bg-[#C9D9DB] p-6 shadow-[0_25px_80px_rgba(0,0,0,0.45)]">
+            <h1 className="text-2xl font-bold text-black">
+              Carregando acesso...
+            </h1>
+          </main>
+        </div>
+      }
+    >
+      <LoginContent />
+    </Suspense>
   );
 }
