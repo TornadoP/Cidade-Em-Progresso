@@ -69,6 +69,13 @@ export default function ObrasClient({
 
     return "bg-gradient-to-r from-[#86EFAC] to-[#425C59]";
   }
+  function progressoReal(status: string | null, progresso: string | null) {
+    if (status === "Em planejamento") {
+      return "0%";
+    }
+
+    return progresso || "0%";
+  }
 
   function alternarFiltro(
     valor: string,
@@ -353,17 +360,22 @@ export default function ObrasClient({
                     <div className="mt-4 mb-5">
                       <div className="mb-1 flex items-center justify-between text-xs text-black/70">
                         <span>{obra.status || "Em planejamento"}</span>
-                        <span>{obra.progresso || "0%"}</span>
+                        <span>
+                          {progressoReal(obra.status, obra.progresso)}
+                        </span>
                       </div>
 
                       <div className="h-3 w-full overflow-hidden rounded-full bg-[#E5E7EB]">
                         <div
                           className={`h-full rounded-full barra-progresso-animada ${corProgresso(
-                            obra.progresso,
+                            progressoReal(obra.status, obra.progresso),
                           )}`}
                           style={
                             {
-                              "--progresso": obra.progresso || "0%",
+                              "--progresso": progressoReal(
+                                obra.status,
+                                obra.progresso,
+                              ),
                             } as CSSProperties
                           }
                         ></div>

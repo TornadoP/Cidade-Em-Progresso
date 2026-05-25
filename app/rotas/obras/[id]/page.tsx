@@ -19,6 +19,13 @@ function corProgresso(progresso: string | null) {
 
   return "bg-gradient-to-r from-[#86EFAC] to-[#425C59]";
 }
+function progressoReal(status: string | null, progresso: string | null) {
+  if (status === "Em planejamento") {
+    return "0%";
+  }
+
+  return progresso || "0%";
+}
 function corStatus(status: string) {
   if (status === "Concluída") {
     return {
@@ -166,18 +173,18 @@ export default async function DetalhesObraPage({
               <div className="mb-2 flex items-center justify-between text-sm text-white/90">
                 <span>Progresso da obra</span>
                 <span className="text-xl font-bold">
-                  {obra.progresso || "0%"}
+                  {progressoReal(obra.status, obra.progresso)}
                 </span>
               </div>
 
               <div className="h-3 w-full overflow-hidden rounded-full bg-white/20">
                 <div
                   className={`h-full rounded-full barra-progresso-animada ${corProgresso(
-                    obra.progresso,
+                    progressoReal(obra.status, obra.progresso),
                   )}`}
                   style={
                     {
-                      "--progresso": obra.progresso || "0%",
+                      "--progresso": progressoReal(obra.status, obra.progresso),
                     } as CSSProperties
                   }
                 ></div>

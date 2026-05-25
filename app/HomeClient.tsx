@@ -131,7 +131,13 @@ export default function HomeClient({ obras }: { obras: Obra[] }) {
 
     return "bg-gradient-to-r from-[#86EFAC] to-[#425C59]";
   }
+  function progressoReal(status: string | null, progresso: string | null) {
+    if (status === "Em planejamento") {
+      return "0%";
+    }
 
+    return progresso || "0%";
+  }
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-[#E3F1F1] to-[#CBDfde] p-4 font-sans sm:p-6">
       <main className="flex w-full max-w-5xl flex-col overflow-hidden rounded-3xl bg-[#C9D9DB] shadow-[0_25px_80px_rgba(0,0,0,0.45)] md:min-h-[650px] md:flex-row">
@@ -302,19 +308,30 @@ export default function HomeClient({ obras }: { obras: Obra[] }) {
                   <div className="mt-4">
                     <div className="mb-1 flex items-center justify-between text-xs text-white/80">
                       <span>Progresso</span>
-                      <span>{obraPrincipal.progresso || "0%"}</span>
+                      <span>
+                        {progressoReal(
+                          obraPrincipal.status,
+                          obraPrincipal.progresso,
+                        )}
+                      </span>
                     </div>
 
                     <div className="h-3 w-full overflow-hidden rounded-full bg-white/20">
                       <div
                         className={`h-full rounded-full barra-progresso-animada ${corProgresso(
                           Number(
-                            (obraPrincipal.progresso || "0%").replace("%", ""),
+                            progressoReal(
+                              obraPrincipal.status,
+                              obraPrincipal.progresso,
+                            ).replace("%", ""),
                           ),
                         )}`}
                         style={
                           {
-                            "--progresso": obraPrincipal.progresso || "0%",
+                            "--progresso": progressoReal(
+                              obraPrincipal.status,
+                              obraPrincipal.progresso,
+                            ),
                           } as CSSProperties
                         }
                       ></div>
@@ -349,7 +366,10 @@ export default function HomeClient({ obras }: { obras: Obra[] }) {
 
                       <RoscaProgresso
                         progresso={Number(
-                          (obra.progresso || "0%").replace("%", ""),
+                          progressoReal(obra.status, obra.progresso).replace(
+                            "%",
+                            "",
+                          ),
                         )}
                       />
                     </Link>
