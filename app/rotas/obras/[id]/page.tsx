@@ -161,11 +161,14 @@ export default async function DetalhesObraPage({
                 ></span>
                 {obra.status || "Em planejamento"}
               </span>
-              <BotaoVotar fonteId={obra.fonte_id || ""} />
-              <p className="text-sm font-medium text-white/90">
-                {obra.total_votos || 0} voto
-                {Number(obra.total_votos || 0) === 1 ? "" : "s"}
-              </p>
+              <div>
+                <BotaoVotar fonteId={obra.fonte_id || ""} />
+
+                <p className="text-sm font-medium text-white/90">
+                  {obra.total_votos || 0} voto
+                  {Number(obra.total_votos || 0) === 1 ? "" : "s"}
+                </p>
+              </div>
             </div>
 
             <div className="mt-6">
