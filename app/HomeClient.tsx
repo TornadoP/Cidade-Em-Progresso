@@ -232,28 +232,7 @@ export default function HomeClient({ obras }: { obras: Obra[] }) {
               </div>
               {/* Ícones de usuário e logout */}
               <div className="flex items-center gap-3 lg:ml-[132px]">
-                {/* Botão usuário */}
-                <button
-                  type="button"
-                  aria-label="Perfil do usuário"
-                  onClick={() => alert("Abrir perfil do usuário")}
-                  className="flex h-10 w-10 items-center justify-center rounded-full bg-[#425C59] shadow-sm transition hover:scale-105 hover:bg-[#334846]"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5 text-white"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M15.75 7.5a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.5 20.25a7.5 7.5 0 0115 0"
-                    />
-                  </svg>
-                </button>
+                <BotaoUsuario />
 
                 {/* Botão logout */}
                 <button
