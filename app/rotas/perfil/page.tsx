@@ -237,7 +237,7 @@ export default function PerfilPage() {
         </header>
 
         <section className="grid gap-6 lg:grid-cols-[0.85fr_1.15fr]">
-          <div className="rounded-3xl bg-[#425C59] p-6 text-white shadow-xl">
+          <div className="rounded-3xl bg-[#FFC222] p-6 text-white shadow-xl">
             <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-white/15 text-3xl">
               👤
             </div>
