@@ -30,10 +30,6 @@ export default function ParticiparPage() {
   const [descricao, setDescricao] = useState("");
   const [justificativa, setJustificativa] = useState("");
 
-  const [pessoasBeneficiadas, setPessoasBeneficiadas] = useState("");
-  const [urgencia, setUrgencia] = useState("50");
-  const [impactoSocial, setImpactoSocial] = useState("50");
-
   const [imagemPrincipal, setImagemPrincipal] = useState("");
   const [imagensExtras, setImagensExtras] = useState("");
   const [videoUrl, setVideoUrl] = useState("");
@@ -88,10 +84,6 @@ export default function ParticiparPage() {
           descricao,
           justificativa,
 
-          pessoas_beneficiadas: Number(pessoasBeneficiadas || 0),
-          urgencia: Number(urgencia),
-          impacto_social: Number(impactoSocial),
-
           imagem_principal: imagemPrincipal,
           imagens_extras: imagensExtras,
           video_url: videoUrl,
@@ -119,10 +111,6 @@ export default function ParticiparPage() {
       setCategoria("");
       setDescricao("");
       setJustificativa("");
-
-      setPessoasBeneficiadas("");
-      setUrgencia("50");
-      setImpactoSocial("50");
 
       setImagemPrincipal("");
       setImagensExtras("");
@@ -360,58 +348,17 @@ export default function ParticiparPage() {
                     />
                   </div>
 
-                  <div>
-                    <label className="mb-1 block text-sm font-semibold text-black">
-                      Pessoas beneficiadas estimadas
-                    </label>
-
-                    <input
-                      type="number"
-                      min="0"
-                      value={pessoasBeneficiadas}
-                      onChange={(event) =>
-                        setPessoasBeneficiadas(event.target.value)
-                      }
-                      placeholder="Ex: 1200"
-                      className="w-full rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm text-black outline-none transition focus:border-[#425C59]"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="mb-1 block text-sm font-semibold text-black">
-                      Urgência da obra: {urgencia}
-                    </label>
-
-                    <input
-                      type="range"
-                      min="0"
-                      max="100"
-                      value={urgencia}
-                      onChange={(event) => setUrgencia(event.target.value)}
-                      className="w-full accent-[#425C59]"
-                    />
-
-                    <p className="mt-1 text-xs text-black/60">
-                      0 = baixa urgência, 100 = muito urgente.
+                  <div className="rounded-2xl bg-white p-4 text-sm leading-6 text-black/70 ring-1 ring-black/5">
+                    <p className="font-semibold text-black">
+                      Estimativa automática de prioridade
                     </p>
-                  </div>
 
-                  <div>
-                    <label className="mb-1 block text-sm font-semibold text-black">
-                      Impacto social: {impactoSocial}
-                    </label>
-
-                    <input
-                      type="range"
-                      min="0"
-                      max="100"
-                      value={impactoSocial}
-                      onChange={(event) => setImpactoSocial(event.target.value)}
-                      className="w-full accent-[#425C59]"
-                    />
-
-                    <p className="mt-1 text-xs text-black/60">
-                      0 = baixo impacto, 100 = alto impacto.
+                    <p className="mt-2">
+                      Você não precisa informar quantidade de pessoas
+                      beneficiadas, urgência ou impacto social. O sistema fará
+                      uma estimativa inicial automaticamente com base na
+                      categoria, localização, descrição e justificativa
+                      enviadas.
                     </p>
                   </div>
                 </div>
