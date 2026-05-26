@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import type { CSSProperties } from "react";
 import { supabase } from "@/app/lib/supabaseClient";
 import BotaoVotar from "@/app/components/BotaoVotar";
+import AcoesUsuario from "@/app/components/AcoesUsuario";
 
 //P A G I N A    D E   D E T A L H E S  O B R A S
 
@@ -65,6 +66,7 @@ export default async function DetalhesObraPage({
             </p>
           </div>
 
+          <AcoesUsuario />
           <nav className="flex flex-wrap gap-3 text-sm">
             <Link
               href="/"

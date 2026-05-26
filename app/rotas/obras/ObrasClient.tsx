@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import type { CSSProperties, Dispatch, SetStateAction } from "react";
+import AcoesUsuario from "@/app/components/AcoesUsuario";
 
 type Obra = {
   id: string;
@@ -104,7 +105,7 @@ export default function ObrasClient({
         {/* Navegação superior */}
         <header className="mb-8 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
           <h1 className="text-2xl font-bold text-black">Cidade em Progresso</h1>
-
+          <AcoesUsuario />
           <nav className="flex flex-wrap gap-3 text-sm">
             <Link
               href="/"

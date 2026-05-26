@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { CSSProperties } from "react";
 import { supabase } from "@/app/lib/supabaseClient";
+import AcoesUsuario from "@/app/components/AcoesUsuario";
 
 type ObraRanking = {
   id: string;
@@ -103,6 +104,8 @@ export default async function RankingPage() {
               Ranking de prioridades populares
             </p>
           </div>
+
+          <AcoesUsuario />
 
           <nav className="flex flex-wrap gap-3 text-sm">
             <Link
