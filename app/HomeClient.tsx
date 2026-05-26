@@ -165,7 +165,7 @@ export default function HomeClient({ obras }: { obras: Obra[] }) {
             {" "}
             <a
               className="rounded-xl bg-[#FFC222] px-4 py-3 font-medium"
-              href="#"
+              href="/rotas/inicio"
             >
               Inicio
             </a>
@@ -177,7 +177,7 @@ export default function HomeClient({ obras }: { obras: Obra[] }) {
             </Link>
             <a
               className="rounded-xl px-4 py-3 transition hover:bg-[#FFC222]"
-              href="#"
+              href="/rotas/participar"
             >
               Participar
             </a>
