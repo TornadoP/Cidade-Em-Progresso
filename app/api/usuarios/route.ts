@@ -39,6 +39,10 @@ function validarCPF(cpfRecebido: string) {
   return segundoDigito === Number(cpf[10]);
 }
 
+function validarEmail(email: string) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
 function gerarHashCPF(cpf: string) {
   const segredo = process.env.CPF_HASH_SECRET;
 
@@ -52,6 +56,28 @@ function gerarHashCPF(cpf: string) {
     .digest("hex");
 }
 
+function gerarHashSenha(senha: string) {
+  const salt = crypto.randomBytes(16).toString("hex");
+  const hash = crypto.scryptSync(senha, salt, 64).toString("hex");
+
+  return `${salt}:${hash}`;
+}
+
+function verificarSenha(senha: string, senhaHashSalva: string) {
+  const [salt, hashSalvo] = senhaHashSalva.split(":");
+
+  if (!salt || !hashSalvo) {
+    return false;
+  }
+
+  const hashDigitado = crypto.scryptSync(senha, salt, 64).toString("hex");
+
+  return crypto.timingSafeEqual(
+    Buffer.from(hashSalvo, "hex"),
+    Buffer.from(hashDigitado, "hex"),
+  );
+}
+
 export async function POST(request: Request) {
   try {
     const body = await request.json();
@@ -60,76 +86,126 @@ export async function POST(request: Request) {
     const nome = String(body.nome || "").trim();
     const telefone = limparTelefone(String(body.telefone || ""));
     const cpf = String(body.cpf || "").trim();
+    const email = String(body.email || "")
+      .trim()
+      .toLowerCase();
+    const senha = String(body.senha || "");
 
-    if (!modo || !telefone || !cpf) {
-      return NextResponse.json(
-        { erro: "Telefone e CPF são obrigatórios." },
-        { status: 400 },
-      );
+    if (!modo) {
+      return NextResponse.json({ erro: "Modo inválido." }, { status: 400 });
     }
-
-    if (telefone.length < 10 || telefone.length > 11) {
-      return NextResponse.json(
-        { erro: "Informe um telefone válido com DDD." },
-        { status: 400 },
-      );
-    }
-
-    if (!validarCPF(cpf)) {
-      return NextResponse.json({ erro: "CPF inválido." }, { status: 400 });
-    }
-
-    const cpfHash = gerarHashCPF(cpf);
 
     if (modo === "login") {
+      if (!email || !senha) {
+        return NextResponse.json(
+          { erro: "Email e senha são obrigatórios." },
+          { status: 400 },
+        );
+      }
+
+      if (!validarEmail(email)) {
+        return NextResponse.json(
+          { erro: "Informe um email válido." },
+          { status: 400 },
+        );
+      }
+
       const { data: usuario, error } = await supabaseAdmin
         .from("usuarios")
-        .select("id, nome, telefone")
-        .eq("telefone", telefone)
-        .eq("cpf_hash", cpfHash)
+        .select("id, nome, telefone, email, senha_hash")
+        .eq("email", email)
         .maybeSingle();
 
       if (error) {
         return NextResponse.json({ erro: error.message }, { status: 500 });
       }
 
-      if (!usuario) {
+      if (!usuario || !usuario.senha_hash) {
         return NextResponse.json(
-          { erro: "Usuário não encontrado. Confira telefone e CPF." },
-          { status: 404 },
+          { erro: "Email ou senha inválidos." },
+          { status: 401 },
+        );
+      }
+
+      const senhaCorreta = verificarSenha(senha, usuario.senha_hash);
+
+      if (!senhaCorreta) {
+        return NextResponse.json(
+          { erro: "Email ou senha inválidos." },
+          { status: 401 },
         );
       }
 
       return NextResponse.json({
         mensagem: "Login realizado com sucesso.",
-        usuario,
+        usuario: {
+          id: usuario.id,
+          nome: usuario.nome,
+          telefone: usuario.telefone,
+          email: usuario.email,
+        },
       });
     }
 
     if (modo === "cadastro") {
-      if (!nome || nome.length < 3) {
+      if (!nome || !telefone || !cpf || !email || !senha) {
+        return NextResponse.json(
+          { erro: "Nome, telefone, CPF, email e senha são obrigatórios." },
+          { status: 400 },
+        );
+      }
+
+      if (nome.length < 3) {
         return NextResponse.json(
           { erro: "Informe um nome válido." },
           { status: 400 },
         );
       }
 
+      if (telefone.length < 10 || telefone.length > 11) {
+        return NextResponse.json(
+          { erro: "Informe um telefone válido com DDD." },
+          { status: 400 },
+        );
+      }
+
+      if (!validarCPF(cpf)) {
+        return NextResponse.json({ erro: "CPF inválido." }, { status: 400 });
+      }
+
+      if (!validarEmail(email)) {
+        return NextResponse.json(
+          { erro: "Informe um email válido." },
+          { status: 400 },
+        );
+      }
+
+      if (senha.length < 6) {
+        return NextResponse.json(
+          { erro: "A senha deve ter pelo menos 6 caracteres." },
+          { status: 400 },
+        );
+      }
+
+      const cpfHash = gerarHashCPF(cpf);
+      const senhaHash = gerarHashSenha(senha);
+
       const { data: usuarioPorTelefone } = await supabaseAdmin
         .from("usuarios")
-        .select("id, nome, telefone")
+        .select("id")
         .eq("telefone", telefone)
         .maybeSingle();
 
       if (usuarioPorTelefone) {
         return NextResponse.json(
-          { erro: "Este telefone já está cadastrado. Use a opção Entrar." },
+          { erro: "Este telefone já está cadastrado." },
           { status: 409 },
         );
       }
 
       const { data: usuarioPorCPF } = await supabaseAdmin
         .from("usuarios")
-        .select("id, nome, telefone")
+        .select("id")
         .eq("cpf_hash", cpfHash)
         .maybeSingle();
 
@@ -140,14 +216,29 @@ export async function POST(request: Request) {
         );
       }
 
+      const { data: usuarioPorEmail } = await supabaseAdmin
+        .from("usuarios")
+        .select("id")
+        .eq("email", email)
+        .maybeSingle();
+
+      if (usuarioPorEmail) {
+        return NextResponse.json(
+          { erro: "Este email já está cadastrado. Use a opção Entrar." },
+          { status: 409 },
+        );
+      }
+
       const { data: usuarioCriado, error: erroCriacao } = await supabaseAdmin
         .from("usuarios")
         .insert({
           nome,
           telefone,
           cpf_hash: cpfHash,
+          email,
+          senha_hash: senhaHash,
         })
-        .select("id, nome, telefone")
+        .select("id, nome, telefone, email")
         .single();
 
       if (erroCriacao) {

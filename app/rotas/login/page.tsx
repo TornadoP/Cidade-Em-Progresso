@@ -31,6 +31,8 @@ function LoginContent() {
   const [nome, setNome] = useState("");
   const [telefone, setTelefone] = useState("");
   const [cpf, setCpf] = useState("");
+  const [email, setEmail] = useState("");
+  const [senha, setSenha] = useState("");
   const [mensagem, setMensagem] = useState("");
   const [erro, setErro] = useState("");
   const [carregando, setCarregando] = useState(false);
@@ -53,6 +55,8 @@ function LoginContent() {
           nome,
           telefone,
           cpf,
+          email,
+          senha,
         }),
       });
 
@@ -151,32 +155,64 @@ function LoginContent() {
             </div>
           )}
 
+          {aba === "cadastro" && (
+            <>
+              <div>
+                <label className="mb-1 block text-sm font-semibold text-black">
+                  Telefone
+                </label>
+
+                <input
+                  type="tel"
+                  value={telefone}
+                  onChange={(event) =>
+                    setTelefone(formatarTelefone(event.target.value))
+                  }
+                  placeholder="(99) 99999-9999"
+                  className="w-full rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm text-black outline-none transition focus:border-[#425C59]"
+                />
+              </div>
+
+              <div>
+                <label className="mb-1 block text-sm font-semibold text-black">
+                  CPF
+                </label>
+
+                <input
+                  type="text"
+                  value={cpf}
+                  onChange={(event) => setCpf(formatarCPF(event.target.value))}
+                  placeholder="000.000.000-00"
+                  className="w-full rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm text-black outline-none transition focus:border-[#425C59]"
+                />
+              </div>
+            </>
+          )}
+
           <div>
             <label className="mb-1 block text-sm font-semibold text-black">
-              Telefone com DDD
+              Email
             </label>
 
             <input
-              type="tel"
-              value={telefone}
-              onChange={(event) =>
-                setTelefone(formatarTelefone(event.target.value))
-              }
-              placeholder="(99) 99999-9999"
+              type="email"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+              placeholder="seuemail@exemplo.com"
               className="w-full rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm text-black outline-none transition focus:border-[#425C59]"
             />
           </div>
 
           <div>
             <label className="mb-1 block text-sm font-semibold text-black">
-              CPF
+              Senha
             </label>
 
             <input
-              type="text"
-              value={cpf}
-              onChange={(event) => setCpf(formatarCPF(event.target.value))}
-              placeholder="000.000.000-00"
+              type="password"
+              value={senha}
+              onChange={(event) => setSenha(event.target.value)}
+              placeholder="Digite sua senha"
               className="w-full rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm text-black outline-none transition focus:border-[#425C59]"
             />
           </div>

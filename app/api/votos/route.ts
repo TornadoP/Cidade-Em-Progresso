@@ -27,6 +27,27 @@ export async function POST(request: Request) {
         { status: 404 },
       );
     }
+    const { data: usuario, error: erroUsuario } = await supabaseAdmin
+      .from("usuarios")
+      .select("id")
+      .eq("id", usuarioUuid)
+      .maybeSingle();
+
+    if (erroUsuario) {
+      return NextResponse.json(
+        { erro: "Erro ao verificar usuário." },
+        { status: 500 },
+      );
+    }
+
+    if (!usuario) {
+      return NextResponse.json(
+        {
+          erro: "Sua sessão expirou ou seu usuário não existe mais. Entre novamente para votar.",
+        },
+        { status: 401 },
+      );
+    }
     const { count: votosAtivos, error: erroContagem } = await supabaseAdmin
       .from("votos")
       .select("*", { count: "exact", head: true })

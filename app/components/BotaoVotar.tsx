@@ -88,6 +88,11 @@ export default function BotaoVotar({
     const dados = await resposta.json();
 
     if (!resposta.ok) {
+      if (resposta.status === 401) {
+        localStorage.removeItem("cidade_progresso_usuario_uuid");
+        localStorage.removeItem("cidade_progresso_usuario_nome");
+      }
+
       setMensagemErroModal(dados.erro || "Erro ao votar.");
       setMostrarModalErro(true);
       setCarregando(false);
