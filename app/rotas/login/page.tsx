@@ -33,6 +33,7 @@ function LoginContent() {
   const [cpf, setCpf] = useState("");
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
+  const [mostrarSenha, setMostrarSenha] = useState(false);
   const [mensagem, setMensagem] = useState("");
   const [erro, setErro] = useState("");
   const [carregando, setCarregando] = useState(false);
@@ -208,13 +209,24 @@ function LoginContent() {
               Senha
             </label>
 
-            <input
-              type="password"
-              value={senha}
-              onChange={(event) => setSenha(event.target.value)}
-              placeholder="Digite sua senha"
-              className="w-full rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm text-black outline-none transition focus:border-[#425C59]"
-            />
+            <div className="relative">
+              <input
+                type={mostrarSenha ? "text" : "password"}
+                value={senha}
+                onChange={(event) => setSenha(event.target.value)}
+                placeholder="Digite sua senha"
+                className="w-full rounded-2xl border border-black/10 bg-white px-4 py-3 pr-14 text-sm text-black outline-none transition focus:border-[#425C59]"
+              />
+
+              <button
+                type="button"
+                onClick={() => setMostrarSenha((valorAtual) => !valorAtual)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 rounded-xl px-2 py-1 text-sm font-semibold text-[#425C59] transition hover:bg-[#E3F1F1]"
+                aria-label={mostrarSenha ? "Ocultar senha" : "Mostrar senha"}
+              >
+                {mostrarSenha ? "Ocultar" : "Mostrar"}
+              </button>
+            </div>
           </div>
 
           {erro && (
