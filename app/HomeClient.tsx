@@ -143,7 +143,7 @@ export default function HomeClient({ obras }: { obras: Obra[] }) {
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-[#E3F1F1] to-[#CBDfde] p-4 font-sans sm:p-6">
       <main className="flex w-full max-w-5xl flex-col overflow-hidden rounded-3xl bg-[#C9D9DB] shadow-[0_25px_80px_rgba(0,0,0,0.45)] md:min-h-[650px] md:flex-row">
         {/* SIDEBAR ESQUERDA - a cor #FFC222  é #D8CBD4 um tom de roxo, ou lilas  #4B5563 #425C59  #C9D9DB*/}
-        <aside className="flex w-full flex-col bg-[#425C59]/35 px-5 py-5 text-black md:w-56">
+        <aside className="flex w-full flex-col items-center bg-[#425C59]/35 px-5 py-5 text-black md:w-56 md:items-stretch">
           {" "}
           <h1 className="mb-6 text-center text-xl font-semibold md:text-left">
             Cidade em Progresso
@@ -161,38 +161,41 @@ export default function HomeClient({ obras }: { obras: Obra[] }) {
               />
             </div>
           </div>
-          <nav className="flex overflow-x-auto gap-3 text-sm md:flex-col md:overflow-visible">
-            {" "}
-            <a
-              className="rounded-xl bg-[#FFC222] px-4 py-3 font-medium"
-              href="/rotas/inicio"
-            >
-              Inicio
-            </a>
+          <nav className="flex flex-wrap justify-center gap-3 text-sm md:flex-col md:flex-nowrap md:justify-start">
             <Link
-              className="rounded-xl px-4 py-3 transition hover:bg-[#FFC222]"
+              className="rounded-xl bg-[#FFC222] px-4 py-3 font-medium text-black"
+              href="/"
+            >
+              Início
+            </Link>
+
+            <Link
+              className="rounded-xl px-4 py-3 font-medium text-black transition hover:bg-[#FFC222]"
               href="/rotas/obras"
             >
               Obras
             </Link>
-            <a
-              className="rounded-xl px-4 py-3 transition hover:bg-[#FFC222]"
+
+            <Link
+              className="rounded-xl px-4 py-3 font-medium text-black transition hover:bg-[#FFC222]"
               href="/rotas/participar"
             >
               Participar
-            </a>
+            </Link>
+
             <Link
-              className="rounded-xl px-4 py-3 transition hover:bg-[#FFC222]"
+              className="rounded-xl px-4 py-3 font-medium text-black transition hover:bg-[#FFC222]"
               href="/rotas/ranking"
             >
               Ranking
             </Link>
-            <a
-              className="rounded-xl px-4 py-3 transition hover:bg-[#FFC222]"
+
+            <Link
+              className="rounded-xl px-4 py-3 font-medium text-black transition hover:bg-[#FFC222]"
               href="/rotas/sobre"
             >
               Sobre
-            </a>
+            </Link>
           </nav>
         </aside>
         {/* ÁREA PRINCIPAL DA DIREITA */}
