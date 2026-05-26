@@ -238,12 +238,16 @@ export default function HomeClient({ obras }: { obras: Obra[] }) {
                 <button
                   type="button"
                   aria-label="Sair da conta"
-                  onClick={() => alert("Deslogar usuário")}
-                  className="flex h-10 w-10 items-center justify-center rounded-full bg-[#425C59] shadow-sm transition hover:scale-105 hover:bg-[#334846]"
+                  onClick={() => {
+                    localStorage.removeItem("cidade_progresso_usuario_uuid");
+                    localStorage.removeItem("cidade_progresso_usuario_nome");
+                    window.location.reload();
+                  }}
+                  className="flex h-10 w-10 items-center justify-center rounded-full bg-red-100 shadow-sm transition hover:scale-105 hover:bg-red-200"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5 text-white"
+                    className="h-5 w-5 text-red-700"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"

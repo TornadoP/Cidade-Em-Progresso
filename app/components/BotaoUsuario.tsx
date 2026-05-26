@@ -25,7 +25,7 @@ export default function BotaoUsuario() {
   if (carregando) {
     return (
       <div className="inline-flex items-center gap-2 rounded-full bg-white/70 px-4 py-2 text-sm font-semibold text-black shadow-sm">
-        <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#425C59] text-white">
+        <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#FFC222] text-base text-black shadow-sm ring-2 ring-white/70">
           👤
         </span>
 
