@@ -121,6 +121,11 @@ export default async function DetalhesObraPage({
 
           {/* Card resumo */}
           <aside className="rounded-3xl bg-[#425C59] p-6 text-white shadow-[0_25px_60px_rgba(0,0,0,0.35)] ring-1 ring-white/20">
+            {obra.origem === "Sugestão popular" && (
+              <span className="mb-3 inline-flex w-fit rounded-full bg-[#FFC222] px-4 py-2 text-sm font-bold text-black shadow-sm">
+                Sugestão popular
+              </span>
+            )}
             <h2 className="text-2xl font-bold">{obra.titulo}</h2>
 
             <BotaoVotar

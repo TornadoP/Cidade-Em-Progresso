@@ -24,6 +24,7 @@ type Obra = {
   empresa: string | null;
   ultima_atualizacao: string | null;
   total_votos: number | null;
+  origem: string | null;
 };
 
 export default function ObrasClient({
@@ -36,6 +37,7 @@ export default function ObrasClient({
   const [pesquisa, setPesquisa] = useState(pesquisaInicial);
   const [statusSelecionados, setStatusSelecionados] = useState<string[]>([]);
   const [tiposSelecionados, setTiposSelecionados] = useState<string[]>([]);
+  const [origemSelecionada, setOrigemSelecionada] = useState("");
 
   const obrasFiltradas = obras.filter((obra) => {
     const texto = pesquisa.toLowerCase();
@@ -51,11 +53,19 @@ export default function ObrasClient({
       statusSelecionados.length === 0 ||
       statusSelecionados.includes(obra.status || "");
 
+    const correspondeOrigem =
+      !origemSelecionada || obra.origem === origemSelecionada;
+
     const correspondeTipo =
       tiposSelecionados.length === 0 ||
       tiposSelecionados.includes(obra.tipo || "");
 
-    return correspondePesquisa && correspondeStatus && correspondeTipo;
+    return (
+      correspondePesquisa &&
+      correspondeStatus &&
+      correspondeTipo &&
+      correspondeOrigem
+    );
   });
 
   function corProgresso(progresso: string | null) {
@@ -186,6 +196,48 @@ export default function ObrasClient({
                 </label>
               </div>
 
+              <div className="mt-6">
+                <h3 className="mb-3 text-sm font-bold uppercase tracking-wide text-white/70">
+                  Origem
+                </h3>
+
+                <div className="space-y-2">
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setOrigemSelecionada((valorAtual) =>
+                        valorAtual === "Oficial" ? "" : "Oficial",
+                      )
+                    }
+                    className={`w-full rounded-xl px-4 py-3 text-left text-sm font-semibold transition ${
+                      origemSelecionada === "Oficial"
+                        ? "bg-[#FFC222] text-black"
+                        : "bg-white/10 text-white hover:bg-white/20"
+                    }`}
+                  >
+                    Obras oficiais
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setOrigemSelecionada((valorAtual) =>
+                        valorAtual === "Sugestão popular"
+                          ? ""
+                          : "Sugestão popular",
+                      )
+                    }
+                    className={`w-full rounded-xl px-4 py-3 text-left text-sm font-semibold transition ${
+                      origemSelecionada === "Sugestão popular"
+                        ? "bg-[#FFC222] text-black"
+                        : "bg-white/10 text-white hover:bg-white/20"
+                    }`}
+                  >
+                    Sugestões populares
+                  </button>
+                </div>
+              </div>
+
               <div>
                 <h3 className="mb-3 text-sm font-semibold text-white/90">
                   Tipo de obra
@@ -312,6 +364,11 @@ export default function ObrasClient({
 
                   <div className="flex flex-1 flex-col p-5">
                     <h3 className="min-h-[56px] text-lg font-bold text-black">
+                      {obra.origem === "Sugestão popular" && (
+                        <span className="mb-3 inline-flex w-fit rounded-full bg-[#FFC222] px-3 py-1 text-xs font-bold text-black shadow-sm">
+                          Sugestão popular
+                        </span>
+                      )}
                       {obra.titulo}
                     </h3>
 

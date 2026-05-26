@@ -448,8 +448,49 @@ export async function POST(request: Request) {
       return NextResponse.json({ erro: erroCriacao.message }, { status: 500 });
     }
 
+    const fonteIdSugestao = `sugestao-${sugestaoCriada.id}`;
+
+    const { error: erroCriarObra } = await supabaseAdmin.from("obras").insert({
+      fonte_id: fonteIdSugestao,
+      titulo,
+      local: bairro ? `${local} - ${bairro}` : local || null,
+
+      investimento: "A definir",
+      inicio: "A definir",
+      prazo: "A definir",
+      progresso: "0%",
+      status: "Em planejamento",
+
+      tipo: categoria || "Sugestão popular",
+      imagem: imagemPrincipal || "/obra-principal.png",
+      descricao,
+      detalhes: justificativa || "Sugestão enviada pela população.",
+
+      orgao: orgaoSugerido || "A definir",
+      empresa: "A definir",
+      ultima_atualizacao: new Date().toISOString(),
+
+      pessoas_beneficiadas: indicadores.pessoas_beneficiadas,
+      impacto_social: indicadores.impacto_social,
+      urgencia: indicadores.urgencia,
+
+      origem: "Sugestão popular",
+      sugestao_id: sugestaoCriada.id,
+    });
+
+    if (erroCriarObra) {
+      return NextResponse.json(
+        {
+          erro: "A sugestão foi salva, mas houve erro ao transformar em card de obra.",
+          detalhe: erroCriarObra.message,
+        },
+        { status: 500 },
+      );
+    }
+
     return NextResponse.json({
-      mensagem: "Sugestão enviada com sucesso!",
+      mensagem:
+        "Sugestão enviada com sucesso! Ela já aparece como obra em planejamento.",
       sugestao: sugestaoCriada,
     });
   } catch (error) {
