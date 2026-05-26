@@ -1,0 +1,39 @@
+"filename", "language", "JSON with Comments", "XML", "Markdown", "JavaScript", "JSON", "TypeScript", "PostCSS", "TypeScript JSX", "comment", "blank", "total"
+"c:\Users\Matheus\Documents\cidade-progresso\AGENTS.md", "Markdown", 0, 0, 2, 0, 0, 0, 0, 0, 2, 2, 6
+"c:\Users\Matheus\Documents\cidade-progresso\CLAUDE.md", "Markdown", 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 2
+"c:\Users\Matheus\Documents\cidade-progresso\README.md", "Markdown", 0, 0, 23, 0, 0, 0, 0, 0, 0, 14, 37
+"c:\Users\Matheus\Documents\cidade-progresso\app\HomeClient.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 295, 16, 35, 346
+"c:\Users\Matheus\Documents\cidade-progresso\app\api\perfil\route.ts", "TypeScript", 0, 0, 0, 0, 0, 72, 0, 0, 0, 12, 84
+"c:\Users\Matheus\Documents\cidade-progresso\app\api\sugestoes\route.ts", "TypeScript", 0, 0, 0, 0, 0, 447, 0, 0, 0, 58, 505
+"c:\Users\Matheus\Documents\cidade-progresso\app\api\uploads\route.ts", "TypeScript", 0, 0, 0, 0, 0, 112, 0, 0, 0, 26, 138
+"c:\Users\Matheus\Documents\cidade-progresso\app\api\usuarios\route.ts", "TypeScript", 0, 0, 0, 0, 0, 218, 0, 0, 0, 52, 270
+"c:\Users\Matheus\Documents\cidade-progresso\app\api\votos\route.ts", "TypeScript", 0, 0, 0, 0, 0, 87, 0, 0, 0, 12, 99
+"c:\Users\Matheus\Documents\cidade-progresso\app\components\AcoesUsuario.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 36, 0, 6, 42
+"c:\Users\Matheus\Documents\cidade-progresso\app\components\BotaoUsuario.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 42, 0, 11, 53
+"c:\Users\Matheus\Documents\cidade-progresso\app\components\BotaoVotar.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 186, 0, 31, 217
+"c:\Users\Matheus\Documents\cidade-progresso\app\data\obras-backup.ts", "TypeScript", 0, 0, 0, 0, 0, 219, 0, 0, 0, 3, 222
+"c:\Users\Matheus\Documents\cidade-progresso\app\globals.css", "PostCSS", 0, 0, 0, 0, 0, 0, 74, 0, 0, 11, 85
+"c:\Users\Matheus\Documents\cidade-progresso\app\layout.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 34, 0, 5, 39
+"c:\Users\Matheus\Documents\cidade-progresso\app\lib\supabaseAdmin.ts", "TypeScript", 0, 0, 0, 0, 0, 10, 0, 0, 0, 5, 15
+"c:\Users\Matheus\Documents\cidade-progresso\app\lib\supabaseClient.ts", "TypeScript", 0, 0, 0, 0, 0, 5, 0, 0, 0, 2, 7
+"c:\Users\Matheus\Documents\cidade-progresso\app\page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 22, 0, 6, 28
+"c:\Users\Matheus\Documents\cidade-progresso\app\rotas\login\page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 247, 0, 35, 282
+"c:\Users\Matheus\Documents\cidade-progresso\app\rotas\obras\ObrasClient.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 400, 3, 48, 451
+"c:\Users\Matheus\Documents\cidade-progresso\app\rotas\obras\[id]\page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 356, 18, 65, 439
+"c:\Users\Matheus\Documents\cidade-progresso\app\rotas\obras\page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 28, 0, 6, 34
+"c:\Users\Matheus\Documents\cidade-progresso\app\rotas\participar\page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 534, 0, 100, 634
+"c:\Users\Matheus\Documents\cidade-progresso\app\rotas\perfil\page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 387, 0, 71, 458
+"c:\Users\Matheus\Documents\cidade-progresso\app\rotas\ranking\page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 231, 0, 38, 269
+"c:\Users\Matheus\Documents\cidade-progresso\app\rotas\sobre\page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 116, 0, 21, 137
+"c:\Users\Matheus\Documents\cidade-progresso\eslint.config.mjs", "JavaScript", 0, 0, 0, 14, 0, 0, 0, 0, 2, 3, 19
+"c:\Users\Matheus\Documents\cidade-progresso\next.config.ts", "TypeScript", 0, 0, 0, 0, 0, 17, 0, 0, 0, 3, 20
+"c:\Users\Matheus\Documents\cidade-progresso\package-lock.json", "JSON", 0, 0, 0, 0, 6826, 0, 0, 0, 0, 1, 6827
+"c:\Users\Matheus\Documents\cidade-progresso\package.json", "JSON", 0, 0, 0, 0, 28, 0, 0, 0, 0, 1, 29
+"c:\Users\Matheus\Documents\cidade-progresso\postcss.config.mjs", "JavaScript", 0, 0, 0, 6, 0, 0, 0, 0, 0, 2, 8
+"c:\Users\Matheus\Documents\cidade-progresso\public\file.svg", "XML", 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1
+"c:\Users\Matheus\Documents\cidade-progresso\public\globe.svg", "XML", 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1
+"c:\Users\Matheus\Documents\cidade-progresso\public\next.svg", "XML", 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1
+"c:\Users\Matheus\Documents\cidade-progresso\public\vercel.svg", "XML", 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1
+"c:\Users\Matheus\Documents\cidade-progresso\public\window.svg", "XML", 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1
+"c:\Users\Matheus\Documents\cidade-progresso\tsconfig.json", "JSON with Comments", 34, 0, 0, 0, 0, 0, 0, 0, 0, 1, 35
+"Total", "-", 34, 5, 26, 20, 6854, 1187, 74, 2914, 41, 687, 11842
