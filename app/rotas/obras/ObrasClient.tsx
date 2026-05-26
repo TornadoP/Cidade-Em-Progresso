@@ -363,12 +363,12 @@ export default function ObrasClient({
                   </div>
 
                   <div className="flex flex-1 flex-col p-5">
+                    {obra.origem === "Sugestão popular" && (
+                      <span className="mb-3 inline-flex w-fit rounded-full bg-[#FFC222] px-3 py-1 text-xs font-bold text-black shadow-sm">
+                        Sugestão popular
+                      </span>
+                    )}
                     <h3 className="min-h-[56px] text-lg font-bold text-black">
-                      {obra.origem === "Sugestão popular" && (
-                        <span className="mb-3 inline-flex w-fit rounded-full bg-[#FFC222] px-3 py-1 text-xs font-bold text-black shadow-sm">
-                          Sugestão popular
-                        </span>
-                      )}
                       {obra.titulo}
                     </h3>
 
