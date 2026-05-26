@@ -48,6 +48,12 @@ export default async function DetalhesObraPage({
     notFound();
   }
 
+  const progressoAtual = String(obra.progresso || "0%").trim();
+
+  const mostrarAvisoSugestaoPopular =
+    obra.origem === "Sugestão popular" &&
+    (progressoAtual === "0%" || progressoAtual === "0");
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#E3F1F1] to-[#CBDfde] p-4 font-sans sm:p-6">
       <main className="mx-auto w-full max-w-7xl rounded-3xl bg-[#C9D9DB] p-6 shadow-[0_25px_80px_rgba(0,0,0,0.45)]">
@@ -411,10 +417,21 @@ export default async function DetalhesObraPage({
           </div>
         </section>
 
-        <div className="mt-6 rounded-2xl border border-[#425C59]/20 bg-[#DFF0DF] px-5 py-4 text-sm text-[#425C59]">
-          ℹ️ Transparência e participação cidadã constroem uma cidade melhor
-          para todos.
-        </div>
+        {mostrarAvisoSugestaoPopular && (
+          <div className="mt-6 rounded-2xl border border-[#425C59]/20 bg-[#DFF0DF] px-5 py-4 text-sm leading-7 text-[#425C59]">
+            <p className="font-bold">
+              ℹ️ Transparência e participação cidadã constroem uma cidade melhor
+              para todos.
+            </p>
+
+            <p className="mt-2">
+              Esta obra foi enviada como uma sugestão popular e ainda não foi
+              oficializada pelos órgãos responsáveis. Enquanto estiver com
+              progresso em 0%, ela representa uma demanda cidadã em análise, não
+              uma obra pública confirmada pelo governo.
+            </p>
+          </div>
+        )}
       </main>
     </div>
   );
