@@ -97,7 +97,7 @@ export default async function DetalhesObraPage({
             </Link>
 
             <Link
-              href="#"
+              href="/rotas/sobre"
               className="rounded-xl px-4 py-3 font-medium text-black transition hover:bg-[#FFC222]"
             >
               Sobre

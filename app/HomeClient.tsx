@@ -189,7 +189,7 @@ export default function HomeClient({ obras }: { obras: Obra[] }) {
             </Link>
             <a
               className="rounded-xl px-4 py-3 transition hover:bg-[#FFC222]"
-              href="#"
+              href="/rotas/sobre"
             >
               Sobre
             </a>
