@@ -30,9 +30,15 @@ export default function ParticiparPage() {
   const [descricao, setDescricao] = useState("");
   const [justificativa, setJustificativa] = useState("");
 
-  const [imagemPrincipal, setImagemPrincipal] = useState("");
-  const [imagensExtras, setImagensExtras] = useState("");
-  const [videoUrl, setVideoUrl] = useState("");
+  const [arquivoImagemPrincipal, setArquivoImagemPrincipal] =
+    useState<File | null>(null);
+
+  const [arquivosImagensExtras, setArquivosImagensExtras] = useState<File[]>(
+    [],
+  );
+
+  const [arquivoVideo, setArquivoVideo] = useState<File | null>(null);
+  const [enviandoArquivos, setEnviandoArquivos] = useState(false);
 
   const [etapasSugeridas, setEtapasSugeridas] = useState("");
   const [transparenciaInfo, setTransparenciaInfo] = useState("");
@@ -61,6 +67,30 @@ export default function ParticiparPage() {
     return () => clearTimeout(timer);
   }, [router]);
 
+  async function enviarArquivoParaStorage(
+    arquivo: File,
+    tipo: "imagem" | "video",
+  ) {
+    const formData = new FormData();
+
+    formData.append("arquivo", arquivo);
+    formData.append("tipo", tipo);
+    formData.append("usuario_uuid", usuarioUuid);
+
+    const resposta = await fetch("/api/uploads", {
+      method: "POST",
+      body: formData,
+    });
+
+    const dados = await resposta.json();
+
+    if (!resposta.ok) {
+      throw new Error(dados.erro || "Erro ao enviar arquivo.");
+    }
+
+    return String(dados.url || "");
+  }
+
   async function enviarSugestao(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
@@ -69,6 +99,33 @@ export default function ParticiparPage() {
     setCarregando(true);
 
     try {
+      setEnviandoArquivos(true);
+
+      let urlImagemPrincipal = "";
+      let urlsImagensExtras: string[] = [];
+      let urlVideo = "";
+
+      if (arquivoImagemPrincipal) {
+        urlImagemPrincipal = await enviarArquivoParaStorage(
+          arquivoImagemPrincipal,
+          "imagem",
+        );
+      }
+
+      if (arquivosImagensExtras.length > 0) {
+        urlsImagensExtras = await Promise.all(
+          arquivosImagensExtras.map((arquivo) =>
+            enviarArquivoParaStorage(arquivo, "imagem"),
+          ),
+        );
+      }
+
+      if (arquivoVideo) {
+        urlVideo = await enviarArquivoParaStorage(arquivoVideo, "video");
+      }
+
+      setEnviandoArquivos(false);
+
       const resposta = await fetch("/api/sugestoes", {
         method: "POST",
         headers: {
@@ -84,9 +141,9 @@ export default function ParticiparPage() {
           descricao,
           justificativa,
 
-          imagem_principal: imagemPrincipal,
-          imagens_extras: imagensExtras,
-          video_url: videoUrl,
+          imagem_principal: urlImagemPrincipal,
+          imagens_extras: urlsImagensExtras.join(","),
+          video_url: urlVideo,
 
           etapas_sugeridas: etapasSugeridas,
           transparencia_info: transparenciaInfo,
@@ -112,16 +169,23 @@ export default function ParticiparPage() {
       setDescricao("");
       setJustificativa("");
 
-      setImagemPrincipal("");
-      setImagensExtras("");
-      setVideoUrl("");
+      setArquivoImagemPrincipal(null);
+      setArquivosImagensExtras([]);
+      setArquivoVideo(null);
+      setEnviandoArquivos(false);
 
       setEtapasSugeridas("");
       setTransparenciaInfo("");
       setOrgaoSugerido("");
       setObservacoes("");
-    } catch {
-      setErro("Erro inesperado ao conectar com o servidor.");
+    } catch (error) {
+      const mensagemErro =
+        error instanceof Error
+          ? error.message
+          : "Erro inesperado ao conectar com o servidor.";
+
+      setErro(mensagemErro);
+      setEnviandoArquivos(false);
     } finally {
       setCarregando(false);
     }
@@ -370,8 +434,8 @@ export default function ParticiparPage() {
                 </h3>
 
                 <p className="mt-2 text-sm text-black/70">
-                  Por enquanto, use links de imagens ou vídeos. Depois o projeto
-                  pode evoluir para upload direto de arquivos.
+                  Envie fotos ou vídeos que ajudem a mostrar o problema. A
+                  imagem principal será usada como imagem do card da sugestão.
                 </p>
 
                 <div className="mt-4 space-y-4">
@@ -381,14 +445,26 @@ export default function ParticiparPage() {
                     </label>
 
                     <input
-                      type="text"
-                      value={imagemPrincipal}
+                      type="file"
+                      accept="image/jpeg,image/png,image/webp"
                       onChange={(event) =>
-                        setImagemPrincipal(event.target.value)
+                        setArquivoImagemPrincipal(
+                          event.target.files?.[0] || null,
+                        )
                       }
-                      placeholder="Ex: /obra-principal.png ou link de imagem"
-                      className="w-full rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm text-black outline-none transition focus:border-[#425C59]"
+                      className="w-full rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm text-black outline-none transition file:mr-4 file:rounded-xl file:border-0 file:bg-[#425C59] file:px-4 file:py-2 file:text-sm file:font-bold file:text-white hover:file:bg-[#334846]"
                     />
+
+                    <p className="mt-1 text-xs text-black/60">
+                      Formatos aceitos: JPG, PNG ou WEBP. Tamanho máximo
+                      recomendado: 5 MB.
+                    </p>
+
+                    {arquivoImagemPrincipal && (
+                      <p className="mt-2 text-xs font-semibold text-[#425C59]">
+                        Imagem selecionada: {arquivoImagemPrincipal.name}
+                      </p>
+                    )}
                   </div>
 
                   <div>
@@ -397,26 +473,57 @@ export default function ParticiparPage() {
                     </label>
 
                     <input
-                      type="text"
-                      value={imagensExtras}
-                      onChange={(event) => setImagensExtras(event.target.value)}
-                      placeholder="Cole links separados por vírgula"
-                      className="w-full rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm text-black outline-none transition focus:border-[#425C59]"
+                      type="file"
+                      accept="image/jpeg,image/png,image/webp"
+                      multiple
+                      onChange={(event) =>
+                        setArquivosImagensExtras(
+                          event.target.files
+                            ? Array.from(event.target.files)
+                            : [],
+                        )
+                      }
+                      className="w-full rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm text-black outline-none transition file:mr-4 file:rounded-xl file:border-0 file:bg-[#425C59] file:px-4 file:py-2 file:text-sm file:font-bold file:text-white hover:file:bg-[#334846]"
                     />
+
+                    <p className="mt-1 text-xs text-black/60">
+                      Você pode enviar mais de uma imagem complementar.
+                    </p>
+
+                    {arquivosImagensExtras.length > 0 && (
+                      <p className="mt-2 text-xs font-semibold text-[#425C59]">
+                        {arquivosImagensExtras.length} imagem
+                        {arquivosImagensExtras.length === 1 ? "" : "s"}{" "}
+                        selecionada
+                        {arquivosImagensExtras.length === 1 ? "" : "s"}.
+                      </p>
+                    )}
                   </div>
 
                   <div>
                     <label className="mb-1 block text-sm font-semibold text-black">
-                      Link de vídeo
+                      Vídeo
                     </label>
 
                     <input
-                      type="text"
-                      value={videoUrl}
-                      onChange={(event) => setVideoUrl(event.target.value)}
-                      placeholder="Ex: link do YouTube, Drive, Instagram ou TikTok"
-                      className="w-full rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm text-black outline-none transition focus:border-[#425C59]"
+                      type="file"
+                      accept="video/mp4,video/webm,video/quicktime"
+                      onChange={(event) =>
+                        setArquivoVideo(event.target.files?.[0] || null)
+                      }
+                      className="w-full rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm text-black outline-none transition file:mr-4 file:rounded-xl file:border-0 file:bg-[#425C59] file:px-4 file:py-2 file:text-sm file:font-bold file:text-white hover:file:bg-[#334846]"
                     />
+
+                    <p className="mt-1 text-xs text-black/60">
+                      Formatos aceitos: MP4, WEBM ou MOV. Tamanho máximo
+                      recomendado: 50 MB.
+                    </p>
+
+                    {arquivoVideo && (
+                      <p className="mt-2 text-xs font-semibold text-[#425C59]">
+                        Vídeo selecionado: {arquivoVideo.name}
+                      </p>
+                    )}
                   </div>
                 </div>
               </section>
@@ -511,7 +618,11 @@ export default function ParticiparPage() {
                 disabled={carregando}
                 className="w-full rounded-2xl bg-[#425C59] px-4 py-3 text-sm font-bold text-white shadow-lg transition hover:-translate-y-1 hover:bg-[#334846] disabled:cursor-not-allowed disabled:opacity-70"
               >
-                {carregando ? "Enviando..." : "Enviar sugestão de obra"}
+                {carregando
+                  ? enviandoArquivos
+                    ? "Enviando arquivos..."
+                    : "Enviando sugestão..."
+                  : "Enviar sugestão de obra"}
               </button>
             </div>
           </form>
