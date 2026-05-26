@@ -11,6 +11,26 @@ export async function POST(request: Request) {
     const categoria = String(body.categoria || "").trim();
     const descricao = String(body.descricao || "").trim();
     const justificativa = String(body.justificativa || "").trim();
+    const bairro = String(body.bairro || "").trim();
+    const imagemPrincipal = String(body.imagem_principal || "").trim();
+    const videoUrl = String(body.video_url || "").trim();
+    const etapasSugeridas = String(body.etapas_sugeridas || "").trim();
+    const transparenciaInfo = String(body.transparencia_info || "").trim();
+    const orgaoSugerido = String(body.orgao_sugerido || "").trim();
+    const observacoes = String(body.observacoes || "").trim();
+
+    const pessoasBeneficiadas = Number(body.pessoas_beneficiadas || 0);
+    const urgencia = Number(body.urgencia || 50);
+    const impactoSocial = Number(body.impacto_social || 50);
+
+    const imagensExtrasTexto = String(body.imagens_extras || "").trim();
+
+    const imagensExtras = imagensExtrasTexto
+      ? imagensExtrasTexto
+          .split(",")
+          .map((item) => item.trim())
+          .filter(Boolean)
+      : [];
 
     if (!usuarioUuid) {
       return NextResponse.json(
@@ -66,9 +86,24 @@ export async function POST(request: Request) {
         usuario_uuid: usuarioUuid,
         titulo,
         local: local || null,
+        bairro: bairro || null,
         categoria: categoria || null,
         descricao,
         justificativa: justificativa || null,
+
+        pessoas_beneficiadas: pessoasBeneficiadas,
+        urgencia,
+        impacto_social: impactoSocial,
+
+        imagem_principal: imagemPrincipal || null,
+        imagens_extras: imagensExtras.length > 0 ? imagensExtras : null,
+        video_url: videoUrl || null,
+
+        etapas_sugeridas: etapasSugeridas || null,
+        transparencia_info: transparenciaInfo || null,
+        orgao_sugerido: orgaoSugerido || null,
+        observacoes: observacoes || null,
+
         status: "Em análise",
       })
       .select("id, titulo, status")
