@@ -5,6 +5,7 @@ import Link from "next/link";
 import type { CSSProperties } from "react";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import BotaoUsuario from "@/app/components/BotaoUsuario";
 
 type Obra = {
   id: string;
