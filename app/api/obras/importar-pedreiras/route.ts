@@ -112,9 +112,17 @@ function pegarTipoSite(texto: string) {
 }
 
 function pegarLocal(texto: string) {
-  const local = pegarPrimeiroMatch(texto, /Local:\s*(.+?Pedreiras\s*-\s*MA)/i);
+  const match = texto.match(
+    /Local:\s*(.+?Pedreiras\s*-\s*MA)(?:\s+Mais informações|\s+Data prevista|\s+Valor total|\s+-->|\s*$)/i,
+  );
 
-  return local !== "Não informado" ? local : "Pedreiras - MA";
+  const local = normalizarTexto(match?.[1]);
+
+  if (!local || local.length > 180) {
+    return "Pedreiras - MA";
+  }
+
+  return local;
 }
 
 function pegarEmpresa(texto: string) {
@@ -247,16 +255,26 @@ function definirStatusDaObra(progresso: number) {
 }
 
 function montarDescricaoParaCard(params: {
+  titulo: string;
   tipo: string;
   local: string;
   investimento: string;
   progresso: number;
+  orgao: string;
 }) {
-  const { tipo, local, investimento, progresso } = params;
+  const { tipo, local, investimento, progresso, orgao } = params;
 
   const partes: string[] = [];
 
-  partes.push(`Obra oficial da área de ${tipo} em Pedreiras-MA.`);
+  partes.push(`Obra oficial cadastrada pela Prefeitura de Pedreiras-MA.`);
+
+  if (tipo !== "Não informado") {
+    partes.push(`Categoria: ${tipo}.`);
+  }
+
+  if (orgao !== "Não informado") {
+    partes.push(`Órgão responsável: ${orgao}.`);
+  }
 
   if (local !== "Pedreiras - MA" && local !== "Não informado") {
     partes.push(`Local: ${local}.`);
@@ -266,9 +284,11 @@ function montarDescricaoParaCard(params: {
     partes.push(`Investimento previsto: ${investimento}.`);
   }
 
-  partes.push(`Execução física informada: ${progresso}%.`);
+  partes.push(`Progresso informado: ${progresso}%.`);
 
-  return partes.join(" ");
+  const descricao = partes.join(" ");
+
+  return limitarTexto(descricao, 280);
 }
 
 function limitarTexto(texto: string, limite = 220) {
@@ -370,10 +390,12 @@ async function buscarObrasPrefeitura() {
         tipo,
         imagem: IMAGEM_PADRAO,
         descricao: montarDescricaoParaCard({
+          titulo: tituloLimpo,
           tipo,
           local,
           investimento,
           progresso,
+          orgao,
         }),
         detalhes: limitarTexto(
           `Fonte oficial: Prefeitura de Pedreiras-MA. Total medido: ${totalMedicoes}. Link: ${link.url}`,
@@ -461,10 +483,14 @@ function normalizarObraGov(
     tipo: tipoFinal,
     imagem: IMAGEM_PADRAO,
     descricao: montarDescricaoParaCard({
+      titulo: tituloFinal,
       tipo: tipoFinal,
       local: "Pedreiras - MA",
       investimento: investimentoFinal,
       progresso: progressoFinal,
+      orgao: String(
+        item.orgao || item.orgaoExecutor || item.tomador || "Não informado",
+      ),
     }),
     detalhes: limitarTexto(
       "Fonte oficial: API de Dados Abertos do ObrasGov.br.",
