@@ -38,6 +38,35 @@ function LoginContent() {
   const [mensagem, setMensagem] = useState("");
   const [erro, setErro] = useState("");
   const [carregando, setCarregando] = useState(false);
+  const [modoRecuperacao, setModoRecuperacao] = useState(false);
+  const [emailRecuperacao, setEmailRecuperacao] = useState("");
+
+  async function enviarEmailRecuperacao() {
+    setErro("");
+    setMensagem("");
+    setCarregando(true);
+
+    const emailLimpo = emailRecuperacao.trim().toLowerCase();
+
+    if (!emailLimpo) {
+      setErro("Informe seu email para recuperar a senha.");
+      setCarregando(false);
+      return;
+    }
+
+    const { error } = await supabase.auth.resetPasswordForEmail(emailLimpo, {
+      redirectTo: `${window.location.origin}/rotas/redefinir-senha`,
+    });
+
+    if (error) {
+      setErro("Não foi possível enviar o email de recuperação.");
+      setCarregando(false);
+      return;
+    }
+
+    setMensagem("Enviamos um link de recuperação para seu email.");
+    setCarregando(false);
+  }
 
   async function enviarFormulario(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -317,6 +346,51 @@ function LoginContent() {
               </button>
             </div>
           </div>
+
+          {aba === "login" && (
+            <button
+              type="button"
+              onClick={() => {
+                setModoRecuperacao((valorAtual) => !valorAtual);
+                setEmailRecuperacao(email);
+                setErro("");
+                setMensagem("");
+              }}
+              className="text-sm font-semibold text-[#425C59] underline"
+            >
+              Esqueci minha senha
+            </button>
+          )}
+
+          {aba === "login" && modoRecuperacao && (
+            <div className="rounded-3xl bg-[#E3F1F1] p-5">
+              <h2 className="text-lg font-bold text-black">Recuperar senha</h2>
+
+              <p className="mt-2 text-sm leading-6 text-black/70">
+                Informe o email cadastrado. Enviaremos um link para você criar
+                uma nova senha.
+              </p>
+
+              <div className="mt-4 space-y-4">
+                <input
+                  type="email"
+                  value={emailRecuperacao}
+                  onChange={(event) => setEmailRecuperacao(event.target.value)}
+                  placeholder="seuemail@exemplo.com"
+                  className="w-full rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm text-black outline-none transition focus:border-[#425C59]"
+                />
+
+                <button
+                  type="button"
+                  onClick={enviarEmailRecuperacao}
+                  disabled={carregando}
+                  className="w-full rounded-2xl bg-[#425C59] px-4 py-3 text-sm font-bold text-white shadow-lg transition hover:-translate-y-1 hover:bg-[#334846] disabled:cursor-not-allowed disabled:opacity-70"
+                >
+                  {carregando ? "Enviando..." : "Enviar link de recuperação"}
+                </button>
+              </div>
+            </div>
+          )}
 
           {erro && (
             <div className="rounded-2xl bg-red-100 px-4 py-3 text-sm font-medium text-red-700">
