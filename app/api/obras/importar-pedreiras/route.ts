@@ -163,13 +163,6 @@ function pegarUltimaAtualizacao(texto: string) {
   );
 }
 
-function pegarStatusFonte(texto: string) {
-  return pegarPrimeiroMatch(
-    texto,
-    /STATUS:\s*([A-ZÀ-Úa-zà-ú\s]+?)(?:\s+DATA:|\s+Voltar|\s*$)/i,
-  );
-}
-
 function classificarTipo(tipoSite: string, titulo: string) {
   const texto = `${tipoSite} ${titulo}`.toLowerCase();
 
@@ -253,24 +246,81 @@ function classificarTipo(tipoSite: string, titulo: string) {
   return "Infraestrutura";
 }
 
+function capitalizarTitulo(texto: string) {
+  return texto
+    .toLowerCase()
+    .split(" ")
+    .map((palavra) => {
+      const minusculas = [
+        "de",
+        "da",
+        "do",
+        "das",
+        "dos",
+        "em",
+        "no",
+        "na",
+        "nos",
+        "nas",
+        "e",
+      ];
+
+      if (minusculas.includes(palavra)) return palavra;
+      return palavra.charAt(0).toUpperCase() + palavra.slice(1);
+    })
+    .join(" ");
+}
+
 function limparTituloParaCard(titulo: string, tipo: string) {
   const original = normalizarTexto(titulo);
-  const texto = original.toUpperCase();
+
+  const semContratos = original
+    .replace(/,\s*CONFORME.*$/i, "")
+    .replace(/\s*CONFORME PROCESSO.*$/i, "")
+    .replace(/\s*CONTRATO ADMINISTRATIVO.*$/i, "")
+    .replace(/\s*PROCESSO ADMINISTRATIVO.*$/i, "")
+    .replace(/\s*TOMADA DE PREÇOS.*$/i, "")
+    .replace(/\s*DISPENSA DE LICITAÇÃO.*$/i, "")
+    .replace(/\s*CONCORRÊNCIA.*$/i, "")
+    .replace(/\s*N[º°]\s*\d+.*$/i, "")
+    .replace(/\s+NO MUNICÍPIO DE PEDREIRAS\s*-?\s*MA\.?$/i, "")
+    .replace(/\s+NO MUNICIPIO DE PEDREIRAS\s*-?\s*MA\.?$/i, "")
+    .replace(/\s+DO MUNICÍPIO DE PEDREIRAS\s*-?\s*MA\.?$/i, "")
+    .replace(/\s+DO MUNICIPIO DE PEDREIRAS\s*-?\s*MA\.?$/i, "")
+    .replace(/\s+EM PEDREIRAS\s*-?\s*MA\.?$/i, "")
+    .replace(/\s+PEDREIRAS\s*-?\s*MA\.?$/i, "")
+    .trim();
+
+  const texto = semContratos.toUpperCase();
 
   if (
     texto.includes("MANUTENÇÃO PREDIAL") ||
     texto.includes("MANUTENÇÃO PREVENTIVA") ||
     texto.includes("MANUTENÇÃO CORRETIVA")
   ) {
-    if (texto.includes("EDUCAÇÃO") || tipo === "Educação") {
+    if (
+      tipo === "Educação" ||
+      texto.includes("EDUCAÇÃO") ||
+      texto.includes("ENSINO") ||
+      texto.includes("ESCOLA")
+    ) {
       return "Manutenção predial em unidades da Educação";
     }
 
-    if (texto.includes("SAÚDE") || tipo === "Saúde") {
+    if (
+      tipo === "Saúde" ||
+      texto.includes("SAÚDE") ||
+      texto.includes("HOSPITAL") ||
+      texto.includes("UBS")
+    ) {
       return "Manutenção predial em unidades da Saúde";
     }
 
     return "Manutenção predial em prédios públicos";
+  }
+
+  if (texto.includes("UNIDADE DE ENSINO NAÍSE TRINDADE")) {
+    return "Reforma e ampliação da Unidade de Ensino Naíse Trindade dos Santos";
   }
 
   if (
@@ -285,55 +335,7 @@ function limparTituloParaCard(titulo: string, tipo: string) {
     return "Reforma e adequação da base do SAMU";
   }
 
-  if (texto.includes("DRENAGEM")) {
-    return "Implantação de sistema de drenagem";
-  }
-
-  if (
-    texto.includes("PAVIMENTAÇÃO ASFÁLTICA") ||
-    texto.includes("PAVIMENTACAO ASFALTICA") ||
-    texto.includes("SINALIZAÇÃO HORIZONTAL") ||
-    texto.includes("SINALIZACAO HORIZONTAL")
-  ) {
-    return "Pavimentação asfáltica e sinalização";
-  }
-
-  if (
-    texto.includes("RECUPERAÇÃO DE ESTRADAS") ||
-    texto.includes("RECUPERACAO DE ESTRADAS") ||
-    texto.includes("ESTRADA VICINAL") ||
-    texto.includes("ESTRADAS VICINAIS")
-  ) {
-    return "Recuperação de estradas municipais";
-  }
-
-  if (
-    texto.includes("PONTE MISTA") ||
-    texto.includes("PONTE EM SEÇÃO MISTA") ||
-    texto.includes("PONTE EM ESTRUTURA METÁLICA") ||
-    texto.includes("PONTE EM ESTRUTURA METALICA")
-  ) {
-    return "Construção de ponte";
-  }
-
-  if (
-    texto.includes("SECRETARIA MUNICIPAL DE EDUCAÇÃO") ||
-    texto.includes("SEDE DA SECRETARIA MUNICIPAL DE EDUCAÇÃO")
-  ) {
-    return "Construção da sede da Secretaria Municipal de Educação";
-  }
-
-  if (
-    texto.includes("SECRETARIA DE MEIO AMBIENTE") ||
-    texto.includes("SECRETARIA MUNICIPAL DE MEIO AMBIENTE")
-  ) {
-    return "Construção da Secretaria de Meio Ambiente";
-  }
-
-  if (
-    texto.includes("MERCADOS MUNICIPAIS") ||
-    texto.includes("MERCADO MUNICIPAL")
-  ) {
+  if (texto.includes("MERCADO")) {
     return "Reforma de mercados municipais";
   }
 
@@ -346,44 +348,81 @@ function limparTituloParaCard(titulo: string, tipo: string) {
   }
 
   if (
+    texto.includes("PONTE MISTA") ||
+    texto.includes("PONTE EM SEÇÃO MISTA") ||
+    texto.includes("PONTE EM ESTRUTURA METÁLICA") ||
+    texto.includes("PONTE EM ESTRUTURA METALICA")
+  ) {
+    return "Construção de ponte";
+  }
+
+  if (
+    texto.includes("RECUPERAÇÃO DE ESTRADAS") ||
+    texto.includes("RECUPERACAO DE ESTRADAS") ||
+    texto.includes("ESTRADA VICINAL") ||
+    texto.includes("ESTRADAS VICINAIS")
+  ) {
+    return "Recuperação de estradas municipais";
+  }
+
+  if (
+    texto.includes("PAVIMENTAÇÃO") ||
+    texto.includes("PAVIMENTACAO") ||
+    texto.includes("ASFÁLTICA") ||
+    texto.includes("ASFALTICA") ||
+    texto.includes("SINALIZAÇÃO")
+  ) {
+    return "Pavimentação asfáltica e sinalização";
+  }
+
+  if (texto.includes("DRENAGEM")) {
+    return "Implantação de sistema de drenagem";
+  }
+
+  if (
     texto.includes("PALÁCIO MUNICIPAL") ||
     texto.includes("PALACIO MUNICIPAL")
   ) {
     return "Restauração do Palácio Municipal";
   }
 
-  if (
-    texto.includes("JARDIM DE INFÂNCIA FÁTIMA ROMA") ||
-    texto.includes("JARDIM DE INFANCIA FATIMA ROMA")
-  ) {
-    return "Reforma do Jardim de Infância Fátima Roma";
+  if (texto.includes("SECRETARIA DE MEIO AMBIENTE")) {
+    return "Construção da Secretaria de Meio Ambiente";
   }
 
-  const semContrato = original
-    .replace(/,\s*CONFORME.*$/i, "")
-    .replace(/,\s*CONTRATO.*$/i, "")
-    .replace(/,\s*PROCESSO ADMINISTRATIVO.*$/i, "")
-    .replace(/\s*CONFORME PROCESSO.*$/i, "")
-    .replace(/\s*CONTRATO ADMINISTRATIVO.*$/i, "")
-    .replace(/\s*N[º°]\s*\d+.*$/i, "")
-    .trim();
-
-  if (semContrato.length > 85) {
-    return `${semContrato.slice(0, 82).trim()}...`;
+  if (texto.includes("SECRETARIA MUNICIPAL DE EDUCAÇÃO")) {
+    return "Construção da sede da Secretaria Municipal de Educação";
   }
 
-  return semContrato || original;
+  const tituloFinal =
+    semContratos.length > 90
+      ? `${semContratos.slice(0, 87).trim()}...`
+      : semContratos;
+
+  return capitalizarTitulo(tituloFinal);
 }
 
-function definirStatusDaObra(progresso: number, statusFonte?: string | null) {
-  const statusNormalizado = normalizarTexto(statusFonte).toLowerCase();
+function definirStatusDaObra(progresso: number, textoDetalhe: string) {
+  const texto = textoDetalhe.toLowerCase();
 
-  if (statusNormalizado.includes("cancel")) return "Cancelada";
-  if (statusNormalizado.includes("conclu")) return "Concluída";
-  if (statusNormalizado.includes("andamento")) return "Em andamento";
+  const temCancelamento =
+    texto.includes("status: cancelada") ||
+    texto.includes("status: cancelado") ||
+    texto.includes("cancelada") ||
+    texto.includes("cancelado");
 
-  if (progresso >= 100) return "Concluída";
-  if (progresso <= 0) return "Em planejamento";
+  if (temCancelamento && progresso === 0) {
+    return "Cancelada";
+  }
+
+  if (progresso >= 100) {
+    return "Concluída";
+  }
+
+  if (progresso <= 0) {
+    return "Em planejamento";
+  }
+
   return "Em andamento";
 }
 
@@ -507,10 +546,9 @@ async function buscarObrasPrefeitura() {
       const local = pegarLocal(textoDetalhe);
       const empresa = pegarEmpresa(textoDetalhe);
       const ultimaAtualizacao = pegarUltimaAtualizacao(textoDetalhe);
-      const statusFonte = pegarStatusFonte(textoDetalhe);
       const tipo = classificarTipo(tipoSite, link.titulo);
       const tituloLimpo = limparTituloParaCard(link.titulo, tipo);
-      const status = definirStatusDaObra(progresso, statusFonte);
+      const status = definirStatusDaObra(progresso, textoDetalhe);
 
       obras.push({
         fonte_id: criarFonteIdPrefeitura(link.id),
