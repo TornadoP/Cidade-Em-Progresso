@@ -11,4 +11,7 @@ if (!supabaseSecretKey) {
   throw new Error("SUPABASE_SECRET_KEY não foi configurada.");
 }
 
-export const supabaseAdmin = createClient(supabaseUrl, supabaseSecretKey);
+export const supabaseAdmin = createClient(
+  new URL(supabaseUrl).origin,
+  supabaseSecretKey,
+);

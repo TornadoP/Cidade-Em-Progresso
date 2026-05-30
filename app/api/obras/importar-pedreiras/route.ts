@@ -163,6 +163,13 @@ function pegarUltimaAtualizacao(texto: string) {
   );
 }
 
+function pegarStatusFonte(texto: string) {
+  return pegarPrimeiroMatch(
+    texto,
+    /STATUS:\s*([A-ZÀ-Úa-zà-ú\s]+?)(?:\s+DATA:|\s+Voltar|\s*$)/i,
+  );
+}
+
 function classificarTipo(tipoSite: string, titulo: string) {
   const texto = `${tipoSite} ${titulo}`.toLowerCase();
 
@@ -368,7 +375,13 @@ function limparTituloParaCard(titulo: string, tipo: string) {
   return semContrato || original;
 }
 
-function definirStatusDaObra(progresso: number) {
+function definirStatusDaObra(progresso: number, statusFonte?: string | null) {
+  const statusNormalizado = normalizarTexto(statusFonte).toLowerCase();
+
+  if (statusNormalizado.includes("cancel")) return "Cancelada";
+  if (statusNormalizado.includes("conclu")) return "Concluída";
+  if (statusNormalizado.includes("andamento")) return "Em andamento";
+
   if (progresso >= 100) return "Concluída";
   if (progresso <= 0) return "Em planejamento";
   return "Em andamento";
@@ -494,9 +507,10 @@ async function buscarObrasPrefeitura() {
       const local = pegarLocal(textoDetalhe);
       const empresa = pegarEmpresa(textoDetalhe);
       const ultimaAtualizacao = pegarUltimaAtualizacao(textoDetalhe);
+      const statusFonte = pegarStatusFonte(textoDetalhe);
       const tipo = classificarTipo(tipoSite, link.titulo);
       const tituloLimpo = limparTituloParaCard(link.titulo, tipo);
-      const status = definirStatusDaObra(progresso);
+      const status = definirStatusDaObra(progresso, statusFonte);
 
       obras.push({
         fonte_id: criarFonteIdPrefeitura(link.id),
@@ -571,6 +585,10 @@ function normalizarObraGov(
     item.valorPrevisto ||
     "Não informado";
 
+  const statusFonte = String(
+    item.situacao || item.status || item.situacaoProjeto || "Não informado",
+  );
+
   const tituloTexto = String(titulo);
 
   const progressoFinal = Number.isNaN(progresso)
@@ -599,7 +617,7 @@ function normalizarObraGov(
       item.dataFim || item.dataConclusaoPrevista || "Não informado",
     ),
     progresso: progressoFinal,
-    status: definirStatusDaObra(progressoFinal),
+    status: definirStatusDaObra(progressoFinal, statusFonte),
     tipo: tipoFinal,
     imagem: IMAGEM_PADRAO,
     descricao: montarDescricaoParaCard({

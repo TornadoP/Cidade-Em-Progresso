@@ -125,6 +125,13 @@ export default function ObrasClient({
       atualizarLista([...lista, valor]);
     }
   }
+
+  function alternarFiltroStatus(valor: string) {
+    setStatusSelecionados((statusAtual) =>
+      statusAtual.includes(valor) ? [] : [valor],
+    );
+  }
+
   function limparFiltros() {
     setPesquisa("");
     setStatusSelecionados([]);
@@ -207,13 +214,7 @@ export default function ObrasClient({
                       type="checkbox"
                       className="h-4 w-4 cursor-pointer accent-[#FFC222]"
                       checked={statusSelecionados.includes(status)}
-                      onChange={() =>
-                        alternarFiltro(
-                          status,
-                          statusSelecionados,
-                          setStatusSelecionados,
-                        )
-                      }
+                      onChange={() => alternarFiltroStatus(status)}
                     />
                     {status}
                   </label>
