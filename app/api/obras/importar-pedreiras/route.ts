@@ -51,80 +51,135 @@ function montarUrlAbsoluta(url: string) {
   return new URL(url, URL_PREFEITURA).toString();
 }
 
-function buscarCampo(texto: string, label: string) {
-  const labelsPossiveis = [
-    "Data início:",
-    "Valor total:",
-    "Medição:",
-    "Empresa contratada :",
-    "Empresa contratada:",
-    "Data prevista:",
-    "Secretaria:",
-    "Situação atual:",
-    "Data situação:",
-  ];
-
-  const inicio = texto.indexOf(label);
-
-  if (inicio === -1) return "Não informado";
-
-  const depoisDoLabel = texto.slice(inicio + label.length);
-
-  const proximosIndices = labelsPossiveis
-    .filter((outroLabel) => outroLabel !== label)
-    .map((outroLabel) => depoisDoLabel.indexOf(outroLabel))
-    .filter((indice) => indice > 0);
-
-  const fim =
-    proximosIndices.length > 0
-      ? Math.min(...proximosIndices)
-      : depoisDoLabel.length;
-
-  return normalizarTexto(depoisDoLabel.slice(0, fim)) || "Não informado";
+function pegarPrimeiroMatch(texto: string, regex: RegExp) {
+  const match = texto.match(regex);
+  return normalizarTexto(match?.[1]) || "Não informado";
 }
 
-function extrairProgresso(medicao: string) {
-  const percentual = medicao.match(/\(([\d,.]+)%\)/);
+function pegarValorTotal(texto: string) {
+  const valor = pegarPrimeiroMatch(
+    texto,
+    /VALOR TOTAL DA OBRA\s*R\$\s*([\d.,]+)/i,
+  );
 
-  if (!percentual) return 0;
+  return valor !== "Não informado" ? `R$ ${valor}` : "Não informado";
+}
 
-  const numero = Number(percentual[1].replace(".", "").replace(",", "."));
+function pegarTotalMedicoes(texto: string) {
+  const valor = pegarPrimeiroMatch(
+    texto,
+    /TOTAL DE MEDIÇÕES\s*R\$\s*([\d.,]+)/i,
+  );
+
+  return valor !== "Não informado" ? `R$ ${valor}` : "Não informado";
+}
+
+function pegarPercentualObra(texto: string) {
+  const percentual = pegarPrimeiroMatch(
+    texto,
+    /PERCENTUAL DA OBRA\s*([\d.,]+)%/i,
+  );
+
+  if (percentual === "Não informado") return 0;
+
+  const numero = Number(percentual.replace(".", "").replace(",", "."));
 
   if (Number.isNaN(numero)) return 0;
 
   return Math.max(0, Math.min(100, Math.round(numero)));
 }
 
-function definirStatus(situacao: string, progresso: number) {
-  const texto = situacao.toLowerCase();
+function pegarInicio(texto: string) {
+  return pegarPrimeiroMatch(texto, /Data início:\s*(\d{2}\/\d{2}\/\d{4})/i);
+}
 
-  if (texto.includes("cancelad")) return "Cancelada";
-  if (
-    progresso >= 100 ||
-    texto.includes("conclusão") ||
-    texto.includes("conclu")
-  ) {
-    return "Concluída";
+function pegarPrazo(texto: string) {
+  return pegarPrimeiroMatch(texto, /Data fim:\s*(\d{2}\/\d{2}\/\d{4})/i);
+}
+
+function pegarSecretaria(texto: string) {
+  return pegarPrimeiroMatch(
+    texto,
+    /secretaria:\s*([A-ZÀ-Úa-zà-ú0-9\s./-]+?)\s+tipo:/i,
+  );
+}
+
+function pegarTipoSite(texto: string) {
+  return pegarPrimeiroMatch(
+    texto,
+    /tipo:\s*([A-ZÀ-Úa-zà-ú0-9\s./-]+?)\s+Fonte:/i,
+  );
+}
+
+function pegarLocal(texto: string) {
+  const local = pegarPrimeiroMatch(texto, /Local:\s*(.+?Pedreiras\s*-\s*MA)/i);
+
+  return local !== "Não informado" ? local : "Pedreiras - MA";
+}
+
+function pegarEmpresa(texto: string) {
+  const empresaContrato = pegarPrimeiroMatch(
+    texto,
+    /CONTRATO ORIGINAL\s+\d+\s+\d{4}\s+(.+?)\s+[\d.]+,\d{2}/i,
+  );
+
+  if (empresaContrato !== "Não informado") {
+    return empresaContrato;
   }
+
+  return pegarPrimeiroMatch(
+    texto,
+    /Pela execução:\s*(.+?)\s+Pela fiscalização:/i,
+  );
+}
+
+function pegarUltimaAtualizacao(texto: string) {
+  return pegarPrimeiroMatch(
+    texto,
+    /DATA:\s*(\d{2}\/\d{2}\/\d{4})\s+-\s+SITUAÇÃO:/i,
+  );
+}
+
+function pegarSituacaoAtual(texto: string) {
+  return pegarPrimeiroMatch(
+    texto,
+    /DATA:\s*\d{2}\/\d{2}\/\d{4}\s+-\s+SITUAÇÃO:\s*(.+?)\s+STATUS:/i,
+  );
+}
+
+function definirStatus(texto: string, progresso: number) {
+  if (progresso >= 100) return "Concluída";
+
+  const status = pegarPrimeiroMatch(
+    texto,
+    /STATUS:\s*([A-ZÀ-Ú\s]+?)(?:\s+DATA:|\s+Voltar|\s*$)/i,
+  );
+
+  const statusNormalizado = status.toLowerCase();
+
+  if (statusNormalizado.includes("cancel")) return "Cancelada";
+  if (statusNormalizado.includes("conclu")) return "Concluída";
+  if (statusNormalizado.includes("andamento")) return "Em andamento";
 
   return "Em andamento";
 }
 
-function inferirTipo(titulo: string, situacao: string) {
-  const texto = `${titulo} ${situacao}`.toLowerCase();
+function classificarTipo(tipoSite: string, titulo: string) {
+  const texto = `${tipoSite} ${titulo}`.toLowerCase();
 
   if (
-    texto.includes("escola") ||
+    texto.includes("educação") ||
     texto.includes("ensino") ||
+    texto.includes("escola") ||
     texto.includes("infância") ||
-    texto.includes("educação")
+    texto.includes("secretaria municipal de educação")
   ) {
     return "Educação";
   }
 
   if (
     texto.includes("saúde") ||
-    texto.includes("posto") ||
+    texto.includes("samu") ||
     texto.includes("ubs") ||
     texto.includes("unidade básica")
   ) {
@@ -132,25 +187,32 @@ function inferirTipo(titulo: string, situacao: string) {
   }
 
   if (
-    texto.includes("ponte") ||
     texto.includes("drenagem") ||
     texto.includes("pavimentação") ||
-    texto.includes("estrada") ||
-    texto.includes("asfáltica")
+    texto.includes("ponte") ||
+    texto.includes("estrada")
   ) {
     return "Infraestrutura";
   }
 
   if (
-    texto.includes("ginásio") ||
     texto.includes("praça") ||
+    texto.includes("ginásio") ||
     texto.includes("mercado")
   ) {
     return "Espaço público";
   }
 
-  if (texto.includes("palácio") || texto.includes("restauração")) {
+  if (
+    texto.includes("palácio") ||
+    texto.includes("restauração") ||
+    texto.includes("patrimônio")
+  ) {
     return "Patrimônio público";
+  }
+
+  if (tipoSite !== "Não informado") {
+    return tipoSite;
   }
 
   return "Obra pública";
@@ -221,27 +283,24 @@ async function buscarObrasPrefeitura() {
       const htmlDetalhe = await respostaDetalhe.text();
       const textoDetalhe = limparTexto(htmlDetalhe);
 
-      const inicio = buscarCampo(textoDetalhe, "Data início:");
-      const investimento = buscarCampo(textoDetalhe, "Valor total:");
-      const medicao = buscarCampo(textoDetalhe, "Medição:");
-      const empresa = buscarCampo(textoDetalhe, "Empresa contratada :");
-      const empresaAlternativa = buscarCampo(
-        textoDetalhe,
-        "Empresa contratada:",
-      );
-      const prazo = buscarCampo(textoDetalhe, "Data prevista:");
-      const orgao = buscarCampo(textoDetalhe, "Secretaria:");
-      const situacao = buscarCampo(textoDetalhe, "Situação atual:");
-      const dataSituacao = buscarCampo(textoDetalhe, "Data situação:");
-
-      const progresso = extrairProgresso(medicao);
-      const status = definirStatus(situacao, progresso);
-      const tipo = inferirTipo(link.titulo, situacao);
+      const investimento = pegarValorTotal(textoDetalhe);
+      const totalMedicoes = pegarTotalMedicoes(textoDetalhe);
+      const progresso = pegarPercentualObra(textoDetalhe);
+      const inicio = pegarInicio(textoDetalhe);
+      const prazo = pegarPrazo(textoDetalhe);
+      const orgao = pegarSecretaria(textoDetalhe);
+      const tipoSite = pegarTipoSite(textoDetalhe);
+      const local = pegarLocal(textoDetalhe);
+      const empresa = pegarEmpresa(textoDetalhe);
+      const ultimaAtualizacao = pegarUltimaAtualizacao(textoDetalhe);
+      const situacaoAtual = pegarSituacaoAtual(textoDetalhe);
+      const status = definirStatus(textoDetalhe, progresso);
+      const tipo = classificarTipo(tipoSite, link.titulo);
 
       obras.push({
         fonte_id: criarFonteIdPrefeitura(link.id),
         titulo: link.titulo,
-        local: "Pedreiras - MA",
+        local,
         investimento,
         inicio,
         prazo,
@@ -249,11 +308,12 @@ async function buscarObrasPrefeitura() {
         status,
         tipo,
         imagem: IMAGEM_PADRAO,
-        descricao: situacao !== "Não informado" ? situacao : link.titulo,
-        detalhes: `Obra importada da página oficial de obras da Prefeitura de Pedreiras-MA. Fonte: ${link.url}. Medição informada: ${medicao}.`,
+        descricao:
+          situacaoAtual !== "Não informado" ? situacaoAtual : link.titulo,
+        detalhes: `Fonte oficial: Prefeitura de Pedreiras-MA. Total medido: ${totalMedicoes}. Link: ${link.url}`,
         orgao,
-        empresa: empresa !== "Não informado" ? empresa : empresaAlternativa,
-        ultima_atualizacao: dataSituacao,
+        empresa,
+        ultima_atualizacao: ultimaAtualizacao,
         origem: "Oficial",
       });
     } catch (error) {
@@ -323,7 +383,7 @@ function normalizarObraGov(
       situacaoTexto,
       Number.isNaN(progresso) ? 0 : progresso,
     ),
-    tipo: inferirTipo(tituloTexto, situacaoTexto),
+    tipo: classificarTipo(String(item.tipo || "Não informado"), tituloTexto),
     imagem: IMAGEM_PADRAO,
     descricao: situacaoTexto,
     detalhes: "Obra importada da API de Dados Abertos do ObrasGov.br.",
@@ -458,6 +518,7 @@ export async function POST(request: NextRequest) {
         obrasgov: obrasGov.length,
       },
       salvas: data?.length || 0,
+      exemplo: obrasParaSalvar[0],
       obras: data || [],
     });
   } catch (error) {
