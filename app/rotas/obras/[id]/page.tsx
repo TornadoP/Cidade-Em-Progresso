@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { supabase } from "@/app/lib/supabaseClient";
 import BotaoVotar from "@/app/components/BotaoVotar";
 import AcoesUsuario from "@/app/components/AcoesUsuario";
+import ModalInformacoesObra from "@/app/components/ModalInformacoesObra";
 
 //P A G I N A    D E   D E T A L H E S  O B R A S
 
@@ -223,9 +224,7 @@ export default async function DetalhesObraPage({
               {obra.descricao || "Descrição não informada."}
             </p>
 
-            <p className="mt-4 text-sm leading-7 text-black/70">
-              {obra.detalhes || "Detalhes não informados."}
-            </p>
+            <ModalInformacoesObra obra={obra} />
           </div>
 
           {/* Etapas */}
