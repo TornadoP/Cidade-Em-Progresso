@@ -6,7 +6,7 @@ export const runtime = "nodejs";
 
 function montarObraPedreiras(obra: (typeof obras)[number]) {
   return {
-    fonte_id: obra.id,
+    fonte_id: String(obra.id),
     titulo: obra.titulo,
     local: obra.local,
     investimento: obra.investimento,
@@ -30,19 +30,35 @@ export async function POST() {
     const obrasPedreiras = obras.map(montarObraPedreiras);
     const fonteIds = obrasPedreiras.map((obra) => obra.fonte_id);
 
+    if (obrasPedreiras.length === 0) {
+      return NextResponse.json(
+        {
+          erro: "Nenhuma obra encontrada em obras-backup.",
+        },
+        { status: 400 },
+      );
+    }
+
     const { data: obrasExistentes, error: erroBusca } = await supabaseAdmin
       .from("obras")
       .select("fonte_id")
       .in("fonte_id", fonteIds);
 
     if (erroBusca) {
-      return NextResponse.json({ erro: erroBusca.message }, { status: 500 });
+      return NextResponse.json(
+        {
+          etapa: "buscar obras existentes",
+          erro: erroBusca.message,
+          codigo: erroBusca.code,
+          hint: erroBusca.hint,
+          detalhes: erroBusca.details,
+        },
+        { status: 500 },
+      );
     }
 
     const fonteIdsExistentes = new Set(
-      (obrasExistentes || [])
-        .map((obra) => obra.fonte_id)
-        .filter((fonteId): fonteId is string => Boolean(fonteId)),
+      (obrasExistentes || []).map((obra) => obra.fonte_id).filter(Boolean),
     );
 
     const obrasParaImportar = obrasPedreiras.filter(
@@ -61,11 +77,18 @@ export async function POST() {
     const { data: obrasImportadas, error: erroImportacao } = await supabaseAdmin
       .from("obras")
       .insert(obrasParaImportar)
-      .select("id, fonte_id, titulo");
+      .select("id, fonte_id, titulo, origem");
 
     if (erroImportacao) {
       return NextResponse.json(
-        { erro: erroImportacao.message },
+        {
+          etapa: "inserir obras",
+          erro: erroImportacao.message,
+          codigo: erroImportacao.code,
+          hint: erroImportacao.hint,
+          detalhes: erroImportacao.details,
+          exemplo_obra_enviada: obrasParaImportar[0],
+        },
         { status: 500 },
       );
     }
@@ -78,11 +101,23 @@ export async function POST() {
       obras: obrasImportadas || [],
     });
   } catch (error) {
-    console.error(error);
+    console.error("Erro inesperado ao importar obras:", error);
 
     return NextResponse.json(
-      { erro: "Erro inesperado ao importar obras de Pedreiras." },
+      {
+        etapa: "erro inesperado",
+        erro:
+          error instanceof Error
+            ? error.message
+            : "Erro inesperado ao importar obras de Pedreiras.",
+      },
       { status: 500 },
     );
   }
+}
+
+// TEMPORÁRIO: serve só para testar pelo navegador na Vercel.
+// Depois que importar, remova este GET.
+export async function GET() {
+  return POST();
 }
