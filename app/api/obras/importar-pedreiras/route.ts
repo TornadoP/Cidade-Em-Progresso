@@ -18,6 +18,32 @@ function headersNavegador(referer = "https://www.pedreiras.ma.gov.br/") {
   };
 }
 
+function escolherImagemPorTipo(tipo: string) {
+  const categoria = tipo.toLowerCase();
+
+  if (categoria.includes("educação") || categoria.includes("educacao")) {
+    return "/obras/educacao.jpg";
+  }
+
+  if (categoria.includes("saúde") || categoria.includes("saude")) {
+    return "/obras/saude.jpg";
+  }
+
+  if (categoria.includes("infraestrutura")) {
+    return "/obras/infraestrutura.jpg";
+  }
+
+  if (categoria.includes("lazer")) {
+    return "/obras/lazer.jpg";
+  }
+
+  if (categoria.includes("patrimônio") || categoria.includes("patrimonio")) {
+    return "/obras/patrimonio.jpg";
+  }
+
+  return IMAGEM_PADRAO;
+}
+
 type ObraNormalizada = {
   fonte_id: string;
   titulo: string;
@@ -611,7 +637,7 @@ async function buscarObrasPrefeitura() {
         progresso,
         status,
         tipo,
-        imagem: IMAGEM_PADRAO,
+        imagem: escolherImagemPorTipo(tipo),
         descricao: montarDescricaoParaCard({
           titulo: tituloLimpo,
           tipo,
@@ -708,7 +734,7 @@ function normalizarObraGov(
     progresso: progressoFinal,
     status: definirStatusDaObra(progressoFinal, statusFonte),
     tipo: tipoFinal,
-    imagem: IMAGEM_PADRAO,
+    imagem: escolherImagemPorTipo(tipoFinal),
     descricao: montarDescricaoParaCard({
       titulo: tituloFinal,
       tipo: tipoFinal,
