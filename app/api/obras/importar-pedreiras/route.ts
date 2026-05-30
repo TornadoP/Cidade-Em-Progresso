@@ -75,18 +75,33 @@ function pegarTotalMedicoes(texto: string) {
 }
 
 function pegarPercentualObra(texto: string) {
-  const percentual = pegarPrimeiroMatch(
+  const percentualObra = pegarPrimeiroMatch(
     texto,
     /PERCENTUAL DA OBRA\s*([\d.,]+)%/i,
   );
 
-  if (percentual === "Não informado") return 0;
+  if (percentualObra !== "Não informado") {
+    const numero = Number(percentualObra.replace(".", "").replace(",", "."));
 
-  const numero = Number(percentual.replace(".", "").replace(",", "."));
+    if (!Number.isNaN(numero)) {
+      return Math.max(0, Math.min(100, Math.round(numero)));
+    }
+  }
 
-  if (Number.isNaN(numero)) return 0;
+  const percentualMedicao = pegarPrimeiroMatch(
+    texto,
+    /TOTAL DE MEDIÇÕES\s*R\$\s*[\d.,]+[\s\S]{0,120}?PERCENTUAL DA OBRA\s*([\d.,]+)%/i,
+  );
 
-  return Math.max(0, Math.min(100, Math.round(numero)));
+  if (percentualMedicao !== "Não informado") {
+    const numero = Number(percentualMedicao.replace(".", "").replace(",", "."));
+
+    if (!Number.isNaN(numero)) {
+      return Math.max(0, Math.min(100, Math.round(numero)));
+    }
+  }
+
+  return 0;
 }
 
 function pegarInicio(texto: string) {
@@ -203,7 +218,8 @@ function classificarTipo(tipoSite: string, titulo: string) {
 }
 
 function limparTituloParaCard(titulo: string, tipo: string) {
-  const texto = titulo.toUpperCase();
+  const original = normalizarTexto(titulo);
+  const texto = original.toUpperCase();
 
   if (
     texto.includes("MANUTENÇÃO PREDIAL") ||
@@ -221,7 +237,11 @@ function limparTituloParaCard(titulo: string, tipo: string) {
     return "Manutenção predial em prédios públicos";
   }
 
-  if (texto.includes("CONSTRUÇÃO DE 01 UNIDADE BASICA DE SAUDE")) {
+  if (
+    texto.includes("UNIDADE BASICA DE SAUDE") ||
+    texto.includes("UNIDADE BÁSICA DE SAÚDE") ||
+    texto.includes("UBS")
+  ) {
     return "Construção de Unidade Básica de Saúde";
   }
 
@@ -233,19 +253,90 @@ function limparTituloParaCard(titulo: string, tipo: string) {
     return "Implantação de sistema de drenagem";
   }
 
-  if (texto.includes("PAVIMENTAÇÃO ASFÁLTICA")) {
+  if (
+    texto.includes("PAVIMENTAÇÃO ASFÁLTICA") ||
+    texto.includes("PAVIMENTACAO ASFALTICA") ||
+    texto.includes("SINALIZAÇÃO HORIZONTAL") ||
+    texto.includes("SINALIZACAO HORIZONTAL")
+  ) {
     return "Pavimentação asfáltica e sinalização";
   }
 
-  if (texto.includes("RECUPERAÇÃO DE ESTRADAS")) {
+  if (
+    texto.includes("RECUPERAÇÃO DE ESTRADAS") ||
+    texto.includes("RECUPERACAO DE ESTRADAS") ||
+    texto.includes("ESTRADA VICINAL") ||
+    texto.includes("ESTRADAS VICINAIS")
+  ) {
     return "Recuperação de estradas municipais";
   }
 
-  if (texto.includes("SECRETARIA MUNICIPAL DE EDUCAÇÃO")) {
+  if (
+    texto.includes("PONTE MISTA") ||
+    texto.includes("PONTE EM SEÇÃO MISTA") ||
+    texto.includes("PONTE EM ESTRUTURA METÁLICA") ||
+    texto.includes("PONTE EM ESTRUTURA METALICA")
+  ) {
+    return "Construção de ponte";
+  }
+
+  if (
+    texto.includes("SECRETARIA MUNICIPAL DE EDUCAÇÃO") ||
+    texto.includes("SEDE DA SECRETARIA MUNICIPAL DE EDUCAÇÃO")
+  ) {
     return "Construção da sede da Secretaria Municipal de Educação";
   }
 
-  return normalizarTexto(titulo);
+  if (
+    texto.includes("SECRETARIA DE MEIO AMBIENTE") ||
+    texto.includes("SECRETARIA MUNICIPAL DE MEIO AMBIENTE")
+  ) {
+    return "Construção da Secretaria de Meio Ambiente";
+  }
+
+  if (
+    texto.includes("MERCADOS MUNICIPAIS") ||
+    texto.includes("MERCADO MUNICIPAL")
+  ) {
+    return "Reforma de mercados municipais";
+  }
+
+  if (
+    texto.includes("GINÁSIO") ||
+    texto.includes("GINASIO") ||
+    texto.includes("POLIESPORTIVO")
+  ) {
+    return "Reforma de ginásio poliesportivo";
+  }
+
+  if (
+    texto.includes("PALÁCIO MUNICIPAL") ||
+    texto.includes("PALACIO MUNICIPAL")
+  ) {
+    return "Restauração do Palácio Municipal";
+  }
+
+  if (
+    texto.includes("JARDIM DE INFÂNCIA FÁTIMA ROMA") ||
+    texto.includes("JARDIM DE INFANCIA FATIMA ROMA")
+  ) {
+    return "Reforma do Jardim de Infância Fátima Roma";
+  }
+
+  const semContrato = original
+    .replace(/,\s*CONFORME.*$/i, "")
+    .replace(/,\s*CONTRATO.*$/i, "")
+    .replace(/,\s*PROCESSO ADMINISTRATIVO.*$/i, "")
+    .replace(/\s*CONFORME PROCESSO.*$/i, "")
+    .replace(/\s*CONTRATO ADMINISTRATIVO.*$/i, "")
+    .replace(/\s*N[º°]\s*\d+.*$/i, "")
+    .trim();
+
+  if (semContrato.length > 85) {
+    return `${semContrato.slice(0, 82).trim()}...`;
+  }
+
+  return semContrato || original;
 }
 
 function definirStatusDaObra(progresso: number) {

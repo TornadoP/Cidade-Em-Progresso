@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import type { CSSProperties, Dispatch, SetStateAction } from "react";
+import type { Dispatch, SetStateAction } from "react";
 import AcoesUsuario from "@/app/components/AcoesUsuario";
 
 type Obra = {
@@ -14,7 +14,7 @@ type Obra = {
   investimento: string | null;
   inicio: string | null;
   prazo: string | null;
-  progresso: string | null;
+  progresso: number | string | null;
   status: string | null;
   tipo: string | null;
   imagem: string | null;
@@ -68,25 +68,32 @@ export default function ObrasClient({
     );
   });
 
-  function corProgresso(progresso: string | null) {
-    const valor = Number((progresso || "0%").replace("%", ""));
-
-    if (valor < 50) {
+  function corProgresso(progresso: number) {
+    if (progresso < 50) {
       return "bg-gradient-to-r from-[#EF4444] to-[#FACC15]";
     }
 
-    if (valor < 75) {
+    if (progresso < 75) {
       return "bg-gradient-to-r from-[#FACC15] to-[#84CC16]";
     }
 
     return "bg-gradient-to-r from-[#86EFAC] to-[#425C59]";
   }
-  function progressoReal(status: string | null, progresso: string | null) {
+
+  function progressoReal(
+    status: string | null,
+    progresso: number | string | null,
+  ) {
     if (status === "Em planejamento") {
-      return "0%";
+      return 0;
     }
 
-    return progresso || "0%";
+    const valor =
+      typeof progresso === "string"
+        ? Number(progresso.replace("%", ""))
+        : Number(progresso);
+
+    return Math.max(0, Math.min(100, Number.isNaN(valor) ? 0 : Math.round(valor)));
   }
 
   function alternarFiltro(
@@ -346,101 +353,99 @@ export default function ObrasClient({
             </div>
 
             <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
-              {obrasFiltradas.map((obra) => (
-                <Link
-                  key={obra.id}
-                  href={`/rotas/obras/${obra.fonte_id || obra.id}`}
-                  className="flex h-full flex-col overflow-hidden rounded-3xl bg-white shadow-[0_18px_45px_rgba(0,0,0,0.28)] ring-1 ring-black/5 transition-all duration-300 hover:-translate-y-2 hover:scale-[1.01] hover:shadow-[0_30px_70px_rgba(0,0,0,0.42)]"
-                >
-                  <div className="relative h-44 w-full bg-[#425C59]/20">
-                    <Image
-                      src={obra.imagem || "/obra-principal.png"}
-                      alt={obra.titulo}
-                      fill
-                      sizes="(max-width: 768px) 100vw, 320px"
-                      className="object-cover"
-                    />
-                  </div>
+              {obrasFiltradas.map((obra) => {
+                const progressoObra = progressoReal(
+                  obra.status,
+                  obra.progresso,
+                );
 
-                  <div className="flex flex-1 flex-col p-5">
-                    {obra.origem === "Sugestão popular" && (
-                      <span className="mb-3 inline-flex w-fit rounded-full bg-[#FFC222] px-3 py-1 text-xs font-bold text-black shadow-sm">
-                        Sugestão popular
-                      </span>
-                    )}
-                    <h3 className="min-h-[56px] text-lg font-bold text-black">
-                      {obra.titulo}
-                    </h3>
-
-                    <p className="mt-1 text-sm font-medium text-[#425C59]">
-                      {obra.status || "Em planejamento"}
-                    </p>
-                    <p className="mt-1 text-sm font-semibold text-black/70">
-                      🗳️ {obra.total_votos || 0} voto
-                      {Number(obra.total_votos || 0) === 1 ? "" : "s"}
-                    </p>
-
-                    <div className="mt-3 grid gap-2 text-sm text-black/70">
-                      <p>
-                        <span className="font-semibold text-black">
-                          📍 Localização:
-                        </span>{" "}
-                        {obra.local || "Local não informado"}
-                      </p>
-
-                      <p>
-                        <span className="font-semibold text-black">
-                          🏦 Investimento:
-                        </span>{" "}
-                        {obra.investimento || "Não informado"}
-                      </p>
-
-                      <p>
-                        <span className="font-semibold text-black">
-                          🚧 Início:
-                        </span>{" "}
-                        {obra.inicio || "Não informado"}
-                      </p>
-
-                      <p>
-                        <span className="font-semibold text-black">
-                          📅 Prazo:
-                        </span>{" "}
-                        {obra.prazo || "Não informado"}
-                      </p>
+                return (
+                  <Link
+                    key={obra.id}
+                    href={`/rotas/obras/${obra.fonte_id || obra.id}`}
+                    className="flex h-full flex-col overflow-hidden rounded-3xl bg-white shadow-[0_18px_45px_rgba(0,0,0,0.28)] ring-1 ring-black/5 transition-all duration-300 hover:-translate-y-2 hover:scale-[1.01] hover:shadow-[0_30px_70px_rgba(0,0,0,0.42)]"
+                  >
+                    <div className="relative h-44 w-full bg-[#425C59]/20">
+                      <Image
+                        src={obra.imagem || "/obra-principal.png"}
+                        alt={obra.titulo}
+                        fill
+                        sizes="(max-width: 768px) 100vw, 320px"
+                        className="object-cover"
+                      />
                     </div>
 
-                    <div className="mt-4 mb-5">
-                      <div className="mb-1 flex items-center justify-between text-xs text-black/70">
-                        <span>Progresso</span>
-                        <span>
-                          {progressoReal(obra.status, obra.progresso)}
+                    <div className="flex flex-1 flex-col p-5">
+                      {obra.origem === "Sugestão popular" && (
+                        <span className="mb-3 inline-flex w-fit rounded-full bg-[#FFC222] px-3 py-1 text-xs font-bold text-black shadow-sm">
+                          Sugestão popular
                         </span>
+                      )}
+                      <h3 className="min-h-[56px] text-lg font-bold text-black">
+                        {obra.titulo}
+                      </h3>
+
+                      <p className="mt-1 text-sm font-medium text-[#425C59]">
+                        {obra.status || "Em planejamento"}
+                      </p>
+                      <p className="mt-1 text-sm font-semibold text-black/70">
+                        🗳️ {obra.total_votos || 0} voto
+                        {Number(obra.total_votos || 0) === 1 ? "" : "s"}
+                      </p>
+
+                      <div className="mt-3 grid gap-2 text-sm text-black/70">
+                        <p>
+                          <span className="font-semibold text-black">
+                            📍 Localização:
+                          </span>{" "}
+                          {obra.local || "Local não informado"}
+                        </p>
+
+                        <p>
+                          <span className="font-semibold text-black">
+                            🏦 Investimento:
+                          </span>{" "}
+                          {obra.investimento || "Não informado"}
+                        </p>
+
+                        <p>
+                          <span className="font-semibold text-black">
+                            🚧 Início:
+                          </span>{" "}
+                          {obra.inicio || "Não informado"}
+                        </p>
+
+                        <p>
+                          <span className="font-semibold text-black">
+                            📅 Prazo:
+                          </span>{" "}
+                          {obra.prazo || "Não informado"}
+                        </p>
                       </div>
 
-                      <div className="h-3 w-full overflow-hidden rounded-full bg-[#E5E7EB]">
-                        <div
-                          className={`h-full rounded-full barra-progresso-animada ${corProgresso(
-                            progressoReal(obra.status, obra.progresso),
-                          )}`}
-                          style={
-                            {
-                              "--progresso": progressoReal(
-                                obra.status,
-                                obra.progresso,
-                              ),
-                            } as CSSProperties
-                          }
-                        ></div>
+                      <div className="mt-4 mb-5">
+                        <div className="mb-1 flex items-center justify-between text-xs text-black/70">
+                          <span>Progresso</span>
+                          <span>{progressoObra}%</span>
+                        </div>
+
+                        <div className="h-3 w-full overflow-hidden rounded-full bg-[#E5E7EB]">
+                          <div
+                            className={`h-full rounded-full transition-all duration-500 ${corProgresso(
+                              progressoObra,
+                            )}`}
+                            style={{ width: `${progressoObra}%` }}
+                          ></div>
+                        </div>
                       </div>
+
+                      <span className="mt-auto block w-full rounded-xl bg-[#425C59] px-4 py-3 text-center text-sm font-semibold text-white transition hover:bg-[#334846]">
+                        Ver detalhes
+                      </span>
                     </div>
-
-                    <span className="mt-auto block w-full rounded-xl bg-[#425C59] px-4 py-3 text-center text-sm font-semibold text-white transition hover:bg-[#334846]">
-                      Ver detalhes
-                    </span>
-                  </div>
-                </Link>
-              ))}
+                  </Link>
+                );
+              })}
             </div>
           </section>
         </div>

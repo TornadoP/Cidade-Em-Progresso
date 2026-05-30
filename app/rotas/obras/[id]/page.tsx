@@ -1,32 +1,38 @@
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import type { CSSProperties } from "react";
 import { supabase } from "@/app/lib/supabaseClient";
 import BotaoVotar from "@/app/components/BotaoVotar";
 import AcoesUsuario from "@/app/components/AcoesUsuario";
 
 //P A G I N A    D E   D E T A L H E S  O B R A S
 
-function corProgresso(progresso: string | null) {
-  const valor = Number((progresso || "0%").replace("%", ""));
-
-  if (valor < 50) {
+function corProgresso(progresso: number) {
+  if (progresso < 50) {
     return "bg-gradient-to-r from-[#EF4444] to-[#FACC15]";
   }
 
-  if (valor < 75) {
+  if (progresso < 75) {
     return "bg-gradient-to-r from-[#FACC15] to-[#84CC16]";
   }
 
   return "bg-gradient-to-r from-[#86EFAC] to-[#425C59]";
 }
-function progressoReal(status: string | null, progresso: string | null) {
+
+function progressoReal(
+  status: string | null,
+  progresso: number | string | null,
+) {
   if (status === "Em planejamento") {
-    return "0%";
+    return 0;
   }
 
-  return progresso || "0%";
+  const valor =
+    typeof progresso === "string"
+      ? Number(progresso.replace("%", ""))
+      : Number(progresso);
+
+  return Math.max(0, Math.min(100, Number.isNaN(valor) ? 0 : Math.round(valor)));
 }
 
 export const dynamic = "force-dynamic";
@@ -48,11 +54,10 @@ export default async function DetalhesObraPage({
     notFound();
   }
 
-  const progressoAtual = String(obra.progresso || "0%").trim();
+  const progressoObra = progressoReal(obra.status, obra.progresso);
 
   const mostrarAvisoSugestaoPopular =
-    obra.origem === "Sugestão popular" &&
-    (progressoAtual === "0%" || progressoAtual === "0");
+    obra.origem === "Sugestão popular" && progressoObra === 0;
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#E3F1F1] to-[#CBDfde] p-4 font-sans sm:p-6">
@@ -138,27 +143,21 @@ export default async function DetalhesObraPage({
               fonteId={obra.fonte_id || ""}
               status={obra.status || "Em planejamento"}
               totalVotos={Number(obra.total_votos || 0)}
-              progresso={progressoReal(obra.status, obra.progresso)}
+              progresso={`${progressoObra}%`}
             />
 
             <div className="mt-6">
               <div className="mb-2 flex items-center justify-between text-sm text-white/90">
                 <span>Progresso da obra</span>
-                <span className="text-xl font-bold">
-                  {progressoReal(obra.status, obra.progresso)}
-                </span>
+                <span className="text-xl font-bold">{progressoObra}%</span>
               </div>
 
               <div className="h-3 w-full overflow-hidden rounded-full bg-white/20">
                 <div
-                  className={`h-full rounded-full barra-progresso-animada ${corProgresso(
-                    progressoReal(obra.status, obra.progresso),
+                  className={`h-full rounded-full transition-all duration-500 ${corProgresso(
+                    progressoObra,
                   )}`}
-                  style={
-                    {
-                      "--progresso": progressoReal(obra.status, obra.progresso),
-                    } as CSSProperties
-                  }
+                  style={{ width: `${progressoObra}%` }}
                 ></div>
               </div>
             </div>
