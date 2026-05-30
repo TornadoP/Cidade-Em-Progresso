@@ -56,6 +56,12 @@ export default function PerfilPage() {
   const [erroAtualizacao, setErroAtualizacao] = useState("");
   const [atualizando, setAtualizando] = useState(false);
 
+  const [novoEmail, setNovoEmail] = useState("");
+  const [senhaAtualEmail, setSenhaAtualEmail] = useState("");
+  const [mensagemEmail, setMensagemEmail] = useState("");
+  const [erroEmail, setErroEmail] = useState("");
+  const [atualizandoEmail, setAtualizandoEmail] = useState(false);
+
   const carregarPerfil = useCallback(async () => {
     setCarregando(true);
     setErro("");
@@ -174,6 +180,69 @@ export default function PerfilPage() {
     setNovaSenha("");
     setConfirmarNovaSenha("");
     setAtualizando(false);
+  }
+  async function atualizarEmailAuth(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    setMensagemEmail("");
+    setErroEmail("");
+    setAtualizandoEmail(true);
+
+    if (!perfil?.usuario.email) {
+      setErroEmail("Não foi possível identificar o email atual da conta.");
+      setAtualizandoEmail(false);
+      return;
+    }
+
+    const emailAtual = perfil.usuario.email.trim().toLowerCase();
+    const emailNovo = novoEmail.trim().toLowerCase();
+
+    if (!emailNovo) {
+      setErroEmail("Informe o novo email.");
+      setAtualizandoEmail(false);
+      return;
+    }
+
+    if (!senhaAtualEmail.trim()) {
+      setErroEmail("Informe sua senha atual para confirmar a alteração.");
+      setAtualizandoEmail(false);
+      return;
+    }
+
+    if (emailNovo === emailAtual) {
+      setErroEmail("O novo email precisa ser diferente do email atual.");
+      setAtualizandoEmail(false);
+      return;
+    }
+
+    const { error: erroSenhaAtual } = await supabase.auth.signInWithPassword({
+      email: emailAtual,
+      password: senhaAtualEmail,
+    });
+
+    if (erroSenhaAtual) {
+      setErroEmail("Senha atual incorreta.");
+      setAtualizandoEmail(false);
+      return;
+    }
+
+    const { error: erroAtualizarEmail } = await supabase.auth.updateUser({
+      email: emailNovo,
+    });
+
+    if (erroAtualizarEmail) {
+      setErroEmail("Não foi possível solicitar a alteração de email.");
+      setAtualizandoEmail(false);
+      return;
+    }
+
+    setMensagemEmail(
+      "Solicitação enviada. Confira seu email para confirmar a alteração.",
+    );
+
+    setNovoEmail("");
+    setSenhaAtualEmail("");
+    setAtualizandoEmail(false);
   }
 
   if (carregando) {
@@ -306,87 +375,167 @@ export default function PerfilPage() {
             </div>
           </div>
 
-          <div className="rounded-3xl bg-white/85 p-6 shadow-xl ring-1 ring-black/5">
-            <h2 className="text-xl font-bold text-black">Segurança da conta</h2>
+          <div className="space-y-6">
+            <div className="rounded-3xl bg-white/85 p-6 shadow-xl ring-1 ring-black/5">
+              <h2 className="text-xl font-bold text-black">
+                Segurança da conta
+              </h2>
 
-            <p className="mt-2 text-sm text-black/70">
-              Atualize sua senha usando sua senha atual como confirmação de
-              segurança.
-            </p>
+              <p className="mt-2 text-sm text-black/70">
+                Atualize sua senha usando sua senha atual como confirmação de
+                segurança.
+              </p>
 
-            <form onSubmit={atualizarSenhaAuth} className="mt-5 space-y-4">
-              <div>
-                <label className="mb-1 block text-sm font-semibold text-black">
-                  Senha atual
-                </label>
+              <form onSubmit={atualizarSenhaAuth} className="mt-5 space-y-4">
+                <div>
+                  <label className="mb-1 block text-sm font-semibold text-black">
+                    Senha atual
+                  </label>
 
-                <input
-                  type={mostrarNovaSenha ? "text" : "password"}
-                  value={senhaAtual}
-                  onChange={(event) => setSenhaAtual(event.target.value)}
-                  placeholder="Digite sua senha atual"
-                  className="w-full rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm text-black outline-none transition focus:border-[#425C59]"
-                />
-              </div>
+                  <input
+                    type={mostrarNovaSenha ? "text" : "password"}
+                    value={senhaAtual}
+                    onChange={(event) => setSenhaAtual(event.target.value)}
+                    placeholder="Digite sua senha atual"
+                    className="w-full rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm text-black outline-none transition focus:border-[#425C59]"
+                  />
+                </div>
 
-              <div>
-                <label className="mb-1 block text-sm font-semibold text-black">
-                  Nova senha
-                </label>
+                <div>
+                  <label className="mb-1 block text-sm font-semibold text-black">
+                    Nova senha
+                  </label>
 
-                <input
-                  type={mostrarNovaSenha ? "text" : "password"}
-                  value={novaSenha}
-                  onChange={(event) => setNovaSenha(event.target.value)}
-                  placeholder="Nova senha com pelo menos 6 caracteres"
-                  className="w-full rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm text-black outline-none transition focus:border-[#425C59]"
-                />
-              </div>
+                  <input
+                    type={mostrarNovaSenha ? "text" : "password"}
+                    value={novaSenha}
+                    onChange={(event) => setNovaSenha(event.target.value)}
+                    placeholder="Nova senha com pelo menos 6 caracteres"
+                    className="w-full rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm text-black outline-none transition focus:border-[#425C59]"
+                  />
+                </div>
 
-              <div>
-                <label className="mb-1 block text-sm font-semibold text-black">
-                  Confirmar nova senha
-                </label>
+                <div>
+                  <label className="mb-1 block text-sm font-semibold text-black">
+                    Confirmar nova senha
+                  </label>
 
-                <input
-                  type={mostrarNovaSenha ? "text" : "password"}
-                  value={confirmarNovaSenha}
-                  onChange={(event) =>
-                    setConfirmarNovaSenha(event.target.value)
+                  <input
+                    type={mostrarNovaSenha ? "text" : "password"}
+                    value={confirmarNovaSenha}
+                    onChange={(event) =>
+                      setConfirmarNovaSenha(event.target.value)
+                    }
+                    placeholder="Repita a nova senha"
+                    className="w-full rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm text-black outline-none transition focus:border-[#425C59]"
+                  />
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() =>
+                    setMostrarNovaSenha((valorAtual) => !valorAtual)
                   }
-                  placeholder="Repita a nova senha"
-                  className="w-full rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm text-black outline-none transition focus:border-[#425C59]"
-                />
-              </div>
+                  className="text-sm font-semibold text-[#425C59] underline"
+                >
+                  {mostrarNovaSenha ? "Ocultar senhas" : "Mostrar senhas"}
+                </button>
 
-              <button
-                type="button"
-                onClick={() => setMostrarNovaSenha((valorAtual) => !valorAtual)}
-                className="text-sm font-semibold text-[#425C59] underline"
-              >
-                {mostrarNovaSenha ? "Ocultar senhas" : "Mostrar senhas"}
-              </button>
+                {erroAtualizacao && (
+                  <div className="rounded-2xl bg-red-100 px-4 py-3 text-sm font-medium text-red-700">
+                    {erroAtualizacao}
+                  </div>
+                )}
 
-              {erroAtualizacao && (
-                <div className="rounded-2xl bg-red-100 px-4 py-3 text-sm font-medium text-red-700">
-                  {erroAtualizacao}
+                {mensagemAtualizacao && (
+                  <div className="rounded-2xl bg-green-100 px-4 py-3 text-sm font-medium text-green-700">
+                    {mensagemAtualizacao}
+                  </div>
+                )}
+
+                <button
+                  type="submit"
+                  disabled={atualizando}
+                  className="w-full rounded-2xl bg-[#425C59] px-4 py-3 text-sm font-bold text-white shadow-lg transition hover:-translate-y-1 hover:bg-[#334846] disabled:cursor-not-allowed disabled:opacity-70"
+                >
+                  {atualizando ? "Atualizando..." : "Atualizar senha"}
+                </button>
+              </form>
+            </div>
+
+            <div className="rounded-3xl bg-white/85 p-6 shadow-xl ring-1 ring-black/5">
+              <h2 className="text-xl font-bold text-black">Alterar email</h2>
+
+              <p className="mt-2 text-sm text-black/70">
+                Informe um novo email e confirme com sua senha atual. O Supabase
+                poderá enviar uma confirmação para validar a alteração.
+              </p>
+
+              <form onSubmit={atualizarEmailAuth} className="mt-5 space-y-4">
+                <div>
+                  <label className="mb-1 block text-sm font-semibold text-black">
+                    Email atual
+                  </label>
+
+                  <input
+                    type="email"
+                    value={perfil.usuario.email || ""}
+                    disabled
+                    className="w-full cursor-not-allowed rounded-2xl border border-black/10 bg-zinc-100 px-4 py-3 text-sm text-black/60 outline-none"
+                  />
                 </div>
-              )}
 
-              {mensagemAtualizacao && (
-                <div className="rounded-2xl bg-green-100 px-4 py-3 text-sm font-medium text-green-700">
-                  {mensagemAtualizacao}
+                <div>
+                  <label className="mb-1 block text-sm font-semibold text-black">
+                    Novo email
+                  </label>
+
+                  <input
+                    type="email"
+                    value={novoEmail}
+                    onChange={(event) => setNovoEmail(event.target.value)}
+                    placeholder="novoemail@exemplo.com"
+                    className="w-full rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm text-black outline-none transition focus:border-[#425C59]"
+                  />
                 </div>
-              )}
 
-              <button
-                type="submit"
-                disabled={atualizando}
-                className="w-full rounded-2xl bg-[#425C59] px-4 py-3 text-sm font-bold text-white shadow-lg transition hover:-translate-y-1 hover:bg-[#334846] disabled:cursor-not-allowed disabled:opacity-70"
-              >
-                {atualizando ? "Atualizando..." : "Atualizar senha"}
-              </button>
-            </form>
+                <div>
+                  <label className="mb-1 block text-sm font-semibold text-black">
+                    Senha atual
+                  </label>
+
+                  <input
+                    type="password"
+                    value={senhaAtualEmail}
+                    onChange={(event) => setSenhaAtualEmail(event.target.value)}
+                    placeholder="Digite sua senha atual"
+                    className="w-full rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm text-black outline-none transition focus:border-[#425C59]"
+                  />
+                </div>
+
+                {erroEmail && (
+                  <div className="rounded-2xl bg-red-100 px-4 py-3 text-sm font-medium text-red-700">
+                    {erroEmail}
+                  </div>
+                )}
+
+                {mensagemEmail && (
+                  <div className="rounded-2xl bg-green-100 px-4 py-3 text-sm font-medium text-green-700">
+                    {mensagemEmail}
+                  </div>
+                )}
+
+                <button
+                  type="submit"
+                  disabled={atualizandoEmail}
+                  className="w-full rounded-2xl bg-[#425C59] px-4 py-3 text-sm font-bold text-white shadow-lg transition hover:-translate-y-1 hover:bg-[#334846] disabled:cursor-not-allowed disabled:opacity-70"
+                >
+                  {atualizandoEmail
+                    ? "Enviando solicitação..."
+                    : "Solicitar alteração de email"}
+                </button>
+              </form>
+            </div>
           </div>
         </section>
 
