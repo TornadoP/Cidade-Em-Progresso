@@ -140,30 +140,6 @@ function pegarUltimaAtualizacao(texto: string) {
   );
 }
 
-function pegarSituacaoAtual(texto: string) {
-  return pegarPrimeiroMatch(
-    texto,
-    /DATA:\s*\d{2}\/\d{2}\/\d{4}\s+-\s+SITUAÇÃO:\s*(.+?)\s+STATUS:/i,
-  );
-}
-
-function definirStatus(texto: string, progresso: number) {
-  if (progresso >= 100) return "Concluída";
-
-  const status = pegarPrimeiroMatch(
-    texto,
-    /STATUS:\s*([A-ZÀ-Ú\s]+?)(?:\s+DATA:|\s+Voltar|\s*$)/i,
-  );
-
-  const statusNormalizado = status.toLowerCase();
-
-  if (statusNormalizado.includes("cancel")) return "Cancelada";
-  if (statusNormalizado.includes("conclu")) return "Concluída";
-  if (statusNormalizado.includes("andamento")) return "Em andamento";
-
-  return "Em andamento";
-}
-
 function classificarTipo(tipoSite: string, titulo: string) {
   const texto = `${tipoSite} ${titulo}`.toLowerCase();
 
@@ -216,6 +192,91 @@ function classificarTipo(tipoSite: string, titulo: string) {
   }
 
   return "Obra pública";
+}
+
+function limparTituloParaCard(titulo: string, tipo: string) {
+  const texto = titulo.toUpperCase();
+
+  if (
+    texto.includes("MANUTENÇÃO PREDIAL") ||
+    texto.includes("MANUTENÇÃO PREVENTIVA") ||
+    texto.includes("MANUTENÇÃO CORRETIVA")
+  ) {
+    if (texto.includes("EDUCAÇÃO") || tipo === "Educação") {
+      return "Manutenção predial em unidades da Educação";
+    }
+
+    if (texto.includes("SAÚDE") || tipo === "Saúde") {
+      return "Manutenção predial em unidades da Saúde";
+    }
+
+    return "Manutenção predial em prédios públicos";
+  }
+
+  if (texto.includes("CONSTRUÇÃO DE 01 UNIDADE BASICA DE SAUDE")) {
+    return "Construção de Unidade Básica de Saúde";
+  }
+
+  if (texto.includes("SAMU")) {
+    return "Reforma e adequação da base do SAMU";
+  }
+
+  if (texto.includes("DRENAGEM")) {
+    return "Implantação de sistema de drenagem";
+  }
+
+  if (texto.includes("PAVIMENTAÇÃO ASFÁLTICA")) {
+    return "Pavimentação asfáltica e sinalização";
+  }
+
+  if (texto.includes("RECUPERAÇÃO DE ESTRADAS")) {
+    return "Recuperação de estradas municipais";
+  }
+
+  if (texto.includes("SECRETARIA MUNICIPAL DE EDUCAÇÃO")) {
+    return "Construção da sede da Secretaria Municipal de Educação";
+  }
+
+  return normalizarTexto(titulo);
+}
+
+function definirStatusDaObra(progresso: number) {
+  if (progresso >= 100) return "Concluída";
+  if (progresso <= 0) return "Em planejamento";
+  return "Em andamento";
+}
+
+function montarDescricaoParaCard(params: {
+  tipo: string;
+  local: string;
+  investimento: string;
+  progresso: number;
+}) {
+  const { tipo, local, investimento, progresso } = params;
+
+  const partes: string[] = [];
+
+  partes.push(`Obra oficial da área de ${tipo} em Pedreiras-MA.`);
+
+  if (local !== "Pedreiras - MA" && local !== "Não informado") {
+    partes.push(`Local: ${local}.`);
+  }
+
+  if (investimento !== "Não informado") {
+    partes.push(`Investimento previsto: ${investimento}.`);
+  }
+
+  partes.push(`Execução física informada: ${progresso}%.`);
+
+  return partes.join(" ");
+}
+
+function limitarTexto(texto: string, limite = 220) {
+  const limpo = normalizarTexto(texto);
+
+  if (limpo.length <= limite) return limpo;
+
+  return `${limpo.slice(0, limite).trim()}...`;
 }
 
 function criarFonteIdPrefeitura(id: string) {
@@ -293,13 +354,13 @@ async function buscarObrasPrefeitura() {
       const local = pegarLocal(textoDetalhe);
       const empresa = pegarEmpresa(textoDetalhe);
       const ultimaAtualizacao = pegarUltimaAtualizacao(textoDetalhe);
-      const situacaoAtual = pegarSituacaoAtual(textoDetalhe);
-      const status = definirStatus(textoDetalhe, progresso);
       const tipo = classificarTipo(tipoSite, link.titulo);
+      const tituloLimpo = limparTituloParaCard(link.titulo, tipo);
+      const status = definirStatusDaObra(progresso);
 
       obras.push({
         fonte_id: criarFonteIdPrefeitura(link.id),
-        titulo: link.titulo,
+        titulo: tituloLimpo,
         local,
         investimento,
         inicio,
@@ -308,9 +369,16 @@ async function buscarObrasPrefeitura() {
         status,
         tipo,
         imagem: IMAGEM_PADRAO,
-        descricao:
-          situacaoAtual !== "Não informado" ? situacaoAtual : link.titulo,
-        detalhes: `Fonte oficial: Prefeitura de Pedreiras-MA. Total medido: ${totalMedicoes}. Link: ${link.url}`,
+        descricao: montarDescricaoParaCard({
+          tipo,
+          local,
+          investimento,
+          progresso,
+        }),
+        detalhes: limitarTexto(
+          `Fonte oficial: Prefeitura de Pedreiras-MA. Total medido: ${totalMedicoes}. Link: ${link.url}`,
+          260,
+        ),
         orgao,
         empresa,
         ultima_atualizacao: ultimaAtualizacao,
@@ -361,32 +429,47 @@ function normalizarObraGov(
     item.valorPrevisto ||
     "Não informado";
 
-  const situacao =
-    item.situacao || item.status || item.situacaoProjeto || "Não informado";
-
   const tituloTexto = String(titulo);
-  const situacaoTexto = String(situacao);
+
+  const progressoFinal = Number.isNaN(progresso)
+    ? 0
+    : Math.max(0, Math.min(100, Math.round(progresso)));
+
+  const tipoFinal = classificarTipo(
+    String(item.tipo || item.categoria || "Não informado"),
+    tituloTexto,
+  );
+
+  const investimentoFinal =
+    valor !== "Não informado" ? String(valor) : "Não informado";
+
+  const tituloFinal = limparTituloParaCard(tituloTexto, tipoFinal);
 
   return {
     fonte_id: `obrasgov-${String(id)}`,
-    titulo: tituloTexto,
+    titulo: tituloFinal,
     local: "Pedreiras - MA",
-    investimento: String(valor),
+    investimento: investimentoFinal,
     inicio: String(
       item.dataInicio || item.dataInicioPrevista || "Não informado",
     ),
     prazo: String(
       item.dataFim || item.dataConclusaoPrevista || "Não informado",
     ),
-    progresso: Number.isNaN(progresso) ? 0 : Math.round(progresso),
-    status: definirStatus(
-      situacaoTexto,
-      Number.isNaN(progresso) ? 0 : progresso,
-    ),
-    tipo: classificarTipo(String(item.tipo || "Não informado"), tituloTexto),
+    progresso: progressoFinal,
+    status: definirStatusDaObra(progressoFinal),
+    tipo: tipoFinal,
     imagem: IMAGEM_PADRAO,
-    descricao: situacaoTexto,
-    detalhes: "Obra importada da API de Dados Abertos do ObrasGov.br.",
+    descricao: montarDescricaoParaCard({
+      tipo: tipoFinal,
+      local: "Pedreiras - MA",
+      investimento: investimentoFinal,
+      progresso: progressoFinal,
+    }),
+    detalhes: limitarTexto(
+      "Fonte oficial: API de Dados Abertos do ObrasGov.br.",
+      260,
+    ),
     orgao: String(
       item.orgao || item.orgaoExecutor || item.tomador || "Não informado",
     ),
