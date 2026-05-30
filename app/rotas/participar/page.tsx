@@ -48,6 +48,8 @@ export default function ParticiparPage() {
   const [mensagem, setMensagem] = useState("");
   const [carregando, setCarregando] = useState(false);
   const [verificandoLogin, setVerificandoLogin] = useState(true);
+  const [etapa, setEtapa] = useState(1);
+  const [confirmado, setConfirmado] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -298,6 +300,26 @@ export default function ParticiparPage() {
             className="rounded-3xl bg-white/85 p-6 shadow-xl ring-1 ring-black/5"
           >
             <h2 className="text-xl font-bold text-black">Dados da sugestão</h2>
+            <div className="mt-6 mb-8">
+              <div className="flex justify-between">
+                {[1, 2, 3, 4, 5].map((numero) => (
+                  <div
+                    key={numero}
+                    className={`flex h-10 w-10 items-center justify-center rounded-full font-bold ${
+                      etapa >= numero
+                        ? "bg-[#425C59] text-white"
+                        : "bg-gray-300 text-black"
+                    }`}
+                  >
+                    {numero}
+                  </div>
+                ))}
+              </div>
+
+              <p className="mt-3 text-center text-sm text-black/70">
+                Etapa {etapa} de 5
+              </p>
+            </div>
 
             <p className="mt-2 text-sm text-black/70">
               Preencha as informações que souber. Campos técnicos, como
@@ -306,300 +328,395 @@ export default function ParticiparPage() {
             </p>
 
             <div className="mt-6 space-y-6">
-              <section className="rounded-3xl bg-[#E3F1F1] p-5">
-                <h3 className="text-lg font-bold text-black">
-                  1. Informações principais
-                </h3>
+              {etapa === 1 && (
+                <section className="rounded-3xl bg-[#E3F1F1] p-5">
+                  <h3 className="text-lg font-bold text-black">
+                    1. Informações principais
+                  </h3>
 
-                <div className="mt-4 space-y-4">
-                  <div>
-                    <label className="mb-1 block text-sm font-semibold text-black">
-                      Título da obra sugerida
-                    </label>
-
-                    <input
-                      type="text"
-                      value={titulo}
-                      onChange={(event) => setTitulo(event.target.value)}
-                      placeholder="Ex: Pavimentação da Rua São José"
-                      className="w-full rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm text-black outline-none transition focus:border-[#425C59]"
-                    />
-                  </div>
-
-                  <div className="grid gap-4 md:grid-cols-2">
+                  <div className="mt-4 space-y-4">
                     <div>
                       <label className="mb-1 block text-sm font-semibold text-black">
-                        Local
+                        Título da obra sugerida
                       </label>
 
                       <input
                         type="text"
-                        value={local}
-                        onChange={(event) => setLocal(event.target.value)}
-                        placeholder="Ex: Rua São José"
+                        value={titulo}
+                        onChange={(event) => setTitulo(event.target.value)}
+                        placeholder="Ex: Pavimentação da Rua São José"
+                        className="w-full rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm text-black outline-none transition focus:border-[#425C59]"
+                      />
+                    </div>
+
+                    <div className="grid gap-4 md:grid-cols-2">
+                      <div>
+                        <label className="mb-1 block text-sm font-semibold text-black">
+                          Local
+                        </label>
+
+                        <input
+                          type="text"
+                          value={local}
+                          onChange={(event) => setLocal(event.target.value)}
+                          placeholder="Ex: Rua São José"
+                          className="w-full rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm text-black outline-none transition focus:border-[#425C59]"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="mb-1 block text-sm font-semibold text-black">
+                          Bairro ou região
+                        </label>
+
+                        <input
+                          type="text"
+                          value={bairro}
+                          onChange={(event) => setBairro(event.target.value)}
+                          placeholder="Ex: Centro"
+                          className="w-full rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm text-black outline-none transition focus:border-[#425C59]"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="mb-1 block text-sm font-semibold text-black">
+                        Categoria
+                      </label>
+
+                      <select
+                        value={categoria}
+                        onChange={(event) => setCategoria(event.target.value)}
+                        className="w-full rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm text-black outline-none transition focus:border-[#425C59]"
+                      >
+                        <option value="">Selecione uma categoria</option>
+
+                        {categorias.map((item) => (
+                          <option key={item} value={item}>
+                            {item}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+                </section>
+              )}
+              {etapa === 2 && (
+                <section className="rounded-3xl bg-[#E3F1F1] p-5">
+                  <h3 className="text-lg font-bold text-black">
+                    2. Problema e impacto
+                  </h3>
+
+                  <div className="mt-4 space-y-4">
+                    <div>
+                      <label className="mb-1 block text-sm font-semibold text-black">
+                        Descrição do problema
+                      </label>
+
+                      <textarea
+                        value={descricao}
+                        onChange={(event) => setDescricao(event.target.value)}
+                        placeholder="Descreva o problema que essa obra resolveria."
+                        rows={5}
+                        className="w-full resize-none rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm text-black outline-none transition focus:border-[#425C59]"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="mb-1 block text-sm font-semibold text-black">
+                        Justificativa ou impacto esperado
+                      </label>
+
+                      <textarea
+                        value={justificativa}
+                        onChange={(event) =>
+                          setJustificativa(event.target.value)
+                        }
+                        placeholder="Explique por que essa obra é importante para a população."
+                        rows={4}
+                        className="w-full resize-none rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm text-black outline-none transition focus:border-[#425C59]"
+                      />
+                    </div>
+
+                    <div className="rounded-2xl bg-white p-4 text-sm leading-6 text-black/70 ring-1 ring-black/5">
+                      <p className="font-semibold text-black">
+                        Estimativa automática de prioridade
+                      </p>
+
+                      <p className="mt-2">
+                        Você não precisa informar quantidade de pessoas
+                        beneficiadas, urgência ou impacto social. O sistema fará
+                        uma estimativa inicial automaticamente com base na
+                        categoria, localização, descrição e justificativa
+                        enviadas.
+                      </p>
+                    </div>
+                  </div>
+                </section>
+              )}
+
+              {etapa === 3 && (
+                <section className="rounded-3xl bg-[#E3F1F1] p-5">
+                  <h3 className="text-lg font-bold text-black">
+                    3. Imagens e vídeos
+                  </h3>
+
+                  <p className="mt-2 text-sm text-black/70">
+                    Envie fotos ou vídeos que ajudem a mostrar o problema. A
+                    imagem principal será usada como imagem do card da sugestão.
+                  </p>
+
+                  <div className="mt-4 space-y-4">
+                    <div>
+                      <label className="mb-1 block text-sm font-semibold text-black">
+                        Imagem principal
+                      </label>
+
+                      <input
+                        type="file"
+                        accept="image/jpeg,image/png,image/webp"
+                        onChange={(event) =>
+                          setArquivoImagemPrincipal(
+                            event.target.files?.[0] || null,
+                          )
+                        }
+                        className="w-full rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm text-black outline-none transition file:mr-4 file:rounded-xl file:border-0 file:bg-[#425C59] file:px-4 file:py-2 file:text-sm file:font-bold file:text-white hover:file:bg-[#334846]"
+                      />
+
+                      <p className="mt-1 text-xs text-black/60">
+                        Formatos aceitos: JPG, PNG ou WEBP. Tamanho máximo
+                        recomendado: 5 MB.
+                      </p>
+
+                      {arquivoImagemPrincipal && (
+                        <p className="mt-2 text-xs font-semibold text-[#425C59]">
+                          Imagem selecionada: {arquivoImagemPrincipal.name}
+                        </p>
+                      )}
+                    </div>
+
+                    <div>
+                      <label className="mb-1 block text-sm font-semibold text-black">
+                        Imagens extras
+                      </label>
+
+                      <input
+                        type="file"
+                        accept="image/jpeg,image/png,image/webp"
+                        multiple
+                        onChange={(event) =>
+                          setArquivosImagensExtras(
+                            event.target.files
+                              ? Array.from(event.target.files)
+                              : [],
+                          )
+                        }
+                        className="w-full rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm text-black outline-none transition file:mr-4 file:rounded-xl file:border-0 file:bg-[#425C59] file:px-4 file:py-2 file:text-sm file:font-bold file:text-white hover:file:bg-[#334846]"
+                      />
+
+                      <p className="mt-1 text-xs text-black/60">
+                        Você pode enviar mais de uma imagem complementar.
+                      </p>
+
+                      {arquivosImagensExtras.length > 0 && (
+                        <p className="mt-2 text-xs font-semibold text-[#425C59]">
+                          {arquivosImagensExtras.length} imagem
+                          {arquivosImagensExtras.length === 1 ? "" : "s"}{" "}
+                          selecionada
+                          {arquivosImagensExtras.length === 1 ? "" : "s"}.
+                        </p>
+                      )}
+                    </div>
+
+                    <div>
+                      <label className="mb-1 block text-sm font-semibold text-black">
+                        Vídeo
+                      </label>
+
+                      <input
+                        type="file"
+                        accept="video/mp4,video/webm,video/quicktime"
+                        onChange={(event) =>
+                          setArquivoVideo(event.target.files?.[0] || null)
+                        }
+                        className="w-full rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm text-black outline-none transition file:mr-4 file:rounded-xl file:border-0 file:bg-[#425C59] file:px-4 file:py-2 file:text-sm file:font-bold file:text-white hover:file:bg-[#334846]"
+                      />
+
+                      <p className="mt-1 text-xs text-black/60">
+                        Formatos aceitos: MP4, WEBM ou MOV. Tamanho máximo
+                        recomendado: 50 MB.
+                      </p>
+
+                      {arquivoVideo && (
+                        <p className="mt-2 text-xs font-semibold text-[#425C59]">
+                          Vídeo selecionado: {arquivoVideo.name}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                </section>
+              )}
+
+              {etapa === 4 && (
+                <section className="rounded-3xl bg-[#E3F1F1] p-5">
+                  <h3 className="text-lg font-bold text-black">
+                    4. Informações opcionais
+                  </h3>
+
+                  <p className="mt-2 text-sm text-black/70">
+                    Esses campos ajudam se você souber alguma informação extra,
+                    mas não são obrigatórios.
+                  </p>
+
+                  <div className="mt-4 space-y-4">
+                    <div>
+                      <label className="mb-1 block text-sm font-semibold text-black">
+                        Etapas sugeridas
+                      </label>
+
+                      <textarea
+                        value={etapasSugeridas}
+                        onChange={(event) =>
+                          setEtapasSugeridas(event.target.value)
+                        }
+                        placeholder="Ex: levantamento, projeto, licitação, execução..."
+                        rows={3}
+                        className="w-full resize-none rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm text-black outline-none transition focus:border-[#425C59]"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="mb-1 block text-sm font-semibold text-black">
+                        Transparência ou informação conhecida
+                      </label>
+
+                      <textarea
+                        value={transparenciaInfo}
+                        onChange={(event) =>
+                          setTransparenciaInfo(event.target.value)
+                        }
+                        placeholder="Ex: promessa pública, informação de orçamento, edital conhecido..."
+                        rows={3}
+                        className="w-full resize-none rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm text-black outline-none transition focus:border-[#425C59]"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="mb-1 block text-sm font-semibold text-black">
+                        Órgão sugerido
+                      </label>
+
+                      <input
+                        type="text"
+                        value={orgaoSugerido}
+                        onChange={(event) =>
+                          setOrgaoSugerido(event.target.value)
+                        }
+                        placeholder="Ex: Secretaria Municipal de Obras"
                         className="w-full rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm text-black outline-none transition focus:border-[#425C59]"
                       />
                     </div>
 
                     <div>
                       <label className="mb-1 block text-sm font-semibold text-black">
-                        Bairro ou região
+                        Observações adicionais
                       </label>
 
-                      <input
-                        type="text"
-                        value={bairro}
-                        onChange={(event) => setBairro(event.target.value)}
-                        placeholder="Ex: Centro"
-                        className="w-full rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm text-black outline-none transition focus:border-[#425C59]"
+                      <textarea
+                        value={observacoes}
+                        onChange={(event) => setObservacoes(event.target.value)}
+                        placeholder="Adicione qualquer informação complementar."
+                        rows={3}
+                        className="w-full resize-none rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm text-black outline-none transition focus:border-[#425C59]"
                       />
                     </div>
                   </div>
+                </section>
+              )}
+              {etapa === 5 && (
+                <section className="rounded-3xl bg-[#E3F1F1] p-5">
+                  <h3 className="text-lg font-bold text-black">
+                    Revisão Final
+                  </h3>
 
-                  <div>
-                    <label className="mb-1 block text-sm font-semibold text-black">
-                      Categoria
-                    </label>
-
-                    <select
-                      value={categoria}
-                      onChange={(event) => setCategoria(event.target.value)}
-                      className="w-full rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm text-black outline-none transition focus:border-[#425C59]"
-                    >
-                      <option value="">Selecione uma categoria</option>
-
-                      {categorias.map((item) => (
-                        <option key={item} value={item}>
-                          {item}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-              </section>
-
-              <section className="rounded-3xl bg-[#E3F1F1] p-5">
-                <h3 className="text-lg font-bold text-black">
-                  2. Problema e impacto
-                </h3>
-
-                <div className="mt-4 space-y-4">
-                  <div>
-                    <label className="mb-1 block text-sm font-semibold text-black">
-                      Descrição do problema
-                    </label>
-
-                    <textarea
-                      value={descricao}
-                      onChange={(event) => setDescricao(event.target.value)}
-                      placeholder="Descreva o problema que essa obra resolveria."
-                      rows={5}
-                      className="w-full resize-none rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm text-black outline-none transition focus:border-[#425C59]"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="mb-1 block text-sm font-semibold text-black">
-                      Justificativa ou impacto esperado
-                    </label>
-
-                    <textarea
-                      value={justificativa}
-                      onChange={(event) => setJustificativa(event.target.value)}
-                      placeholder="Explique por que essa obra é importante para a população."
-                      rows={4}
-                      className="w-full resize-none rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm text-black outline-none transition focus:border-[#425C59]"
-                    />
-                  </div>
-
-                  <div className="rounded-2xl bg-white p-4 text-sm leading-6 text-black/70 ring-1 ring-black/5">
-                    <p className="font-semibold text-black">
-                      Estimativa automática de prioridade
+                  <div className="mt-6 space-y-3">
+                    <p>
+                      <strong>Título:</strong> {titulo}
+                    </p>
+                    <p>
+                      <strong>Local:</strong> {local}
+                    </p>
+                    <p>
+                      <strong>Bairro:</strong> {bairro}
+                    </p>
+                    <p>
+                      <strong>Categoria:</strong> {categoria}
                     </p>
 
-                    <p className="mt-2">
-                      Você não precisa informar quantidade de pessoas
-                      beneficiadas, urgência ou impacto social. O sistema fará
-                      uma estimativa inicial automaticamente com base na
-                      categoria, localização, descrição e justificativa
-                      enviadas.
-                    </p>
-                  </div>
-                </div>
-              </section>
-
-              <section className="rounded-3xl bg-[#E3F1F1] p-5">
-                <h3 className="text-lg font-bold text-black">
-                  3. Imagens e vídeos
-                </h3>
-
-                <p className="mt-2 text-sm text-black/70">
-                  Envie fotos ou vídeos que ajudem a mostrar o problema. A
-                  imagem principal será usada como imagem do card da sugestão.
-                </p>
-
-                <div className="mt-4 space-y-4">
-                  <div>
-                    <label className="mb-1 block text-sm font-semibold text-black">
-                      Imagem principal
-                    </label>
-
-                    <input
-                      type="file"
-                      accept="image/jpeg,image/png,image/webp"
-                      onChange={(event) =>
-                        setArquivoImagemPrincipal(
-                          event.target.files?.[0] || null,
-                        )
-                      }
-                      className="w-full rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm text-black outline-none transition file:mr-4 file:rounded-xl file:border-0 file:bg-[#425C59] file:px-4 file:py-2 file:text-sm file:font-bold file:text-white hover:file:bg-[#334846]"
-                    />
-
-                    <p className="mt-1 text-xs text-black/60">
-                      Formatos aceitos: JPG, PNG ou WEBP. Tamanho máximo
-                      recomendado: 5 MB.
+                    <p>
+                      <strong>Descrição:</strong>
+                      <br />
+                      {descricao}
                     </p>
 
-                    {arquivoImagemPrincipal && (
-                      <p className="mt-2 text-xs font-semibold text-[#425C59]">
-                        Imagem selecionada: {arquivoImagemPrincipal.name}
-                      </p>
-                    )}
-                  </div>
-
-                  <div>
-                    <label className="mb-1 block text-sm font-semibold text-black">
-                      Imagens extras
-                    </label>
-
-                    <input
-                      type="file"
-                      accept="image/jpeg,image/png,image/webp"
-                      multiple
-                      onChange={(event) =>
-                        setArquivosImagensExtras(
-                          event.target.files
-                            ? Array.from(event.target.files)
-                            : [],
-                        )
-                      }
-                      className="w-full rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm text-black outline-none transition file:mr-4 file:rounded-xl file:border-0 file:bg-[#425C59] file:px-4 file:py-2 file:text-sm file:font-bold file:text-white hover:file:bg-[#334846]"
-                    />
-
-                    <p className="mt-1 text-xs text-black/60">
-                      Você pode enviar mais de uma imagem complementar.
+                    <p>
+                      <strong>Justificativa:</strong>
+                      <br />
+                      {justificativa}
                     </p>
 
-                    {arquivosImagensExtras.length > 0 && (
-                      <p className="mt-2 text-xs font-semibold text-[#425C59]">
-                        {arquivosImagensExtras.length} imagem
-                        {arquivosImagensExtras.length === 1 ? "" : "s"}{" "}
-                        selecionada
-                        {arquivosImagensExtras.length === 1 ? "" : "s"}.
-                      </p>
-                    )}
-                  </div>
-
-                  <div>
-                    <label className="mb-1 block text-sm font-semibold text-black">
-                      Vídeo
-                    </label>
-
-                    <input
-                      type="file"
-                      accept="video/mp4,video/webm,video/quicktime"
-                      onChange={(event) =>
-                        setArquivoVideo(event.target.files?.[0] || null)
-                      }
-                      className="w-full rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm text-black outline-none transition file:mr-4 file:rounded-xl file:border-0 file:bg-[#425C59] file:px-4 file:py-2 file:text-sm file:font-bold file:text-white hover:file:bg-[#334846]"
-                    />
-
-                    <p className="mt-1 text-xs text-black/60">
-                      Formatos aceitos: MP4, WEBM ou MOV. Tamanho máximo
-                      recomendado: 50 MB.
+                    <p>
+                      <strong>Imagem Principal:</strong>{" "}
+                      {arquivoImagemPrincipal?.name || "Não enviada"}
                     </p>
 
-                    {arquivoVideo && (
-                      <p className="mt-2 text-xs font-semibold text-[#425C59]">
-                        Vídeo selecionado: {arquivoVideo.name}
-                      </p>
-                    )}
+                    <p>
+                      <strong>Imagens Extras:</strong>{" "}
+                      {arquivosImagensExtras.length}
+                    </p>
+
+                    <p>
+                      <strong>Vídeo:</strong>{" "}
+                      {arquivoVideo?.name || "Não enviado"}
+                    </p>
+
+                    <p>
+                      <strong>Etapas Sugeridas:</strong>
+                      <br />
+                      {etapasSugeridas || "-"}
+                    </p>
+
+                    <p>
+                      <strong>Transparência:</strong>
+                      <br />
+                      {transparenciaInfo || "-"}
+                    </p>
+
+                    <p>
+                      <strong>Órgão:</strong>
+                      <br />
+                      {orgaoSugerido || "-"}
+                    </p>
+
+                    <p>
+                      <strong>Observações:</strong>
+                      <br />
+                      {observacoes || "-"}
+                    </p>
                   </div>
-                </div>
-              </section>
 
-              <section className="rounded-3xl bg-[#E3F1F1] p-5">
-                <h3 className="text-lg font-bold text-black">
-                  4. Informações opcionais
-                </h3>
-
-                <p className="mt-2 text-sm text-black/70">
-                  Esses campos ajudam se você souber alguma informação extra,
-                  mas não são obrigatórios.
-                </p>
-
-                <div className="mt-4 space-y-4">
-                  <div>
-                    <label className="mb-1 block text-sm font-semibold text-black">
-                      Etapas sugeridas
+                  <div className="mt-6">
+                    <label className="flex items-center gap-2">
+                      <input
+                        type="checkbox"
+                        checked={confirmado}
+                        onChange={(e) => setConfirmado(e.target.checked)}
+                      />
+                      Confirmo que revisei todas as informações.
                     </label>
-
-                    <textarea
-                      value={etapasSugeridas}
-                      onChange={(event) =>
-                        setEtapasSugeridas(event.target.value)
-                      }
-                      placeholder="Ex: levantamento, projeto, licitação, execução..."
-                      rows={3}
-                      className="w-full resize-none rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm text-black outline-none transition focus:border-[#425C59]"
-                    />
                   </div>
-
-                  <div>
-                    <label className="mb-1 block text-sm font-semibold text-black">
-                      Transparência ou informação conhecida
-                    </label>
-
-                    <textarea
-                      value={transparenciaInfo}
-                      onChange={(event) =>
-                        setTransparenciaInfo(event.target.value)
-                      }
-                      placeholder="Ex: promessa pública, informação de orçamento, edital conhecido..."
-                      rows={3}
-                      className="w-full resize-none rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm text-black outline-none transition focus:border-[#425C59]"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="mb-1 block text-sm font-semibold text-black">
-                      Órgão sugerido
-                    </label>
-
-                    <input
-                      type="text"
-                      value={orgaoSugerido}
-                      onChange={(event) => setOrgaoSugerido(event.target.value)}
-                      placeholder="Ex: Secretaria Municipal de Obras"
-                      className="w-full rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm text-black outline-none transition focus:border-[#425C59]"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="mb-1 block text-sm font-semibold text-black">
-                      Observações adicionais
-                    </label>
-
-                    <textarea
-                      value={observacoes}
-                      onChange={(event) => setObservacoes(event.target.value)}
-                      placeholder="Adicione qualquer informação complementar."
-                      rows={3}
-                      className="w-full resize-none rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm text-black outline-none transition focus:border-[#425C59]"
-                    />
-                  </div>
-                </div>
-              </section>
+                </section>
+              )}
 
               {erro && (
                 <div className="rounded-2xl bg-red-100 px-4 py-3 text-sm font-medium text-red-700">
@@ -613,18 +730,41 @@ export default function ParticiparPage() {
                 </div>
               )}
 
-              <button
-                type="submit"
-                disabled={carregando}
-                className="w-full rounded-2xl bg-[#425C59] px-4 py-3 text-sm font-bold text-white shadow-lg transition hover:-translate-y-1 hover:bg-[#334846] disabled:cursor-not-allowed disabled:opacity-70"
-              >
-                {carregando
-                  ? enviandoArquivos
-                    ? "Enviando arquivos..."
-                    : "Enviando sugestão..."
-                  : "Enviar sugestão de obra"}
-              </button>
-            </div>
+              <div className="flex justify-between">
+  {etapa > 1 && (
+    <button
+      type="button"
+      onClick={() => setEtapa(etapa - 1)}
+      className="rounded-2xl bg-gray-400 px-6 py-3 text-white"
+    >
+      Voltar
+    </button>
+  )}
+
+  {etapa < 5 ? (
+    <button
+      type="button"
+      onClick={() => setEtapa(etapa + 1)}
+      className="ml-auto rounded-2xl bg-[#425C59] px-6 py-3 text-white"
+    >
+      Próximo
+    </button>
+  ) : (
+    <button
+      type="submit"
+      disabled={!confirmado || carregando}
+      className="ml-auto rounded-2xl bg-[#425C59] px-6 py-3 text-white disabled:opacity-50"
+    >
+      {carregando
+        ? enviandoArquivos
+          ? "Enviando arquivos..."
+          : "Enviando sugestão..."
+        : "Enviar sugestão de obra"}
+    </button>
+  )}
+</div>
+                
+              
           </form>
         </section>
       </main>
