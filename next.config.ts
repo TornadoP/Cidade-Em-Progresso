@@ -12,6 +12,14 @@ const nextConfig: NextConfig = {
         hostname: "fktmtrlizimldozsggdz.supabase.co",
         pathname: "/storage/v1/object/public/**",
       },
+      {
+        protocol: "https",
+        hostname: "www.pedreiras.ma.gov.br",
+      },
+      {
+        protocol: "https",
+        hostname: "pedreiras.ma.gov.br",
+      },
     ],
   },
 };

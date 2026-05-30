@@ -61,6 +61,7 @@ type ObraNormalizada = {
   empresa: string;
   ultima_atualizacao: string;
   origem: "Oficial";
+  imagens_prefeitura?: string[];
 };
 
 function limparTexto(texto: string) {
@@ -86,6 +87,49 @@ function normalizarTexto(texto?: string | null) {
 function montarUrlAbsoluta(url: string) {
   if (url.startsWith("http")) return url;
   return new URL(url, URL_PREFEITURA).toString();
+}
+
+function extrairImagensDaPrefeitura(html: string) {
+  const imagens: string[] = [];
+  const regex = /<img[^>]+src=["']([^"']+)["'][^>]*>/gi;
+
+  let match;
+
+  while ((match = regex.exec(html)) !== null) {
+    const src = match[1];
+
+    if (!src) continue;
+
+    const url = montarUrlAbsoluta(src);
+    const urlLower = url.toLowerCase();
+
+    const pareceImagemInutil =
+      urlLower.includes("logo") ||
+      urlLower.includes("brasao") ||
+      urlLower.includes("favicon") ||
+      urlLower.includes("icon") ||
+      urlLower.includes("loading") ||
+      urlLower.includes("blank") ||
+      urlLower.includes("placeholder") ||
+      urlLower.includes("no-image") ||
+      urlLower.includes("sem-foto");
+
+    const pareceArquivoDeImagem =
+      urlLower.includes(".jpg") ||
+      urlLower.includes(".jpeg") ||
+      urlLower.includes(".png") ||
+      urlLower.includes(".webp");
+
+    if (!pareceImagemInutil && pareceArquivoDeImagem) {
+      imagens.push(url);
+    }
+  }
+
+  return Array.from(new Set(imagens));
+}
+
+function escolherImagemPrincipal(imagensPrefeitura: string[], tipo: string) {
+  return imagensPrefeitura[0] || escolherImagemPorTipo(tipo);
 }
 
 function pegarPrimeiroMatch(texto: string, regex: RegExp) {
@@ -612,6 +656,7 @@ async function buscarObrasPrefeitura() {
 
       const htmlDetalhe = await respostaDetalhe.text();
       const textoDetalhe = limparTexto(htmlDetalhe);
+      const imagensPrefeitura = extrairImagensDaPrefeitura(htmlDetalhe);
 
       const investimento = pegarValorTotal(textoDetalhe);
       const totalMedicoes = pegarTotalMedicoes(textoDetalhe);
@@ -637,7 +682,7 @@ async function buscarObrasPrefeitura() {
         progresso,
         status,
         tipo,
-        imagem: escolherImagemPorTipo(tipo),
+        imagem: escolherImagemPrincipal(imagensPrefeitura, tipo),
         descricao: montarDescricaoParaCard({
           titulo: tituloLimpo,
           tipo,
@@ -654,6 +699,7 @@ async function buscarObrasPrefeitura() {
         empresa,
         ultima_atualizacao: ultimaAtualizacao,
         origem: "Oficial",
+        imagens_prefeitura: imagensPrefeitura,
       });
     } catch (error) {
       console.error("Erro ao ler detalhe da obra:", link.url, error);
@@ -852,9 +898,17 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    const obrasParaUpsert = obrasParaSalvar.map((obra) => {
+      const obraSemImagens = { ...obra };
+
+      delete obraSemImagens.imagens_prefeitura;
+
+      return obraSemImagens;
+    });
+
     const { data, error } = await supabaseAdmin
       .from("obras")
-      .upsert(obrasParaSalvar, {
+      .upsert(obrasParaUpsert, {
         onConflict: "fonte_id",
       })
       .select("id, fonte_id, titulo, origem, progresso, status");
@@ -873,6 +927,36 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    const imagensParaInserir =
+      data?.flatMap((obraSalva) => {
+        const obraOriginal = obrasParaSalvar.find(
+          (obra) => obra.fonte_id === obraSalva.fonte_id,
+        );
+
+        const imagens = obraOriginal?.imagens_prefeitura || [];
+
+        return imagens.slice(0, 6).map((url, index) => ({
+          obra_id: obraSalva.id,
+          url,
+          legenda: `Imagem oficial da obra ${obraSalva.titulo}`,
+          ordem: index + 1,
+        }));
+      }) || [];
+
+    const idsComImagensOficiais = Array.from(
+      new Set(imagensParaInserir.map((imagem) => imagem.obra_id)),
+    );
+
+    if (imagensParaInserir.length > 0 && idsComImagensOficiais.length > 0) {
+      await supabaseAdmin
+        .from("obras_imagens")
+        .delete()
+        .in("obra_id", idsComImagensOficiais)
+        .ilike("url", "%pedreiras.ma.gov.br%");
+
+      await supabaseAdmin.from("obras_imagens").insert(imagensParaInserir);
+    }
+
     return NextResponse.json({
       mensagem: "Obras oficiais importadas/atualizadas com sucesso.",
       fontes: {
@@ -880,6 +964,7 @@ export async function POST(request: NextRequest) {
         obrasgov: obrasGov.length,
       },
       salvas: data?.length || 0,
+      imagens_oficiais: imagensParaInserir.length,
       exemplo: obrasParaSalvar[0],
       obras: data || [],
     });
