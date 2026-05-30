@@ -168,9 +168,12 @@ function classificarTipo(tipoSite: string, titulo: string) {
 
   if (
     texto.includes("educação") ||
+    texto.includes("educacao") ||
     texto.includes("ensino") ||
     texto.includes("escola") ||
+    texto.includes("creche") ||
     texto.includes("infância") ||
+    texto.includes("infancia") ||
     texto.includes("secretaria municipal de educação")
   ) {
     return "Educação";
@@ -178,43 +181,69 @@ function classificarTipo(tipoSite: string, titulo: string) {
 
   if (
     texto.includes("saúde") ||
+    texto.includes("saude") ||
     texto.includes("samu") ||
     texto.includes("ubs") ||
-    texto.includes("unidade básica")
+    texto.includes("unidade básica") ||
+    texto.includes("unidade basica") ||
+    texto.includes("posto de saúde") ||
+    texto.includes("posto de saude")
   ) {
     return "Saúde";
   }
 
   if (
-    texto.includes("drenagem") ||
     texto.includes("pavimentação") ||
+    texto.includes("pavimentacao") ||
+    texto.includes("asfáltica") ||
+    texto.includes("asfaltica") ||
+    texto.includes("asfalto") ||
+    texto.includes("sinalização") ||
+    texto.includes("sinalizacao") ||
+    texto.includes("drenagem") ||
+    texto.includes("galeria") ||
+    texto.includes("galerias") ||
     texto.includes("ponte") ||
-    texto.includes("estrada")
+    texto.includes("estrada") ||
+    texto.includes("vicinal") ||
+    texto.includes("zona rural") ||
+    texto.includes("saneamento") ||
+    texto.includes("esgoto")
   ) {
     return "Infraestrutura";
   }
 
   if (
     texto.includes("praça") ||
+    texto.includes("praca") ||
+    texto.includes("lazer") ||
+    texto.includes("parque") ||
+    texto.includes("quadra") ||
     texto.includes("ginásio") ||
-    texto.includes("mercado")
+    texto.includes("ginasio") ||
+    texto.includes("poliesportivo")
   ) {
-    return "Espaço público";
+    return "Lazer";
   }
 
   if (
     texto.includes("palácio") ||
+    texto.includes("palacio") ||
     texto.includes("restauração") ||
-    texto.includes("patrimônio")
+    texto.includes("restauracao") ||
+    texto.includes("patrimônio") ||
+    texto.includes("patrimonio") ||
+    texto.includes("mercado") ||
+    texto.includes("mercados municipais") ||
+    texto.includes("secretaria") ||
+    texto.includes("prédio") ||
+    texto.includes("predio") ||
+    texto.includes("sede")
   ) {
     return "Patrimônio público";
   }
 
-  if (tipoSite !== "Não informado") {
-    return tipoSite;
-  }
-
-  return "Obra pública";
+  return "Infraestrutura";
 }
 
 function limparTituloParaCard(titulo: string, tipo: string) {

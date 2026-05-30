@@ -27,6 +27,23 @@ type Obra = {
   origem: string | null;
 };
 
+const filtrosTipo = [
+  "Educação",
+  "Saúde",
+  "Infraestrutura",
+  "Lazer",
+  "Patrimônio público",
+];
+
+const filtrosStatus = [
+  "Em planejamento",
+  "Em andamento",
+  "Concluída",
+  "Cancelada",
+];
+
+const filtrosOrigem = ["Oficial", "Sugestão popular"];
+
 export default function ObrasClient({
   obras,
   pesquisaInicial,
@@ -37,7 +54,7 @@ export default function ObrasClient({
   const [pesquisa, setPesquisa] = useState(pesquisaInicial);
   const [statusSelecionados, setStatusSelecionados] = useState<string[]>([]);
   const [tiposSelecionados, setTiposSelecionados] = useState<string[]>([]);
-  const [origemSelecionada, setOrigemSelecionada] = useState("");
+  const [origensSelecionadas, setOrigensSelecionadas] = useState<string[]>([]);
 
   const obrasFiltradas = obras.filter((obra) => {
     const texto = pesquisa.toLowerCase();
@@ -54,7 +71,8 @@ export default function ObrasClient({
       statusSelecionados.includes(obra.status || "");
 
     const correspondeOrigem =
-      !origemSelecionada || obra.origem === origemSelecionada;
+      origensSelecionadas.length === 0 ||
+      origensSelecionadas.includes(obra.origem || "");
 
     const correspondeTipo =
       tiposSelecionados.length === 0 ||
@@ -107,15 +125,13 @@ export default function ObrasClient({
       atualizarLista([...lista, valor]);
     }
   }
-  function alternarFiltroStatus(valor: string) {
-    setStatusSelecionados((statusAtual) => {
-      if (statusAtual.includes(valor)) {
-        return [];
-      }
-
-      return [valor];
-    });
+  function limparFiltros() {
+    setPesquisa("");
+    setStatusSelecionados([]);
+    setTiposSelecionados([]);
+    setOrigensSelecionadas([]);
   }
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-[#E3F1F1] to-[#CBDfde] p-4 font-sans sm:p-6">
       <main className="w-full max-w-6xl overflow-hidden rounded-3xl bg-[#C9D9DB] p-6 shadow-[0_25px_80px_rgba(0,0,0,0.45)]">
@@ -164,7 +180,17 @@ export default function ObrasClient({
         <div className="grid gap-6 lg:grid-cols-[240px_1fr]">
           {/* Filtros */}
           <aside className="rounded-3xl bg-[#425C59] p-5 text-white shadow-xl">
-            <h2 className="mb-5 text-xl font-semibold">Filtros</h2>
+            <div className="mb-5 flex items-center justify-between gap-3">
+              <h2 className="text-xl font-semibold">Filtros</h2>
+
+              <button
+                type="button"
+                onClick={limparFiltros}
+                className="rounded-lg bg-white/10 px-3 py-2 text-xs font-bold text-white transition hover:bg-white/20"
+              >
+                Limpar
+              </button>
+            </div>
 
             <div className="space-y-5">
               <div>
@@ -172,35 +198,26 @@ export default function ObrasClient({
                   Status
                 </h3>
 
-                <label className="mb-2 flex items-center gap-2 text-sm">
-                  <input
-                    type="checkbox"
-                    className="h-4 w-4 cursor-pointer accent-[#FFC222]"
-                    checked={statusSelecionados.includes("Em andamento")}
-                    onChange={() => alternarFiltroStatus("Em andamento")}
-                  />
-                  Em andamento
-                </label>
-
-                <label className="mb-2 flex items-center gap-2 text-sm">
-                  <input
-                    type="checkbox"
-                    className="h-4 w-4 cursor-pointer accent-[#FFC222]"
-                    checked={statusSelecionados.includes("Em planejamento")}
-                    onChange={() => alternarFiltroStatus("Em planejamento")}
-                  />
-                  Em planejamento
-                </label>
-
-                <label className="mb-2 flex items-center gap-2 text-sm">
-                  <input
-                    type="checkbox"
-                    className="h-4 w-4 cursor-pointer accent-[#FFC222]"
-                    checked={statusSelecionados.includes("Concluída")}
-                    onChange={() => alternarFiltroStatus("Concluída")}
-                  />
-                  Concluída
-                </label>
+                {filtrosStatus.map((status) => (
+                  <label
+                    key={status}
+                    className="mb-2 flex items-center gap-2 text-sm"
+                  >
+                    <input
+                      type="checkbox"
+                      className="h-4 w-4 cursor-pointer accent-[#FFC222]"
+                      checked={statusSelecionados.includes(status)}
+                      onChange={() =>
+                        alternarFiltro(
+                          status,
+                          statusSelecionados,
+                          setStatusSelecionados,
+                        )
+                      }
+                    />
+                    {status}
+                  </label>
+                ))}
               </div>
 
               <div className="mt-6">
@@ -208,41 +225,26 @@ export default function ObrasClient({
                   Origem
                 </h3>
 
-                <div className="space-y-2">
-                  <button
-                    type="button"
-                    onClick={() =>
-                      setOrigemSelecionada((valorAtual) =>
-                        valorAtual === "Oficial" ? "" : "Oficial",
-                      )
-                    }
-                    className={`w-full rounded-xl px-4 py-3 text-left text-sm font-semibold transition ${
-                      origemSelecionada === "Oficial"
-                        ? "bg-[#FFC222] text-black"
-                        : "bg-white/10 text-white hover:bg-white/20"
-                    }`}
+                {filtrosOrigem.map((origem) => (
+                  <label
+                    key={origem}
+                    className="mb-2 flex items-center gap-2 text-sm"
                   >
-                    Obras oficiais
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() =>
-                      setOrigemSelecionada((valorAtual) =>
-                        valorAtual === "Sugestão popular"
-                          ? ""
-                          : "Sugestão popular",
-                      )
-                    }
-                    className={`w-full rounded-xl px-4 py-3 text-left text-sm font-semibold transition ${
-                      origemSelecionada === "Sugestão popular"
-                        ? "bg-[#FFC222] text-black"
-                        : "bg-white/10 text-white hover:bg-white/20"
-                    }`}
-                  >
-                    Sugestões populares
-                  </button>
-                </div>
+                    <input
+                      type="checkbox"
+                      className="h-4 w-4 cursor-pointer accent-[#FFC222]"
+                      checked={origensSelecionadas.includes(origem)}
+                      onChange={() =>
+                        alternarFiltro(
+                          origem,
+                          origensSelecionadas,
+                          setOrigensSelecionadas,
+                        )
+                      }
+                    />
+                    {origem}
+                  </label>
+                ))}
               </div>
 
               <div>
@@ -250,69 +252,26 @@ export default function ObrasClient({
                   Tipo de obra
                 </h3>
 
-                <label className="mb-2 flex items-center gap-2 text-sm">
-                  <input
-                    type="checkbox"
-                    className="h-4 w-4 cursor-pointer accent-[#FFC222]"
-                    checked={tiposSelecionados.includes("Pavimentação")}
-                    onChange={() =>
-                      alternarFiltro(
-                        "Pavimentação",
-                        tiposSelecionados,
-                        setTiposSelecionados,
-                      )
-                    }
-                  />
-                  Pavimentação
-                </label>
-
-                <label className="mb-2 flex items-center gap-2 text-sm">
-                  <input
-                    type="checkbox"
-                    className="h-4 w-4 cursor-pointer accent-[#FFC222]"
-                    checked={tiposSelecionados.includes("Saúde")}
-                    onChange={() =>
-                      alternarFiltro(
-                        "Saúde",
-                        tiposSelecionados,
-                        setTiposSelecionados,
-                      )
-                    }
-                  />
-                  Saúde
-                </label>
-
-                <label className="mb-2 flex items-center gap-2 text-sm">
-                  <input
-                    type="checkbox"
-                    className="h-4 w-4 cursor-pointer accent-[#FFC222]"
-                    checked={tiposSelecionados.includes("Educação")}
-                    onChange={() =>
-                      alternarFiltro(
-                        "Educação",
-                        tiposSelecionados,
-                        setTiposSelecionados,
-                      )
-                    }
-                  />
-                  Educação
-                </label>
-
-                <label className="mb-2 flex items-center gap-2 text-sm">
-                  <input
-                    type="checkbox"
-                    className="h-4 w-4 cursor-pointer accent-[#FFC222]"
-                    checked={tiposSelecionados.includes("Lazer")}
-                    onChange={() =>
-                      alternarFiltro(
-                        "Lazer",
-                        tiposSelecionados,
-                        setTiposSelecionados,
-                      )
-                    }
-                  />
-                  Lazer
-                </label>
+                {filtrosTipo.map((tipo) => (
+                  <label
+                    key={tipo}
+                    className="mb-2 flex items-center gap-2 text-sm"
+                  >
+                    <input
+                      type="checkbox"
+                      className="h-4 w-4 cursor-pointer accent-[#FFC222]"
+                      checked={tiposSelecionados.includes(tipo)}
+                      onChange={() =>
+                        alternarFiltro(
+                          tipo,
+                          tiposSelecionados,
+                          setTiposSelecionados,
+                        )
+                      }
+                    />
+                    {tipo}
+                  </label>
+                ))}
               </div>
             </div>
           </aside>
