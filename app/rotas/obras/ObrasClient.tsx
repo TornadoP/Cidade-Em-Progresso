@@ -323,9 +323,9 @@ export default function ObrasClient({
                   <Link
                     key={obra.id}
                     href={`/rotas/obras/${obra.fonte_id || obra.id}`}
-                    className="flex h-full flex-col overflow-hidden rounded-3xl bg-white shadow-[0_18px_45px_rgba(0,0,0,0.28)] ring-1 ring-black/5 transition-all duration-300 hover:-translate-y-2 hover:scale-[1.01] hover:shadow-[0_30px_70px_rgba(0,0,0,0.42)]"
+                    className="flex h-full min-h-[520px] flex-col overflow-hidden rounded-3xl bg-white shadow-[0_18px_45px_rgba(0,0,0,0.28)] ring-1 ring-black/5 transition-all duration-300 hover:-translate-y-2 hover:scale-[1.01] hover:shadow-[0_30px_70px_rgba(0,0,0,0.42)]"
                   >
-                    <div className="relative h-44 w-full bg-[#425C59]/20">
+                    <div className="relative h-52 w-full shrink-0 bg-[#425C59]/20">
                       <Image
                         src={obra.imagem || "/obra-principal.png"}
                         alt={obra.titulo}
@@ -341,55 +341,64 @@ export default function ObrasClient({
                           Sugestão popular
                         </span>
                       )}
-                      <h3 className="min-h-[56px] text-lg font-bold text-black">
-                        {obra.titulo}
-                      </h3>
+                      <div className="min-h-[112px]">
+                        <h3 className="h-[56px] overflow-hidden text-xl font-bold leading-7 text-black">
+                          {obra.titulo}
+                        </h3>
 
-                      <p className="mt-1 text-sm font-medium text-[#425C59]">
-                        {obra.status || "Em planejamento"}
-                      </p>
-                      <p className="mt-1 text-sm font-semibold text-black/70">
-                        🗳️ {obra.total_votos || 0} voto
-                        {Number(obra.total_votos || 0) === 1 ? "" : "s"}
-                      </p>
+                        <p className="mt-2 h-[40px] overflow-hidden text-sm leading-5 text-black/60">
+                          {obra.local || "Local não informado"}
+                        </p>
+                      </div>
 
                       <div className="mt-3 grid gap-2 text-sm text-black/70">
                         <p>
                           <span className="font-semibold text-black">
-                            📍 Localização:
+                            Status:
                           </span>{" "}
-                          {obra.local || "Local não informado"}
+                          {obra.status || "Em planejamento"}
                         </p>
 
                         <p>
                           <span className="font-semibold text-black">
-                            🏦 Investimento:
+                            Investimento:
                           </span>{" "}
                           {obra.investimento || "Não informado"}
                         </p>
 
                         <p>
                           <span className="font-semibold text-black">
-                            🚧 Início:
+                            Início:
                           </span>{" "}
                           {obra.inicio || "Não informado"}
                         </p>
 
                         <p>
                           <span className="font-semibold text-black">
-                            📅 Prazo:
+                            Prazo:
                           </span>{" "}
                           {obra.prazo || "Não informado"}
                         </p>
+
+                        <p>
+                          <span className="font-semibold text-black">
+                            Votos:
+                          </span>{" "}
+                          {obra.total_votos || 0}
+                        </p>
                       </div>
 
-                      <div className="mt-4 mb-5">
-                        <div className="mb-1 flex items-center justify-between text-xs text-black/70">
-                          <span>Progresso</span>
-                          <span>{progressoObra}%</span>
+                      <div className="mt-auto pt-5">
+                        <div className="mb-2 flex items-center justify-between text-sm">
+                          <span className="font-semibold text-black/70">
+                            Progresso
+                          </span>
+                          <span className="font-bold text-[#425C59]">
+                            {progressoObra}%
+                          </span>
                         </div>
 
-                        <div className="h-3 w-full overflow-hidden rounded-full bg-[#E5E7EB]">
+                        <div className="h-3 w-full overflow-hidden rounded-full bg-zinc-200">
                           <div
                             className={`h-full rounded-full transition-all duration-500 ${corProgresso(
                               progressoObra,
@@ -397,11 +406,11 @@ export default function ObrasClient({
                             style={{ width: `${progressoObra}%` }}
                           ></div>
                         </div>
-                      </div>
 
-                      <span className="mt-auto block w-full rounded-xl bg-[#425C59] px-4 py-3 text-center text-sm font-semibold text-white transition hover:bg-[#334846]">
-                        Ver detalhes
-                      </span>
+                        <span className="mt-5 block w-full rounded-xl bg-[#FFC222] px-4 py-3 text-center text-sm font-bold text-black transition hover:bg-[#eab308]">
+                          Ver detalhes
+                        </span>
+                      </div>
                     </div>
                   </Link>
                 );

@@ -330,14 +330,50 @@ function limparTituloParaCard(titulo: string, tipo: string) {
     return "Manutenção predial em prédios públicos";
   }
 
-  if (texto.includes("UNIDADE DE ENSINO NAÍSE TRINDADE")) {
-    return "Reforma e ampliação da Unidade de Ensino Naíse Trindade dos Santos";
+  if (
+    texto.includes("MANUTENÇÃO DE TELHADOS") ||
+    texto.includes("TELHADOS CERÂMICO") ||
+    texto.includes("TELHADOS CERAMICO")
+  ) {
+    return "Manutenção de telhados nas escolas municipais";
   }
 
   if (
-    texto.includes("UNIDADE BASICA DE SAUDE") ||
+    texto.includes("MANUTENÇÃO E ADEQUAÇÃO EM INSTALAÇÕES HIDRO") ||
+    texto.includes("INSTALAÇÕES HIDRO SANITÁRIAS") ||
+    texto.includes("INSTALACOES HIDRO SANITARIAS")
+  ) {
+    return "Adequação hidrossanitária em escolas municipais";
+  }
+
+  if (
+    texto.includes("MANUTENÇÃO E SUBSTITUIÇÃO DE FORRO") ||
+    texto.includes("SUBSTITUIÇÃO DE FORRO") ||
+    texto.includes("SUBSTITUICAO DE FORRO")
+  ) {
+    return "Manutenção e substituição de forro em escolas municipais";
+  }
+
+  if (
+    texto.includes("JARDIM DE INFÂNCIA FÁTIMA ROMA") ||
+    texto.includes("JARDIM DE INFANCIA FATIMA ROMA")
+  ) {
+    return "Reforma do Jardim de Infância Fátima Roma";
+  }
+
+  if (
+    texto.includes("UNIDADE DE ENSINO NAÍSE TRINDADE") ||
+    texto.includes("UNIDADE DE ENSINO NAISE TRINDADE")
+  ) {
+    return "Reforma da Unidade de Ensino Naíse Trindade";
+  }
+
+  if (
     texto.includes("UNIDADE BÁSICA DE SAÚDE") ||
-    texto.includes("UBS")
+    texto.includes("UNIDADE BASICA DE SAUDE") ||
+    texto.includes(" UBS ") ||
+    texto.includes("POSTO DE SAÚDE") ||
+    texto.includes("POSTO DE SAUDE")
   ) {
     return "Construção de Unidade Básica de Saúde";
   }
@@ -405,10 +441,18 @@ function limparTituloParaCard(titulo: string, tipo: string) {
     return "Construção da sede da Secretaria Municipal de Educação";
   }
 
+  const tituloSemMunicipio = semContratos
+    .replace(/\s+do município de pedreiras.*$/i, "")
+    .replace(/\s+no município de pedreiras.*$/i, "")
+    .replace(/\s+do municipio de pedreiras.*$/i, "")
+    .replace(/\s+no municipio de pedreiras.*$/i, "")
+    .replace(/\s+em pedreiras.*$/i, "")
+    .trim();
+
   const tituloFinal =
-    semContratos.length > 90
-      ? `${semContratos.slice(0, 87).trim()}...`
-      : semContratos;
+    tituloSemMunicipio.length > 75
+      ? `${tituloSemMunicipio.slice(0, 72).trim()}...`
+      : tituloSemMunicipio;
 
   return capitalizarTitulo(tituloFinal);
 }
