@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { Suspense, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { supabase } from "@/app/lib/supabaseClient";
 
 function formatarTelefone(valor: string) {
   return valor
@@ -45,39 +46,127 @@ function LoginContent() {
     setErro("");
     setCarregando(true);
 
+    const emailLimpo = email.trim().toLowerCase();
+    const senhaLimpa = senha.trim();
+
+    if (!emailLimpo || !senhaLimpa) {
+      setErro("Informe email e senha.");
+      setCarregando(false);
+      return;
+    }
+
+    if (senhaLimpa.length < 6) {
+      setErro("A senha precisa ter pelo menos 6 caracteres.");
+      setCarregando(false);
+      return;
+    }
+
     try {
-      const resposta = await fetch("/api/usuarios", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          modo: aba,
-          nome,
-          telefone,
-          cpf,
-          email,
-          senha,
-        }),
-      });
+      if (aba === "cadastro") {
+        if (!nome.trim() || !telefone.trim() || !cpf.trim()) {
+          setErro("Preencha nome, telefone e CPF para criar a conta.");
+          setCarregando(false);
+          return;
+        }
 
-      const dados = await resposta.json();
+        const { data: cadastroAuth, error: erroAuth } =
+          await supabase.auth.signUp({
+            email: emailLimpo,
+            password: senhaLimpa,
+          });
 
-      if (!resposta.ok) {
-        setErro(dados.erro || "Não foi possível continuar.");
+        if (erroAuth || !cadastroAuth.user) {
+          setErro(
+            erroAuth?.message ||
+              "Não foi possível criar a conta no Supabase Auth.",
+          );
+          setCarregando(false);
+          return;
+        }
+
+        const authUserId = cadastroAuth.user.id;
+
+        const respostaPerfil = await fetch("/api/usuarios/perfil-auth", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            auth_user_id: authUserId,
+            nome,
+            telefone,
+            cpf,
+            email: emailLimpo,
+          }),
+        });
+
+        const dadosPerfil = await respostaPerfil.json();
+
+        if (!respostaPerfil.ok) {
+          setErro(
+            dadosPerfil.erro ||
+              "Conta criada, mas não foi possível salvar o perfil.",
+          );
+          setCarregando(false);
+          return;
+        }
+
+        localStorage.setItem("cidade_progresso_usuario_uuid", authUserId);
+        localStorage.setItem(
+          "cidade_progresso_usuario_nome",
+          nome.trim() || "Cidadão",
+        );
+
+        setMensagem(
+          "Conta criada com sucesso. Você já pode usar sua participação no protótipo.",
+        );
+
+        setTimeout(() => {
+          router.push(voltarPara);
+        }, 700);
+
+        return;
+      }
+
+      const { data: loginAuth, error: erroAuth } =
+        await supabase.auth.signInWithPassword({
+          email: emailLimpo,
+          password: senhaLimpa,
+        });
+
+      if (erroAuth || !loginAuth.user) {
+        setErro("Email ou senha inválidos.");
         setCarregando(false);
         return;
       }
 
-      localStorage.setItem("cidade_progresso_usuario_uuid", dados.usuario.id);
-      localStorage.setItem("cidade_progresso_usuario_nome", dados.usuario.nome);
+      const usuarioUuid = loginAuth.user.id;
 
-      setMensagem(dados.mensagem || "Acesso realizado com sucesso.");
+      const { data: perfil, error: erroPerfil } = await supabase
+        .from("usuarios")
+        .select("nome")
+        .eq("id", usuarioUuid)
+        .maybeSingle();
+
+      if (erroPerfil) {
+        setErro("Login feito, mas houve erro ao buscar o perfil.");
+        setCarregando(false);
+        return;
+      }
+
+      localStorage.setItem("cidade_progresso_usuario_uuid", usuarioUuid);
+      localStorage.setItem(
+        "cidade_progresso_usuario_nome",
+        perfil?.nome || "Cidadão",
+      );
+
+      setMensagem("Login realizado com sucesso.");
 
       setTimeout(() => {
         router.push(voltarPara);
       }, 700);
-    } catch {
+    } catch (error) {
+      console.error(error);
       setErro("Erro inesperado ao conectar com o servidor.");
     } finally {
       setCarregando(false);
