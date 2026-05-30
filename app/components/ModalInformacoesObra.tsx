@@ -34,7 +34,7 @@ function extrairLinkFonte(detalhes?: string | null) {
 function extrairTotalMedido(detalhes?: string | null) {
   if (!detalhes) return "Não informado";
 
-  const match = detalhes.match(/Total medido:\s*([^.]*)/i);
+  const match = detalhes.match(/Total medido:\s*(.*?)\.\s*Link:/i);
 
   return match?.[1]?.trim() || "Não informado";
 }
