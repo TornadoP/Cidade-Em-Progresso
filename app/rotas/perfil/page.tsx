@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
+import { supabase } from "@/app/lib/supabaseClient";
 
 type ObraDoVoto = {
   id: string;
@@ -48,8 +49,9 @@ export default function PerfilPage() {
   const [erro, setErro] = useState("");
 
   const [senhaAtual, setSenhaAtual] = useState("");
-  const [novoEmail, setNovoEmail] = useState("");
   const [novaSenha, setNovaSenha] = useState("");
+  const [confirmarNovaSenha, setConfirmarNovaSenha] = useState("");
+  const [mostrarNovaSenha, setMostrarNovaSenha] = useState(false);
   const [mensagemAtualizacao, setMensagemAtualizacao] = useState("");
   const [erroAtualizacao, setErroAtualizacao] = useState("");
   const [atualizando, setAtualizando] = useState(false);
@@ -100,55 +102,78 @@ export default function PerfilPage() {
     return () => clearTimeout(timer);
   }, [carregarPerfil]);
 
-  function sair() {
+  async function sair() {
+    await supabase.auth.signOut();
+
     localStorage.removeItem("cidade_progresso_usuario_uuid");
     localStorage.removeItem("cidade_progresso_usuario_nome");
 
     router.push("/rotas/login");
   }
 
-  async function atualizarConta(event: React.FormEvent<HTMLFormElement>) {
+  async function atualizarSenhaAuth(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     setMensagemAtualizacao("");
     setErroAtualizacao("");
     setAtualizando(true);
 
-    const usuarioUuid = localStorage.getItem("cidade_progresso_usuario_uuid");
-
-    if (!usuarioUuid) {
-      router.push("/rotas/login?voltar=/rotas/perfil");
-      return;
-    }
-
-    const resposta = await fetch("/api/usuarios/atualizar", {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        usuario_uuid: usuarioUuid,
-        senha_atual: senhaAtual,
-        novo_email: novoEmail,
-        nova_senha: novaSenha,
-      }),
-    });
-
-    const dados = await resposta.json();
-
-    if (!resposta.ok) {
-      setErroAtualizacao(dados.erro || "Erro ao atualizar conta.");
+    if (!perfil?.usuario.email) {
+      setErroAtualizacao("Não foi possível identificar o email da conta.");
       setAtualizando(false);
       return;
     }
 
-    setMensagemAtualizacao(dados.mensagem || "Dados atualizados com sucesso.");
-    setSenhaAtual("");
-    setNovoEmail("");
-    setNovaSenha("");
-    setAtualizando(false);
+    if (!senhaAtual.trim()) {
+      setErroAtualizacao("Informe sua senha atual.");
+      setAtualizando(false);
+      return;
+    }
 
-    await carregarPerfil();
+    if (!novaSenha.trim() || !confirmarNovaSenha.trim()) {
+      setErroAtualizacao("Informe a nova senha e a confirmação.");
+      setAtualizando(false);
+      return;
+    }
+
+    if (novaSenha.length < 6) {
+      setErroAtualizacao("A nova senha precisa ter pelo menos 6 caracteres.");
+      setAtualizando(false);
+      return;
+    }
+
+    if (novaSenha !== confirmarNovaSenha) {
+      setErroAtualizacao("A nova senha e a confirmação não conferem.");
+      setAtualizando(false);
+      return;
+    }
+
+    const { error: erroSenhaAtual } = await supabase.auth.signInWithPassword({
+      email: perfil.usuario.email,
+      password: senhaAtual,
+    });
+
+    if (erroSenhaAtual) {
+      setErroAtualizacao("Senha atual incorreta.");
+      setAtualizando(false);
+      return;
+    }
+
+    const { error: erroAtualizarSenha } = await supabase.auth.updateUser({
+      password: novaSenha,
+    });
+
+    if (erroAtualizarSenha) {
+      setErroAtualizacao("Não foi possível atualizar a senha.");
+      setAtualizando(false);
+      return;
+    }
+
+    setMensagemAtualizacao("Senha atualizada com sucesso.");
+    setSenhaAtual("");
+    setNovaSenha("");
+    setConfirmarNovaSenha("");
+    setAtualizando(false);
   }
 
   if (carregando) {
@@ -285,34 +310,21 @@ export default function PerfilPage() {
             <h2 className="text-xl font-bold text-black">Segurança da conta</h2>
 
             <p className="mt-2 text-sm text-black/70">
-              Para alterar email ou senha, informe sua senha atual.
+              Atualize sua senha usando sua senha atual como confirmação de
+              segurança.
             </p>
 
-            <form onSubmit={atualizarConta} className="mt-5 space-y-4">
+            <form onSubmit={atualizarSenhaAuth} className="mt-5 space-y-4">
               <div>
                 <label className="mb-1 block text-sm font-semibold text-black">
                   Senha atual
                 </label>
 
                 <input
-                  type="password"
+                  type={mostrarNovaSenha ? "text" : "password"}
                   value={senhaAtual}
                   onChange={(event) => setSenhaAtual(event.target.value)}
                   placeholder="Digite sua senha atual"
-                  className="w-full rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm text-black outline-none transition focus:border-[#425C59]"
-                />
-              </div>
-
-              <div>
-                <label className="mb-1 block text-sm font-semibold text-black">
-                  Novo email
-                </label>
-
-                <input
-                  type="email"
-                  value={novoEmail}
-                  onChange={(event) => setNovoEmail(event.target.value)}
-                  placeholder="novoemail@exemplo.com"
                   className="w-full rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm text-black outline-none transition focus:border-[#425C59]"
                 />
               </div>
@@ -323,13 +335,37 @@ export default function PerfilPage() {
                 </label>
 
                 <input
-                  type="password"
+                  type={mostrarNovaSenha ? "text" : "password"}
                   value={novaSenha}
                   onChange={(event) => setNovaSenha(event.target.value)}
                   placeholder="Nova senha com pelo menos 6 caracteres"
                   className="w-full rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm text-black outline-none transition focus:border-[#425C59]"
                 />
               </div>
+
+              <div>
+                <label className="mb-1 block text-sm font-semibold text-black">
+                  Confirmar nova senha
+                </label>
+
+                <input
+                  type={mostrarNovaSenha ? "text" : "password"}
+                  value={confirmarNovaSenha}
+                  onChange={(event) =>
+                    setConfirmarNovaSenha(event.target.value)
+                  }
+                  placeholder="Repita a nova senha"
+                  className="w-full rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm text-black outline-none transition focus:border-[#425C59]"
+                />
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setMostrarNovaSenha((valorAtual) => !valorAtual)}
+                className="text-sm font-semibold text-[#425C59] underline"
+              >
+                {mostrarNovaSenha ? "Ocultar senhas" : "Mostrar senhas"}
+              </button>
 
               {erroAtualizacao && (
                 <div className="rounded-2xl bg-red-100 px-4 py-3 text-sm font-medium text-red-700">
@@ -348,7 +384,7 @@ export default function PerfilPage() {
                 disabled={atualizando}
                 className="w-full rounded-2xl bg-[#425C59] px-4 py-3 text-sm font-bold text-white shadow-lg transition hover:-translate-y-1 hover:bg-[#334846] disabled:cursor-not-allowed disabled:opacity-70"
               >
-                {atualizando ? "Atualizando..." : "Atualizar email/senha"}
+                {atualizando ? "Atualizando..." : "Atualizar senha"}
               </button>
             </form>
           </div>
