@@ -731,40 +731,39 @@ export default function ParticiparPage() {
               )}
 
               <div className="flex justify-between">
-  {etapa > 1 && (
-    <button
-      type="button"
-      onClick={() => setEtapa(etapa - 1)}
-      className="rounded-2xl bg-gray-400 px-6 py-3 text-white"
-    >
-      Voltar
-    </button>
-  )}
+                {etapa > 1 && (
+                  <button
+                    type="button"
+                    onClick={() => setEtapa(etapa - 1)}
+                    className="rounded-2xl bg-gray-400 px-6 py-3 text-white"
+                  >
+                    Voltar
+                  </button>
+                )}
 
-  {etapa < 5 ? (
-    <button
-      type="button"
-      onClick={() => setEtapa(etapa + 1)}
-      className="ml-auto rounded-2xl bg-[#425C59] px-6 py-3 text-white"
-    >
-      Próximo
-    </button>
-  ) : (
-    <button
-      type="submit"
-      disabled={!confirmado || carregando}
-      className="ml-auto rounded-2xl bg-[#425C59] px-6 py-3 text-white disabled:opacity-50"
-    >
-      {carregando
-        ? enviandoArquivos
-          ? "Enviando arquivos..."
-          : "Enviando sugestão..."
-        : "Enviar sugestão de obra"}
-    </button>
-  )}
-</div>
-                
-              
+                {etapa < 5 ? (
+                  <button
+                    type="button"
+                    onClick={() => setEtapa(etapa + 1)}
+                    className="ml-auto rounded-2xl bg-[#425C59] px-6 py-3 text-white"
+                  >
+                    Próximo
+                  </button>
+                ) : (
+                  <button
+                    type="submit"
+                    disabled={!confirmado || carregando}
+                    className="ml-auto rounded-2xl bg-[#425C59] px-6 py-3 text-white disabled:opacity-50"
+                  >
+                    {carregando
+                      ? enviandoArquivos
+                        ? "Enviando arquivos..."
+                        : "Enviando sugestão..."
+                      : "Enviar sugestão de obra"}
+                  </button>
+                )}
+              </div>
+            </div>
           </form>
         </section>
       </main>
