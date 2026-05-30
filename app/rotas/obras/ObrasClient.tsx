@@ -347,42 +347,42 @@ export default function ObrasClient({
                         </h3>
 
                         <p className="mt-2 h-[40px] overflow-hidden text-sm leading-5 text-black/60">
-                          {obra.local || "Local não informado"}
+                          📍 {obra.local || "Local não informado"}
                         </p>
                       </div>
 
                       <div className="mt-3 grid gap-2 text-sm text-black/70">
                         <p>
                           <span className="font-semibold text-black">
-                            Status:
+                            🚦 Status:
                           </span>{" "}
                           {obra.status || "Em planejamento"}
                         </p>
 
                         <p>
                           <span className="font-semibold text-black">
-                            Investimento:
+                            🏦 Investimento:
                           </span>{" "}
                           {obra.investimento || "Não informado"}
                         </p>
 
                         <p>
                           <span className="font-semibold text-black">
-                            Início:
+                            🚧 Início:
                           </span>{" "}
                           {obra.inicio || "Não informado"}
                         </p>
 
                         <p>
                           <span className="font-semibold text-black">
-                            Prazo:
+                            📅 Prazo:
                           </span>{" "}
                           {obra.prazo || "Não informado"}
                         </p>
 
                         <p>
                           <span className="font-semibold text-black">
-                            Votos:
+                            🗳️ Votos:
                           </span>{" "}
                           {obra.total_votos || 0}
                         </p>
