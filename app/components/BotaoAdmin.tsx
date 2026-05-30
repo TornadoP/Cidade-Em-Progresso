@@ -20,6 +20,7 @@ export default function BotaoAdmin() {
         }
 
         const resposta = await fetch("/api/admin/verificar", {
+          method: "GET",
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -34,6 +35,16 @@ export default function BotaoAdmin() {
     }
 
     verificarAdmin();
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange(() => {
+      verificarAdmin();
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
   }, []);
 
   if (carregando || !ehAdmin) {
@@ -45,9 +56,9 @@ export default function BotaoAdmin() {
       href="/rotas/admin"
       title="Painel administrativo"
       aria-label="Painel administrativo"
-      className="fixed bottom-5 right-5 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-[#425C59] text-xl text-white shadow-xl transition hover:scale-105 hover:bg-[#314744]"
+      className="inline-flex items-center justify-center rounded-xl bg-[#425C59] px-4 py-3 text-sm font-bold text-white transition hover:bg-[#314744]"
     >
-      ⚙️
+      ⚙️ Admin
     </Link>
   );
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import BotaoAdmin from "@/app/components/BotaoAdmin";
 import BotaoUsuario from "@/app/components/BotaoUsuario";
 import { supabase } from "@/app/lib/supabaseClient";
 
@@ -29,7 +30,8 @@ export default function AcoesUsuario() {
   }
 
   return (
-    <div className="flex items-center gap-3">
+    <div className="flex flex-wrap items-center gap-3">
+      <BotaoAdmin />
       <BotaoUsuario />
 
       {!carregando && logado && (
