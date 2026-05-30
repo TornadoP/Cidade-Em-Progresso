@@ -55,6 +55,13 @@ export default async function DetalhesObraPage({
     notFound();
   }
 
+  const { data: imagensObra } = await supabase
+    .from("obras_imagens")
+    .select("id, url, legenda, ordem")
+    .eq("obra_id", obra.id)
+    .order("ordem", { ascending: true })
+    .order("created_at", { ascending: true });
+
   const progressoObra = progressoReal(obra.status, obra.progresso);
 
   const mostrarAvisoSugestaoPopular =
@@ -338,26 +345,36 @@ export default async function DetalhesObraPage({
               </h3>
             </div>
 
-            <div className="grid gap-3 sm:grid-cols-3">
-              {[1, 2, 3].map((item) => (
-                <div
-                  key={item}
-                  className="relative h-28 overflow-hidden rounded-2xl bg-[#425C59]/20"
-                >
-                  <Image
-                    src={obra.imagem || "/obra-principal.png"}
-                    alt={`Atualização ${item} da obra`}
-                    fill
-                    sizes="180px"
-                    className="object-cover"
-                  />
+            {imagensObra && imagensObra.length > 0 ? (
+              <>
+                <div className="grid gap-3 sm:grid-cols-3">
+                  {imagensObra.slice(0, 3).map((imagem) => (
+                    <div
+                      key={imagem.id}
+                      className="relative h-28 overflow-hidden rounded-2xl bg-[#425C59]/20"
+                    >
+                      <Image
+                        src={imagem.url}
+                        alt={imagem.legenda || `Foto da obra ${obra.titulo}`}
+                        fill
+                        sizes="180px"
+                        className="object-cover"
+                      />
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
 
-            <button className="mt-4 w-full rounded-xl bg-[#CBDfde] px-4 py-3 text-sm font-semibold text-black transition hover:bg-white">
-              Ver todas as fotos
-            </button>
+                <button className="mt-4 w-full rounded-xl bg-[#CBDfde] px-4 py-3 text-sm font-semibold text-black transition hover:bg-white">
+                  Ver todas as fotos
+                </button>
+              </>
+            ) : (
+              <div className="rounded-2xl bg-[#E3F1F1] p-5 text-sm leading-7 text-black/60">
+                Fotos reais desta obra ainda não foram adicionadas.
+                <br />
+                Por enquanto, a imagem principal representa a categoria da obra.
+              </div>
+            )}
           </div>
 
           {/* Transparência */}
