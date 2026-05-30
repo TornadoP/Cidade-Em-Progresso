@@ -7,6 +7,17 @@ export const dynamic = "force-dynamic";
 const URL_PREFEITURA = "https://www.pedreiras.ma.gov.br/obras.php";
 const IMAGEM_PADRAO = "/obra-principal.png";
 
+function headersNavegador(referer = "https://www.pedreiras.ma.gov.br/") {
+  return {
+    "User-Agent":
+      "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
+    Accept:
+      "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+    "Accept-Language": "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7",
+    Referer: referer,
+  };
+}
+
 type ObraNormalizada = {
   fonte_id: string;
   titulo: string;
@@ -506,9 +517,7 @@ function extrairLinksDeObras(html: string) {
 async function buscarObrasPrefeitura() {
   const resposta = await fetch(URL_PREFEITURA, {
     cache: "no-store",
-    headers: {
-      "User-Agent": "CidadeEmProgresso/1.0",
-    },
+    headers: headersNavegador(),
   });
 
   if (!resposta.ok) {
@@ -524,9 +533,7 @@ async function buscarObrasPrefeitura() {
     try {
       const respostaDetalhe = await fetch(link.url, {
         cache: "no-store",
-        headers: {
-          "User-Agent": "CidadeEmProgresso/1.0",
-        },
+        headers: headersNavegador(URL_PREFEITURA),
       });
 
       if (!respostaDetalhe.ok) {
