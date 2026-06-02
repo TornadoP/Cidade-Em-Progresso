@@ -62,6 +62,11 @@ export default function PerfilPage() {
   const [erroEmail, setErroEmail] = useState("");
   const [atualizandoEmail, setAtualizandoEmail] = useState(false);
 
+  const [senhaExclusao, setSenhaExclusao] = useState("");
+  const [mensagemExclusao, setMensagemExclusao] = useState("");
+  const [erroExclusao, setErroExclusao] = useState("");
+  const [excluindoConta, setExcluindoConta] = useState(false);
+
   const carregarPerfil = useCallback(async () => {
     setCarregando(true);
     setErro("");
@@ -243,6 +248,70 @@ export default function PerfilPage() {
     setNovoEmail("");
     setSenhaAtualEmail("");
     setAtualizandoEmail(false);
+  }
+
+  async function excluirConta(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    setMensagemExclusao("");
+    setErroExclusao("");
+    setExcluindoConta(true);
+
+    if (!perfil?.usuario.email) {
+      setErroExclusao("Não foi possível identificar o email da conta.");
+      setExcluindoConta(false);
+      return;
+    }
+
+    if (!senhaExclusao.trim()) {
+      setErroExclusao("Informe sua senha para confirmar a exclusão.");
+      setExcluindoConta(false);
+      return;
+    }
+
+    const { error: erroSenhaAtual } = await supabase.auth.signInWithPassword({
+      email: perfil.usuario.email,
+      password: senhaExclusao,
+    });
+
+    if (erroSenhaAtual) {
+      setErroExclusao("Senha incorreta.");
+      setExcluindoConta(false);
+      return;
+    }
+
+    const { data } = await supabase.auth.getSession();
+    const token = data.session?.access_token;
+
+    if (!token) {
+      setErroExclusao("Sessão inválida. Entre novamente para excluir a conta.");
+      setExcluindoConta(false);
+      return;
+    }
+
+    const resposta = await fetch("/api/usuarios/excluir-conta", {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const dados = await resposta.json();
+
+    if (!resposta.ok) {
+      setErroExclusao(dados.erro || "Não foi possível excluir a conta.");
+      setExcluindoConta(false);
+      return;
+    }
+
+    setMensagemExclusao(dados.mensagem || "Conta excluída com sucesso.");
+
+    await supabase.auth.signOut();
+
+    localStorage.removeItem("cidade_progresso_usuario_uuid");
+    localStorage.removeItem("cidade_progresso_usuario_nome");
+
+    window.location.href = "/rotas/login";
   }
 
   if (carregando) {
@@ -533,6 +602,54 @@ export default function PerfilPage() {
                   {atualizandoEmail
                     ? "Enviando solicitação..."
                     : "Solicitar alteração de email"}
+                </button>
+              </form>
+            </div>
+
+            <div className="rounded-3xl bg-red-50 p-6 shadow-xl ring-1 ring-red-200">
+              <h2 className="text-xl font-bold text-red-800">
+                Zona de perigo
+              </h2>
+
+              <p className="mt-2 text-sm leading-6 text-red-800/75">
+                Excluir sua conta remove seus dados pessoais e votos ativos.
+                Suas sugestões públicas podem permanecer como histórico, sem
+                vínculo com seu perfil.
+              </p>
+
+              <form onSubmit={excluirConta} className="mt-5 space-y-4">
+                <div>
+                  <label className="mb-1 block text-sm font-semibold text-red-900">
+                    Senha atual
+                  </label>
+
+                  <input
+                    type="password"
+                    value={senhaExclusao}
+                    onChange={(event) => setSenhaExclusao(event.target.value)}
+                    placeholder="Digite sua senha para confirmar"
+                    className="w-full rounded-2xl border border-red-200 bg-white px-4 py-3 text-sm text-black outline-none transition focus:border-red-700"
+                  />
+                </div>
+
+                {erroExclusao && (
+                  <div className="rounded-2xl bg-red-100 px-4 py-3 text-sm font-medium text-red-700">
+                    {erroExclusao}
+                  </div>
+                )}
+
+                {mensagemExclusao && (
+                  <div className="rounded-2xl bg-green-100 px-4 py-3 text-sm font-medium text-green-700">
+                    {mensagemExclusao}
+                  </div>
+                )}
+
+                <button
+                  type="submit"
+                  disabled={excluindoConta}
+                  className="w-full rounded-2xl bg-red-700 px-4 py-3 text-sm font-bold text-white shadow-lg transition hover:-translate-y-1 hover:bg-red-800 disabled:cursor-not-allowed disabled:opacity-70"
+                >
+                  {excluindoConta ? "Excluindo conta..." : "Excluir minha conta"}
                 </button>
               </form>
             </div>
