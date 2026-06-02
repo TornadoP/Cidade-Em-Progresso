@@ -473,6 +473,7 @@ export async function POST(request: Request) {
       pessoas_beneficiadas: indicadores.pessoas_beneficiadas,
       impacto_social: indicadores.impacto_social,
       urgencia: indicadores.urgencia,
+      video_url: videoUrl || null,
 
       origem: "Sugestão popular",
       sugestao_id: sugestaoCriada.id,
