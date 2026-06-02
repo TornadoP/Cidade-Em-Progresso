@@ -134,11 +134,28 @@ export default function HomeClient({ obras }: { obras: Obra[] }) {
   }
   function progressoReal(status: string | null, progresso: string | null) {
     if (status === "Em planejamento") {
-      return "0%";
+      return 0;
     }
 
-    return progresso || "0%";
+    const numero = Number(String(progresso || "0").replace("%", ""));
+
+    if (Number.isNaN(numero)) {
+      return 0;
+    }
+
+    return Math.max(0, Math.min(100, Math.round(numero)));
   }
+
+  function limitarTexto(texto: string | null, limite = 145) {
+    if (!texto) return "Descrição não informada.";
+
+    const limpo = texto.replace(/\s+/g, " ").trim();
+
+    if (limpo.length <= limite) return limpo;
+
+    return `${limpo.slice(0, limite).trim()}...`;
+  }
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-[#E3F1F1] to-[#CBDfde] p-4 font-sans sm:p-6">
       <main className="flex w-full max-w-5xl flex-col overflow-hidden rounded-3xl bg-[#C9D9DB] shadow-[0_25px_80px_rgba(0,0,0,0.45)] md:min-h-[650px] md:flex-row">
@@ -245,7 +262,7 @@ export default function HomeClient({ obras }: { obras: Obra[] }) {
               <Link
                 key={obraPrincipal.id}
                 href={`/rotas/obras/${obraPrincipal.fonte_id || obraPrincipal.id}`}
-                className="animacao-troca-obra block w-full rounded-3xl bg-[#425C59] p-5 shadow-xl transition-all duration-300 hover:-translate-y-2 hover:scale-[1.01] hover:shadow-[0_35px_80px_rgba(0,0,0,0.55)] lg:w-[420px]"
+                className="animacao-troca-obra flex w-full flex-col rounded-3xl bg-[#425C59] p-5 shadow-xl transition-all duration-300 hover:-translate-y-2 hover:scale-[1.01] hover:shadow-[0_35px_80px_rgba(0,0,0,0.55)] lg:w-[420px]"
               >
                 {/* Área da imagem */}
                 <div className="relative h-[260px] w-full overflow-hidden rounded-2xl bg-white/20 sm:h-[320px] md:h-[360px]">
@@ -259,7 +276,7 @@ export default function HomeClient({ obras }: { obras: Obra[] }) {
                 </div>
 
                 {/* Área da descrição */}
-                <div className="mt-5 rounded-2xl bg-white/10 p-4">
+                <div className="mt-5 flex flex-1 flex-col rounded-2xl bg-white/10 p-4">
                   <h2 className="text-xl font-semibold text-white">
                     {obraPrincipal.titulo}
                   </h2>
@@ -273,33 +290,30 @@ export default function HomeClient({ obras }: { obras: Obra[] }) {
                           obraPrincipal.status,
                           obraPrincipal.progresso,
                         )}
+                        %
                       </span>
                     </div>
 
                     <div className="h-3 w-full overflow-hidden rounded-full bg-white/20">
                       <div
-                        className={`h-full rounded-full barra-progresso-animada ${corProgresso(
-                          Number(
-                            progressoReal(
-                              obraPrincipal.status,
-                              obraPrincipal.progresso,
-                            ).replace("%", ""),
+                        className={`h-full rounded-full ${corProgresso(
+                          progressoReal(
+                            obraPrincipal.status,
+                            obraPrincipal.progresso,
                           ),
                         )}`}
-                        style={
-                          {
-                            "--progresso": progressoReal(
-                              obraPrincipal.status,
-                              obraPrincipal.progresso,
-                            ),
-                          } as CSSProperties
-                        }
+                        style={{
+                          width: `${progressoReal(
+                            obraPrincipal.status,
+                            obraPrincipal.progresso,
+                          )}%`,
+                        }}
                       ></div>
                     </div>
                   </div>
 
-                  <p className="mt-2 text-sm leading-6 text-white/80">
-                    {obraPrincipal.descricao || "Descrição não informada."}
+                  <p className="mt-2 line-clamp-3 text-sm leading-6 text-white/80">
+                    {limitarTexto(obraPrincipal.descricao, 145)}
                   </p>
                 </div>
                 <span className="mt-5 block w-full rounded-xl bg-[#FFC222] px-4 py-3 text-center text-sm font-semibold text-black transition hover:bg-[#eab308]">
@@ -325,12 +339,7 @@ export default function HomeClient({ obras }: { obras: Obra[] }) {
                       </p>
 
                       <RoscaProgresso
-                        progresso={Number(
-                          progressoReal(obra.status, obra.progresso).replace(
-                            "%",
-                            "",
-                          ),
-                        )}
+                        progresso={progressoReal(obra.status, obra.progresso)}
                       />
                     </Link>
                   ))}
