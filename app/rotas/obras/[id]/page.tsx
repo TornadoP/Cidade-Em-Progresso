@@ -386,13 +386,16 @@ export default async function DetalhesObraPage({
               observações da comunidade.
             </p>
 
-            <button className="mt-5 w-full rounded-xl bg-[#FFC222] px-4 py-3 text-sm font-semibold text-black transition hover:bg-[#eab308]">
-              Acompanhar atualizações 🔔
-            </button>
-
-            <button className="mt-3 w-full rounded-xl border border-black/20 px-4 py-3 text-sm font-semibold text-black transition hover:bg-black/5">
-              Registrar observação 💬
-            </button>
+            <div className="mt-6">
+              <a
+                href="https://www.instagram.com/cidadeemprogresso/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex w-full items-center justify-center rounded-xl bg-[#FFC222] px-5 py-3 text-sm font-bold text-black transition hover:bg-[#eab308]"
+              >
+                Acompanhe atualizações
+              </a>
+            </div>
           </div>
         </section>
 
