@@ -377,6 +377,29 @@ export default async function DetalhesObraPage({
             )}
           </div>
 
+          {obra.video_url && (
+            <div className="rounded-3xl bg-white/80 p-5 shadow-xl ring-1 ring-black/5">
+              <div className="mb-4 flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#E3F1F1] text-[#425C59] shadow-sm ring-1 ring-[#425C59]/10">
+                  🎥
+                </div>
+
+                <h3 className="text-lg font-bold text-black">
+                  Vídeo da sugestão
+                </h3>
+              </div>
+
+              <video
+                src={obra.video_url}
+                controls
+                preload="metadata"
+                className="w-full rounded-2xl bg-black"
+              >
+                Seu navegador não suporta reprodução de vídeo.
+              </video>
+            </div>
+          )}
+
           {/* Transparência */}
           <div className="rounded-3xl bg-white/80 p-6 shadow-xl ring-1 ring-black/5">
             <div className="mb-4 flex items-center gap-3">
