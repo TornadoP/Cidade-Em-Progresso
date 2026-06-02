@@ -139,7 +139,16 @@ export default function ParticiparPage() {
   }
 
   async function enviarVideoDiretoParaStorage(arquivo: File) {
+    const { data: sessao } = await supabase.auth.getSession();
+
+    if (!sessao.session) {
+      throw new Error(
+        "Sua sessão expirou. Faça login novamente para enviar vídeo.",
+      );
+    }
+
     const extensao = arquivo.name.split(".").pop()?.toLowerCase() || "mp4";
+
     const caminho = `${usuarioUuid}/${Date.now()}-${crypto.randomUUID()}.${extensao}`;
 
     const { error } = await supabase.storage
