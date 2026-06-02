@@ -370,23 +370,37 @@ export default function PerfilPage() {
           <nav className="flex flex-wrap gap-3 text-sm">
             <Link
               href="/"
-              className="rounded-xl px-4 py-3 font-medium text-black transition hover:bg-[#FFC222]"
+              className="rounded-xl px-4 py-3 font-medium text-black transition hover:bg-[#E3F1F1]"
             >
               Início
             </Link>
 
             <Link
               href="/rotas/obras"
-              className="rounded-xl px-4 py-3 font-medium text-black transition hover:bg-[#FFC222]"
+              className="rounded-xl px-4 py-3 font-medium text-black transition hover:bg-[#E3F1F1]"
             >
               Obras
             </Link>
 
             <Link
+              href="/rotas/participar"
+              className="rounded-xl px-4 py-3 font-medium text-black transition hover:bg-[#E3F1F1]"
+            >
+              Participar
+            </Link>
+
+            <Link
               href="/rotas/ranking"
-              className="rounded-xl px-4 py-3 font-medium text-black transition hover:bg-[#FFC222]"
+              className="rounded-xl px-4 py-3 font-medium text-black transition hover:bg-[#E3F1F1]"
             >
               Ranking
+            </Link>
+
+            <Link
+              href="/rotas/sobre"
+              className="rounded-xl px-4 py-3 font-medium text-black transition hover:bg-[#E3F1F1]"
+            >
+              Sobre
             </Link>
 
             <button

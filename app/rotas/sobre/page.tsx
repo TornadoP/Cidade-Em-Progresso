@@ -33,6 +33,13 @@ export default function SobrePage() {
               </Link>
 
               <Link
+                href="/rotas/participar"
+                className="rounded-xl px-4 py-3 font-medium text-black transition hover:bg-[#E3F1F1]"
+              >
+                Participar
+              </Link>
+
+              <Link
                 href="/rotas/ranking"
                 className="rounded-xl px-4 py-3 font-medium text-black transition hover:bg-[#E3F1F1]"
               >
