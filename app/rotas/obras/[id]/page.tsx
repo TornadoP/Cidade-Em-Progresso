@@ -5,6 +5,7 @@ import { supabase } from "@/app/lib/supabaseClient";
 import BotaoVotar from "@/app/components/BotaoVotar";
 import AcoesUsuario from "@/app/components/AcoesUsuario";
 import ModalInformacoesObra from "@/app/components/ModalInformacoesObra";
+import ModalGaleriaObra from "@/app/components/ModalGaleriaObra";
 
 //P A G I N A    D E   D E T A L H E S  O B R A S
 
@@ -333,72 +334,12 @@ export default async function DetalhesObraPage({
 
         {/* Segunda linha */}
         <section className="mt-6 grid gap-6 lg:grid-cols-[1.2fr_0.65fr_0.8fr]">
-          {/* Galeria */}
-          <div className="rounded-3xl bg-white/80 p-6 shadow-xl ring-1 ring-black/5">
-            <div className="mb-4 flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#E3F1F1] text-[#425C59] shadow-sm ring-1 ring-[#425C59]/10">
-                📷
-              </div>
-
-              <h3 className="text-lg font-bold text-black">
-                Galeria de atualizações
-              </h3>
-            </div>
-
-            {imagensObra && imagensObra.length > 0 ? (
-              <>
-                <div className="grid gap-3 sm:grid-cols-3">
-                  {imagensObra.slice(0, 3).map((imagem) => (
-                    <div
-                      key={imagem.id}
-                      className="relative h-28 overflow-hidden rounded-2xl bg-[#425C59]/20"
-                    >
-                      <Image
-                        src={imagem.url}
-                        alt={imagem.legenda || `Foto da obra ${obra.titulo}`}
-                        fill
-                        sizes="180px"
-                        className="object-cover"
-                      />
-                    </div>
-                  ))}
-                </div>
-
-                <button className="mt-4 w-full rounded-xl bg-[#CBDfde] px-4 py-3 text-sm font-semibold text-black transition hover:bg-white">
-                  Ver todas as fotos
-                </button>
-              </>
-            ) : (
-              <div className="rounded-2xl bg-[#E3F1F1] p-5 text-sm leading-7 text-black/60">
-                Fotos reais desta obra ainda não foram adicionadas.
-                <br />
-                Por enquanto, a imagem principal representa a categoria da obra.
-              </div>
-            )}
-          </div>
-
-          {obra.video_url && (
-            <div className="rounded-3xl bg-white/80 p-5 shadow-xl ring-1 ring-black/5">
-              <div className="mb-4 flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#E3F1F1] text-[#425C59] shadow-sm ring-1 ring-[#425C59]/10">
-                  🎥
-                </div>
-
-                <h3 className="text-lg font-bold text-black">
-                  Vídeo da sugestão
-                </h3>
-              </div>
-
-              <video
-                src={obra.video_url}
-                controls
-                preload="metadata"
-                className="w-full rounded-2xl bg-black"
-              >
-                Seu navegador não suporta reprodução de vídeo.
-              </video>
-            </div>
-          )}
+          <ModalGaleriaObra
+            titulo={obra.titulo}
+            imagemPrincipal={obra.imagem}
+            imagens={imagensObra || []}
+            videoUrl={obra.video_url}
+          />
 
           {/* Transparência */}
           <div className="rounded-3xl bg-white/80 p-6 shadow-xl ring-1 ring-black/5">
