@@ -51,6 +51,50 @@ export default function ParticiparPage() {
   const [etapa, setEtapa] = useState(1);
   const [confirmado, setConfirmado] = useState(false);
 
+  const TAMANHO_MAXIMO_IMAGEM_MB = 5;
+  const TAMANHO_MAXIMO_VIDEO_MB = 50;
+
+  const TAMANHO_MAXIMO_IMAGEM_BYTES =
+    TAMANHO_MAXIMO_IMAGEM_MB * 1024 * 1024;
+
+  const TAMANHO_MAXIMO_VIDEO_BYTES = TAMANHO_MAXIMO_VIDEO_MB * 1024 * 1024;
+
+  function validarImagem(arquivo: File | null) {
+    if (!arquivo) return true;
+
+    const tiposPermitidos = ["image/jpeg", "image/png", "image/webp"];
+
+    if (!tiposPermitidos.includes(arquivo.type)) {
+      setErro("Envie imagens apenas nos formatos JPG, PNG ou WEBP.");
+      return false;
+    }
+
+    if (arquivo.size > TAMANHO_MAXIMO_IMAGEM_BYTES) {
+      setErro(`Cada imagem deve ter no máximo ${TAMANHO_MAXIMO_IMAGEM_MB} MB.`);
+      return false;
+    }
+
+    return true;
+  }
+
+  function validarVideo(arquivo: File | null) {
+    if (!arquivo) return true;
+
+    const tiposPermitidos = ["video/mp4", "video/webm", "video/quicktime"];
+
+    if (!tiposPermitidos.includes(arquivo.type)) {
+      setErro("Envie vídeos apenas nos formatos MP4, WEBM ou MOV.");
+      return false;
+    }
+
+    if (arquivo.size > TAMANHO_MAXIMO_VIDEO_BYTES) {
+      setErro(`O vídeo deve ter no máximo ${TAMANHO_MAXIMO_VIDEO_MB} MB.`);
+      return false;
+    }
+
+    return true;
+  }
+
   useEffect(() => {
     const timer = setTimeout(() => {
       const usuarioSalvo = localStorage.getItem(
@@ -99,6 +143,25 @@ export default function ParticiparPage() {
     setErro("");
     setMensagem("");
     setCarregando(true);
+
+    if (!validarImagem(arquivoImagemPrincipal)) {
+      setCarregando(false);
+      return;
+    }
+
+    const imagensExtrasValidas = arquivosImagensExtras.every((arquivo) =>
+      validarImagem(arquivo),
+    );
+
+    if (!imagensExtrasValidas) {
+      setCarregando(false);
+      return;
+    }
+
+    if (!validarVideo(arquivoVideo)) {
+      setCarregando(false);
+      return;
+    }
 
     try {
       setEnviandoArquivos(true);
@@ -475,11 +538,19 @@ export default function ParticiparPage() {
                       <input
                         type="file"
                         accept="image/jpeg,image/png,image/webp"
-                        onChange={(event) =>
-                          setArquivoImagemPrincipal(
-                            event.target.files?.[0] || null,
-                          )
-                        }
+                        onChange={(event) => {
+                          const arquivo = event.target.files?.[0] || null;
+
+                          setErro("");
+
+                          if (!validarImagem(arquivo)) {
+                            setArquivoImagemPrincipal(null);
+                            event.target.value = "";
+                            return;
+                          }
+
+                          setArquivoImagemPrincipal(arquivo);
+                        }}
                         className="w-full rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm text-black outline-none transition file:mr-4 file:rounded-xl file:border-0 file:bg-[#425C59] file:px-4 file:py-2 file:text-sm file:font-bold file:text-white hover:file:bg-[#334846]"
                       />
 
@@ -504,13 +575,25 @@ export default function ParticiparPage() {
                         type="file"
                         accept="image/jpeg,image/png,image/webp"
                         multiple
-                        onChange={(event) =>
-                          setArquivosImagensExtras(
-                            event.target.files
-                              ? Array.from(event.target.files)
-                              : [],
-                          )
-                        }
+                        onChange={(event) => {
+                          const arquivos = event.target.files
+                            ? Array.from(event.target.files)
+                            : [];
+
+                          setErro("");
+
+                          const imagensValidas = arquivos.every((arquivo) =>
+                            validarImagem(arquivo),
+                          );
+
+                          if (!imagensValidas) {
+                            setArquivosImagensExtras([]);
+                            event.target.value = "";
+                            return;
+                          }
+
+                          setArquivosImagensExtras(arquivos);
+                        }}
                         className="w-full rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm text-black outline-none transition file:mr-4 file:rounded-xl file:border-0 file:bg-[#425C59] file:px-4 file:py-2 file:text-sm file:font-bold file:text-white hover:file:bg-[#334846]"
                       />
 
@@ -536,9 +619,19 @@ export default function ParticiparPage() {
                       <input
                         type="file"
                         accept="video/mp4,video/webm,video/quicktime"
-                        onChange={(event) =>
-                          setArquivoVideo(event.target.files?.[0] || null)
-                        }
+                        onChange={(event) => {
+                          const arquivo = event.target.files?.[0] || null;
+
+                          setErro("");
+
+                          if (!validarVideo(arquivo)) {
+                            setArquivoVideo(null);
+                            event.target.value = "";
+                            return;
+                          }
+
+                          setArquivoVideo(arquivo);
+                        }}
                         className="w-full rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm text-black outline-none transition file:mr-4 file:rounded-xl file:border-0 file:bg-[#425C59] file:px-4 file:py-2 file:text-sm file:font-bold file:text-white hover:file:bg-[#334846]"
                       />
 
