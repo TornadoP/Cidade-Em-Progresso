@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import AcoesUsuario from "@/app/components/AcoesUsuario";
+import { supabase } from "@/app/lib/supabaseClient";
 
 const categorias = [
   "Pavimentação",
@@ -137,6 +138,28 @@ export default function ParticiparPage() {
     return String(dados.url || "");
   }
 
+  async function enviarVideoDiretoParaStorage(arquivo: File) {
+    const extensao = arquivo.name.split(".").pop()?.toLowerCase() || "mp4";
+    const caminho = `${usuarioUuid}/${Date.now()}-${crypto.randomUUID()}.${extensao}`;
+
+    const { error } = await supabase.storage
+      .from("sugestoes-videos")
+      .upload(caminho, arquivo, {
+        contentType: arquivo.type,
+        upsert: false,
+      });
+
+    if (error) {
+      throw new Error(error.message || "Erro ao enviar vídeo.");
+    }
+
+    const { data } = supabase.storage
+      .from("sugestoes-videos")
+      .getPublicUrl(caminho);
+
+    return data.publicUrl;
+  }
+
   async function enviarSugestao(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
@@ -186,7 +209,7 @@ export default function ParticiparPage() {
       }
 
       if (arquivoVideo) {
-        urlVideo = await enviarArquivoParaStorage(arquivoVideo, "video");
+        urlVideo = await enviarVideoDiretoParaStorage(arquivoVideo);
       }
 
       setEnviandoArquivos(false);
