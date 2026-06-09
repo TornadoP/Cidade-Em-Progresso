@@ -50,6 +50,7 @@ export default function BotaoVotar({
   const [carregando, setCarregando] = useState(false);
   const [votosAtuais, setVotosAtuais] = useState(totalVotos);
   const [mostrarModalLogin, setMostrarModalLogin] = useState(false);
+  const [mostrarConfirmacao, setMostrarConfirmacao] = useState(false);
   const [mostrarModalErro, setMostrarModalErro] = useState(false);
   const [mensagemErroModal, setMensagemErroModal] = useState("");
 
@@ -60,6 +61,22 @@ export default function BotaoVotar({
 
   function obterUsuarioUuid() {
     return localStorage.getItem("cidade_progresso_usuario_uuid");
+  }
+
+  function abrirConfirmacaoDeVoto() {
+    const usuarioUuid = obterUsuarioUuid();
+
+    if (!usuarioUuid) {
+      setMostrarModalLogin(true);
+      return;
+    }
+
+    setMostrarConfirmacao(true);
+  }
+
+  async function confirmarVoto() {
+    setMostrarConfirmacao(false);
+    await votar();
   }
 
   async function votar() {
@@ -135,7 +152,7 @@ export default function BotaoVotar({
         ) : (
           <button
             type="button"
-            onClick={votar}
+            onClick={abrirConfirmacaoDeVoto}
             disabled={carregando}
             className="inline-flex items-center justify-center gap-2 rounded-2xl bg-blue-600 px-6 py-3 text-base font-bold text-white shadow-lg transition-all duration-300 hover:-translate-y-1 hover:scale-[1.03] hover:bg-blue-700 hover:shadow-xl disabled:cursor-not-allowed disabled:opacity-70"
           >
@@ -178,6 +195,51 @@ export default function BotaoVotar({
           </div>
         </div>
       )}
+
+      {mostrarConfirmacao && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4">
+          <div className="w-full max-w-md rounded-3xl bg-white p-6 shadow-2xl">
+            <div className="mb-4 flex items-center gap-3">
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#E3F1F1] text-2xl">
+                👍
+              </div>
+
+              <div>
+                <p className="text-sm font-bold uppercase tracking-wide text-[#425C59]">
+                  Confirmar voto
+                </p>
+
+                <h2 className="text-xl font-bold text-black">Tem certeza?</h2>
+              </div>
+            </div>
+
+            <p className="text-sm leading-7 text-black/70">
+              Você está prestes a usar 1 dos seus votos ativos nesta obra. Esse
+              voto ficará registrado no seu perfil e ajudará a destacar essa
+              prioridade.
+            </p>
+
+            <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+              <button
+                type="button"
+                onClick={() => setMostrarConfirmacao(false)}
+                className="w-full rounded-xl border border-black/10 bg-white px-4 py-3 text-sm font-bold text-black transition hover:bg-zinc-100"
+              >
+                Cancelar
+              </button>
+
+              <button
+                type="button"
+                onClick={confirmarVoto}
+                className="w-full rounded-xl bg-[#FFC222] px-4 py-3 text-sm font-bold text-black transition hover:bg-[#eab308]"
+              >
+                Sim, confirmar voto
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {mostrarModalErro && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
           <div className="w-full max-w-md rounded-3xl bg-white p-6 text-black shadow-[0_25px_80px_rgba(0,0,0,0.45)]">
