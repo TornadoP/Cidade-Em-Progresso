@@ -491,7 +491,7 @@ export default function PerfilPage() {
               </div>
 
               <div className="rounded-2xl bg-white/10 p-4">
-                <p className="text-sm text-white/70">Vagas restantes</p>
+                <p className="text-sm text-white/70">Votos restantes</p>
                 <p className="mt-1 text-3xl font-bold">
                   {perfil.resumo.votos_restantes}
                 </p>
@@ -669,9 +669,7 @@ export default function PerfilPage() {
             </div>
 
             <div className="rounded-3xl bg-red-50 p-6 shadow-xl ring-1 ring-red-200">
-              <h2 className="text-xl font-bold text-red-800">
-                Zona de perigo
-              </h2>
+              <h2 className="text-xl font-bold text-red-800">Zona de perigo</h2>
 
               <p className="mt-2 text-sm leading-6 text-red-800/75">
                 Excluir sua conta remove seus dados pessoais e votos ativos.
@@ -711,7 +709,9 @@ export default function PerfilPage() {
                   disabled={excluindoConta}
                   className="w-full rounded-2xl bg-red-700 px-4 py-3 text-sm font-bold text-white shadow-lg transition hover:-translate-y-1 hover:bg-red-800 disabled:cursor-not-allowed disabled:opacity-70"
                 >
-                  {excluindoConta ? "Excluindo conta..." : "Excluir minha conta"}
+                  {excluindoConta
+                    ? "Excluindo conta..."
+                    : "Excluir minha conta"}
                 </button>
               </form>
             </div>
