@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { exigirAdmin } from "@/app/lib/apiAuth";
 import { supabaseAdmin } from "@/app/lib/supabaseAdmin";
 
 export const runtime = "nodejs";
@@ -871,12 +872,17 @@ function removerDuplicadas(obras: ObraNormalizada[]) {
 export async function POST(request: NextRequest) {
   try {
     const chaveImportacao = request.headers.get("x-import-secret");
+    const importSecret = process.env.IMPORT_SECRET;
+    const segredoValido = Boolean(
+      importSecret && chaveImportacao === importSecret,
+    );
 
-    if (
-      process.env.IMPORT_SECRET &&
-      chaveImportacao !== process.env.IMPORT_SECRET
-    ) {
-      return NextResponse.json({ erro: "Não autorizado." }, { status: 401 });
+    if (!segredoValido) {
+      const auth = await exigirAdmin(request);
+
+      if (auth.resposta) {
+        return auth.resposta;
+      }
     }
 
     const obrasPrefeitura = await buscarObrasPrefeitura();

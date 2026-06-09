@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import crypto from "crypto";
+import { exigirUsuarioAutenticado } from "@/app/lib/apiAuth";
+import { aplicarRateLimit, obterIpCliente } from "@/app/lib/rateLimit";
 import { supabaseAdmin } from "@/app/lib/supabaseAdmin";
 
 function limparCpf(cpf: string) {
@@ -50,6 +52,23 @@ function gerarHashCpf(cpf: string) {
 
 export async function POST(request: Request) {
   try {
+    const limite = await aplicarRateLimit({
+      chave: obterIpCliente(request),
+      rota: "/api/usuarios/perfil-auth",
+      limite: 10,
+      janelaSegundos: 60 * 60,
+    });
+
+    if (limite) {
+      return limite;
+    }
+
+    const auth = await exigirUsuarioAutenticado(request);
+
+    if (auth.resposta) {
+      return auth.resposta;
+    }
+
     const body = await request.json();
 
     const authUserId = String(body.auth_user_id || "").trim();
@@ -64,6 +83,13 @@ export async function POST(request: Request) {
       return NextResponse.json(
         { erro: "Preencha todos os campos obrigatórios." },
         { status: 400 },
+      );
+    }
+
+    if (auth.usuario.id !== authUserId) {
+      return NextResponse.json(
+        { erro: "Usuário autenticado não confere com o perfil." },
+        { status: 403 },
       );
     }
 

@@ -9,23 +9,12 @@ type ObraRanking = {
   fonte_id: string | null;
   titulo: string;
   local: string | null;
-  investimento: string | null;
-  inicio: string | null;
-  prazo: string | null;
   progresso: string | null;
   status: string | null;
   tipo: string | null;
   imagem: string | null;
-  descricao: string | null;
-  detalhes: string | null;
-  orgao: string | null;
-  empresa: string | null;
-  ultima_atualizacao: string | null;
   total_votos: number | null;
   votos_ativos: number | null;
-  pessoas_beneficiadas: number | null;
-  impacto_social: number | null;
-  urgencia: number | null;
   pontuacao_prioridade: number | null;
 };
 
@@ -71,9 +60,12 @@ function corProgresso(progresso: string | null) {
 export default async function RankingPage() {
   const { data: obras, error } = await supabase
     .from("ranking_prioridades")
-    .select("*")
+    .select(
+      "id, fonte_id, titulo, local, progresso, status, tipo, imagem, total_votos, votos_ativos, pontuacao_prioridade",
+    )
     .order("pontuacao_prioridade", { ascending: false })
-    .order("votos_ativos", { ascending: false });
+    .order("votos_ativos", { ascending: false })
+    .limit(50);
 
   if (error) {
     return (

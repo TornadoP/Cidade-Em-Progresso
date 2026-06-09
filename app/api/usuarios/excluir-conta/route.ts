@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
+import { exigirUsuarioAutenticado } from "@/app/lib/apiAuth";
+import { aplicarRateLimit } from "@/app/lib/rateLimit";
 import { supabaseAdmin } from "@/app/lib/supabaseAdmin";
 
 export const runtime = "nodejs";
@@ -33,25 +35,24 @@ async function anonimizarSugestoes(usuarioId: string) {
 
 export async function DELETE(request: NextRequest) {
   try {
-    const authorization = request.headers.get("authorization");
+    const auth = await exigirUsuarioAutenticado(request);
 
-    if (!authorization?.startsWith("Bearer ")) {
-      return NextResponse.json(
-        { erro: "Usuário não autenticado." },
-        { status: 401 },
-      );
+    if (auth.resposta) {
+      return auth.resposta;
     }
 
-    const token = authorization.replace("Bearer ", "");
+    const authUserId = auth.usuario.id;
 
-    const { data: authData, error: authError } =
-      await supabaseAdmin.auth.getUser(token);
+    const limite = await aplicarRateLimit({
+      chave: authUserId,
+      rota: "/api/usuarios/excluir-conta",
+      limite: 3,
+      janelaSegundos: 60 * 60,
+    });
 
-    if (authError || !authData.user) {
-      return NextResponse.json({ erro: "Sessão inválida." }, { status: 401 });
+    if (limite) {
+      return limite;
     }
-
-    const authUserId = authData.user.id;
 
     const { data: usuarioPerfil, error: erroPerfil } = await supabaseAdmin
       .from("usuarios")

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { supabase } from "@/app/lib/supabaseClient";
 
 function corStatus(status: string) {
   if (status === "Concluída") {
@@ -91,14 +92,25 @@ export default function BotaoVotar({
       return;
     }
 
+    const { data: sessao } = await supabase.auth.getSession();
+    const token = sessao.session?.access_token;
+
+    if (!token) {
+      localStorage.removeItem("cidade_progresso_usuario_uuid");
+      localStorage.removeItem("cidade_progresso_usuario_nome");
+      setCarregando(false);
+      setMostrarModalLogin(true);
+      return;
+    }
+
     const resposta = await fetch("/api/votos", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({
         fonte_id: fonteId,
-        usuario_uuid: usuarioUuid,
       }),
     });
 

@@ -1,4 +1,6 @@
 import { NextResponse } from "next/server";
+import { exigirUsuarioAutenticado } from "@/app/lib/apiAuth";
+import { aplicarRateLimit } from "@/app/lib/rateLimit";
 import { supabaseAdmin } from "@/app/lib/supabaseAdmin";
 
 export const runtime = "nodejs";
@@ -11,17 +13,26 @@ type Params = {
 
 export async function DELETE(request: Request, { params }: Params) {
   try {
-    const { id } = await params;
+    const auth = await exigirUsuarioAutenticado(request);
 
-    const body = await request.json().catch(() => null);
-    const usuarioUuid = String(body?.usuario_uuid || "").trim();
-
-    if (!usuarioUuid) {
-      return NextResponse.json(
-        { erro: "Usuário não informado." },
-        { status: 401 },
-      );
+    if (auth.resposta) {
+      return auth.resposta;
     }
+
+    const usuarioUuid = auth.usuario.id;
+
+    const limite = await aplicarRateLimit({
+      chave: usuarioUuid,
+      rota: "/api/sugestoes/excluir",
+      limite: 10,
+      janelaSegundos: 60 * 60,
+    });
+
+    if (limite) {
+      return limite;
+    }
+
+    const { id } = await params;
 
     if (!id) {
       return NextResponse.json(

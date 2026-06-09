@@ -2,6 +2,7 @@
 
 import type { FormEvent } from "react";
 import { useState } from "react";
+import { supabase } from "@/app/lib/supabaseClient";
 
 type Obra = {
   id: string;
@@ -56,9 +57,17 @@ export default function FormUploadImagemObra({ obras }: Props) {
       formData.append("ordem", ordem);
       formData.append("arquivo", arquivo);
 
+      const { data: sessao } = await supabase.auth.getSession();
+      const token = sessao.session?.access_token;
+
+      if (!token) {
+        throw new Error("Você precisa estar logado como admin para enviar.");
+      }
+
       const resposta = await fetch("/api/obras/imagens", {
         method: "POST",
         headers: {
+          Authorization: `Bearer ${token}`,
           "x-upload-secret": chave,
         },
         body: formData,

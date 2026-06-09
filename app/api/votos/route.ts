@@ -1,4 +1,6 @@
 import { NextResponse } from "next/server";
+import { exigirUsuarioAutenticado } from "@/app/lib/apiAuth";
+import { aplicarRateLimit, obterIpCliente } from "@/app/lib/rateLimit";
 import { supabaseAdmin } from "@/app/lib/supabaseAdmin";
 
 export async function POST(request: Request) {
@@ -6,14 +8,32 @@ export async function POST(request: Request) {
     const body = await request.json();
 
     const fonteId = body.fonte_id;
-    const usuarioUuid = body.usuario_uuid;
 
-    if (!fonteId || !usuarioUuid) {
+    if (!fonteId) {
       return NextResponse.json(
-        { erro: "Você precisa entrar ou se cadastrar para votar." },
-        { status: 401 },
+        { erro: "Obra não informada." },
+        { status: 400 },
       );
     }
+
+    const limite = await aplicarRateLimit({
+      chave: obterIpCliente(request),
+      rota: "/api/votos",
+      limite: 10,
+      janelaSegundos: 60,
+    });
+
+    if (limite) {
+      return limite;
+    }
+
+    const auth = await exigirUsuarioAutenticado(request);
+
+    if (auth.resposta) {
+      return auth.resposta;
+    }
+
+    const usuarioUuid = auth.usuario.id;
 
     const { data: obra, error: erroObra } = await supabaseAdmin
       .from("obras")
@@ -50,7 +70,7 @@ export async function POST(request: Request) {
     }
     const { count: votosAtivos, error: erroContagem } = await supabaseAdmin
       .from("votos")
-      .select("*", { count: "exact", head: true })
+      .select("id", { count: "exact", head: true })
       .eq("usuario_uuid", usuarioUuid)
       .eq("ativo", true);
     if (erroContagem) {

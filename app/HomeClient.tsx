@@ -12,19 +12,11 @@ type Obra = {
   id: string;
   fonte_id: string | null;
   titulo: string;
-  local: string | null;
-  investimento: string | null;
-  inicio: string | null;
-  prazo: string | null;
   progresso: string | null;
   status: string | null;
   tipo: string | null;
   imagem: string | null;
   descricao: string | null;
-  detalhes: string | null;
-  orgao: string | null;
-  empresa: string | null;
-  ultima_atualizacao: string | null;
 };
 {
   /* P A G I N A    P R I N C I P A L*/

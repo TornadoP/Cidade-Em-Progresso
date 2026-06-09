@@ -8,7 +8,8 @@ export default async function ImagensObrasAdminPage() {
   const { data: obras, error } = await supabase
     .from("obras")
     .select("id, titulo, fonte_id, origem, tipo, status")
-    .order("created_at", { ascending: false });
+    .order("created_at", { ascending: false })
+    .limit(200);
 
   if (error) {
     return (

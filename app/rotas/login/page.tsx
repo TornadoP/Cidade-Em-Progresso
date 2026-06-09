@@ -114,11 +114,23 @@ function LoginContent() {
         }
 
         const authUserId = cadastroAuth.user.id;
+        const tokenCadastro =
+          cadastroAuth.session?.access_token ||
+          (await supabase.auth.getSession()).data.session?.access_token;
+
+        if (!tokenCadastro) {
+          setErro(
+            "Conta criada, mas a sessão não foi confirmada para salvar o perfil.",
+          );
+          setCarregando(false);
+          return;
+        }
 
         const respostaPerfil = await fetch("/api/usuarios/perfil-auth", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${tokenCadastro}`,
           },
           body: JSON.stringify({
             auth_user_id: authUserId,
@@ -268,7 +280,7 @@ function LoginContent() {
                 type="text"
                 value={nome}
                 onChange={(event) => setNome(event.target.value)}
-                placeholder="Ex: Matheus Silva"
+                placeholder="Ex: Juan Carlos"
                 className="w-full rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm text-black outline-none transition focus:border-[#425C59]"
               />
             </div>

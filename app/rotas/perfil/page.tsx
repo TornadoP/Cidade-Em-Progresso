@@ -57,7 +57,6 @@ export default function PerfilPage() {
   const router = useRouter();
 
   const [perfil, setPerfil] = useState<PerfilResposta | null>(null);
-  const [usuarioUuid, setUsuarioUuid] = useState("");
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState("");
 
@@ -94,16 +93,22 @@ export default function PerfilPage() {
       return;
     }
 
-    setUsuarioUuid(usuarioUuidSalvo);
+    const { data: sessao } = await supabase.auth.getSession();
+    const token = sessao.session?.access_token;
+
+    if (!token) {
+      localStorage.removeItem("cidade_progresso_usuario_uuid");
+      localStorage.removeItem("cidade_progresso_usuario_nome");
+      router.push("/rotas/login?voltar=/rotas/perfil");
+      return;
+    }
 
     const resposta = await fetch("/api/perfil", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({
-        usuario_uuid: usuarioUuidSalvo,
-      }),
     });
 
     const dados = await resposta.json();
@@ -339,14 +344,22 @@ export default function PerfilPage() {
 
     setExcluindoSugestaoId(sugestaoId);
 
+    const { data: sessao } = await supabase.auth.getSession();
+    const token = sessao.session?.access_token;
+
+    if (!token) {
+      alert("Sua sessão expirou. Entre novamente para excluir a sugestão.");
+      setExcluindoSugestaoId("");
+      router.push("/rotas/login?voltar=/rotas/perfil");
+      return;
+    }
+
     const resposta = await fetch(`/api/sugestoes/${sugestaoId}/excluir`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({
-        usuario_uuid: usuarioUuid,
-      }),
     });
 
     const dados = await resposta.json();

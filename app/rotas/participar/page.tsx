@@ -22,8 +22,6 @@ const categorias = [
 export default function ParticiparPage() {
   const router = useRouter();
 
-  const [usuarioUuid, setUsuarioUuid] = useState("");
-
   const [titulo, setTitulo] = useState("");
   const [local, setLocal] = useState("");
   const [bairro, setBairro] = useState("");
@@ -54,6 +52,7 @@ export default function ParticiparPage() {
 
   const TAMANHO_MAXIMO_IMAGEM_MB = 5;
   const TAMANHO_MAXIMO_VIDEO_MB = 50;
+  const QUANTIDADE_MAXIMA_IMAGENS = 5;
 
   const TAMANHO_MAXIMO_IMAGEM_BYTES =
     TAMANHO_MAXIMO_IMAGEM_MB * 1024 * 1024;
@@ -107,7 +106,6 @@ export default function ParticiparPage() {
         return;
       }
 
-      setUsuarioUuid(usuarioSalvo);
       setVerificandoLogin(false);
     }, 0);
 
@@ -118,14 +116,25 @@ export default function ParticiparPage() {
     arquivo: File,
     tipo: "imagem" | "video",
   ) {
+    const { data: sessao } = await supabase.auth.getSession();
+    const token = sessao.session?.access_token;
+
+    if (!token) {
+      throw new Error(
+        "Sua sessão expirou. Faça login novamente para enviar arquivos.",
+      );
+    }
+
     const formData = new FormData();
 
     formData.append("arquivo", arquivo);
     formData.append("tipo", tipo);
-    formData.append("usuario_uuid", usuarioUuid);
 
     const resposta = await fetch("/api/uploads", {
       method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
       body: formData,
     });
 
@@ -138,37 +147,6 @@ export default function ParticiparPage() {
     return String(dados.url || "");
   }
 
-  async function enviarVideoDiretoParaStorage(arquivo: File) {
-    const { data: sessao } = await supabase.auth.getSession();
-
-    if (!sessao.session) {
-      throw new Error(
-        "Sua sessão expirou. Faça login novamente para enviar vídeo.",
-      );
-    }
-
-    const extensao = arquivo.name.split(".").pop()?.toLowerCase() || "mp4";
-
-    const caminho = `${usuarioUuid}/${Date.now()}-${crypto.randomUUID()}.${extensao}`;
-
-    const { error } = await supabase.storage
-      .from("sugestoes-videos")
-      .upload(caminho, arquivo, {
-        contentType: arquivo.type,
-        upsert: false,
-      });
-
-    if (error) {
-      throw new Error(error.message || "Erro ao enviar vídeo.");
-    }
-
-    const { data } = supabase.storage
-      .from("sugestoes-videos")
-      .getPublicUrl(caminho);
-
-    return data.publicUrl;
-  }
-
   async function enviarSugestao(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
@@ -177,6 +155,17 @@ export default function ParticiparPage() {
     setCarregando(true);
 
     if (!validarImagem(arquivoImagemPrincipal)) {
+      setCarregando(false);
+      return;
+    }
+
+    const totalImagens =
+      (arquivoImagemPrincipal ? 1 : 0) + arquivosImagensExtras.length;
+
+    if (totalImagens > QUANTIDADE_MAXIMA_IMAGENS) {
+      setErro(
+        `Envie no máximo ${QUANTIDADE_MAXIMA_IMAGENS} imagens por sugestão, somando imagem principal e extras.`,
+      );
       setCarregando(false);
       return;
     }
@@ -218,19 +207,27 @@ export default function ParticiparPage() {
       }
 
       if (arquivoVideo) {
-        urlVideo = await enviarVideoDiretoParaStorage(arquivoVideo);
+        urlVideo = await enviarArquivoParaStorage(arquivoVideo, "video");
       }
 
       setEnviandoArquivos(false);
+
+      const { data: sessao } = await supabase.auth.getSession();
+      const token = sessao.session?.access_token;
+
+      if (!token) {
+        throw new Error(
+          "Sua sessão expirou. Faça login novamente para enviar a sugestão.",
+        );
+      }
 
       const resposta = await fetch("/api/sugestoes", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-          usuario_uuid: usuarioUuid,
-
           titulo,
           local,
           bairro,
@@ -614,6 +611,15 @@ export default function ParticiparPage() {
 
                           setErro("");
 
+                          if (arquivos.length > QUANTIDADE_MAXIMA_IMAGENS) {
+                            setErro(
+                              `Selecione no máximo ${QUANTIDADE_MAXIMA_IMAGENS} imagens extras.`,
+                            );
+                            setArquivosImagensExtras([]);
+                            event.target.value = "";
+                            return;
+                          }
+
                           const imagensValidas = arquivos.every((arquivo) =>
                             validarImagem(arquivo),
                           );
@@ -630,7 +636,8 @@ export default function ParticiparPage() {
                       />
 
                       <p className="mt-1 text-xs text-black/60">
-                        Você pode enviar mais de uma imagem complementar.
+                        Você pode enviar até {QUANTIDADE_MAXIMA_IMAGENS} imagens
+                        por sugestão, somando a principal e as extras.
                       </p>
 
                       {arquivosImagensExtras.length > 0 && (

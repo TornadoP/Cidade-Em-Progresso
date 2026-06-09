@@ -48,7 +48,9 @@ export default async function DetalhesObraPage({
 
   const { data: obra, error } = await supabase
     .from("obras_com_votos")
-    .select("*")
+    .select(
+      "id, fonte_id, titulo, local, investimento, inicio, prazo, progresso, status, tipo, imagem, descricao, detalhes, orgao, empresa, ultima_atualizacao, origem, total_votos, video_url",
+    )
     .eq("fonte_id", id)
     .single();
 
@@ -61,7 +63,8 @@ export default async function DetalhesObraPage({
     .select("id, url, legenda, ordem")
     .eq("obra_id", obra.id)
     .order("ordem", { ascending: true })
-    .order("created_at", { ascending: true });
+    .order("created_at", { ascending: true })
+    .limit(30);
 
   const progressoObra = progressoReal(obra.status, obra.progresso);
 

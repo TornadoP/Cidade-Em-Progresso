@@ -1,18 +1,16 @@
 import { NextResponse } from "next/server";
+import { exigirUsuarioAutenticado } from "@/app/lib/apiAuth";
 import { supabaseAdmin } from "@/app/lib/supabaseAdmin";
 
 export async function POST(request: Request) {
   try {
-    const body = await request.json();
+    const auth = await exigirUsuarioAutenticado(request);
 
-    const usuarioUuid = String(body.usuario_uuid || "").trim();
-
-    if (!usuarioUuid) {
-      return NextResponse.json(
-        { erro: "Usuário não informado." },
-        { status: 401 },
-      );
+    if (auth.resposta) {
+      return auth.resposta;
     }
+
+    const usuarioUuid = auth.usuario.id;
 
     const { data: usuario, error: erroUsuario } = await supabaseAdmin
       .from("usuarios")
@@ -51,7 +49,8 @@ export async function POST(request: Request) {
       `,
       )
       .eq("usuario_uuid", usuarioUuid)
-      .order("created_at", { ascending: false });
+      .order("created_at", { ascending: false })
+      .limit(100);
 
     if (erroVotos) {
       return NextResponse.json({ erro: erroVotos.message }, { status: 500 });
@@ -63,7 +62,8 @@ export async function POST(request: Request) {
         "id, titulo, local, bairro, categoria, descricao, status, created_at",
       )
       .eq("usuario_uuid", usuarioUuid)
-      .order("created_at", { ascending: false });
+      .order("created_at", { ascending: false })
+      .limit(50);
 
     if (erroSugestoes) {
       return NextResponse.json(

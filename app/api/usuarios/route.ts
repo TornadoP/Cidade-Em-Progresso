@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import crypto from "crypto";
+import { aplicarRateLimit, obterIpCliente } from "@/app/lib/rateLimit";
 import { supabaseAdmin } from "@/app/lib/supabaseAdmin";
 
 function limparCPF(cpf: string) {
@@ -80,6 +81,17 @@ function verificarSenha(senha: string, senhaHashSalva: string) {
 
 export async function POST(request: Request) {
   try {
+    const limite = await aplicarRateLimit({
+      chave: obterIpCliente(request),
+      rota: "/api/usuarios",
+      limite: 20,
+      janelaSegundos: 60 * 60,
+    });
+
+    if (limite) {
+      return limite;
+    }
+
     const body = await request.json();
 
     const modo = String(body.modo || "").trim();

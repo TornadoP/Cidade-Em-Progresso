@@ -10,7 +10,8 @@ export default async function AdminObrasPage() {
     .select(
       "id, fonte_id, titulo, local, investimento, inicio, prazo, progresso, status, tipo, imagem, descricao, orgao, empresa, ultima_atualizacao, origem",
     )
-    .order("created_at", { ascending: false });
+    .order("created_at", { ascending: false })
+    .limit(200);
 
   return (
     <AdminGuard>

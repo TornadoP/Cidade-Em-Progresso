@@ -1,4 +1,6 @@
 import { NextResponse } from "next/server";
+import { exigirUsuarioAutenticado } from "@/app/lib/apiAuth";
+import { aplicarRateLimit } from "@/app/lib/rateLimit";
 import { supabaseAdmin } from "@/app/lib/supabaseAdmin";
 function limitar(valor: number, minimo = 0, maximo = 100) {
   return Math.max(minimo, Math.min(valor, maximo));
@@ -333,9 +335,27 @@ function calcularIndicadoresSugestao({
 }
 export async function POST(request: Request) {
   try {
+    const auth = await exigirUsuarioAutenticado(request);
+
+    if (auth.resposta) {
+      return auth.resposta;
+    }
+
+    const usuarioUuid = auth.usuario.id;
+
+    const limite = await aplicarRateLimit({
+      chave: usuarioUuid,
+      rota: "/api/sugestoes",
+      limite: 3,
+      janelaSegundos: 60 * 60,
+    });
+
+    if (limite) {
+      return limite;
+    }
+
     const body = await request.json();
 
-    const usuarioUuid = String(body.usuario_uuid || "").trim();
     const titulo = String(body.titulo || "").trim();
     const local = String(body.local || "").trim();
     const categoria = String(body.categoria || "").trim();
@@ -357,6 +377,23 @@ export async function POST(request: Request) {
           .map((item) => item.trim())
           .filter(Boolean)
       : [];
+
+    const totalImagens = (imagemPrincipal ? 1 : 0) + imagensExtras.length;
+
+    if (totalImagens > 5) {
+      return NextResponse.json(
+        { erro: "Envie no máximo 5 imagens por sugestão." },
+        { status: 400 },
+      );
+    }
+
+    if (videoUrl && videoUrl.includes(",")) {
+      return NextResponse.json(
+        { erro: "Envie no máximo 1 vídeo por sugestão." },
+        { status: 400 },
+      );
+    }
+
     const indicadores = calcularIndicadoresSugestao({
       categoria,
       titulo,
@@ -365,13 +402,6 @@ export async function POST(request: Request) {
       local,
       bairro,
     });
-
-    if (!usuarioUuid) {
-      return NextResponse.json(
-        { erro: "Você precisa entrar ou se cadastrar para sugerir uma obra." },
-        { status: 401 },
-      );
-    }
 
     if (!titulo || !descricao) {
       return NextResponse.json(

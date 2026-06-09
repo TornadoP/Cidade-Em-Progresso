@@ -18,11 +18,6 @@ type Obra = {
   status: string | null;
   tipo: string | null;
   imagem: string | null;
-  descricao: string | null;
-  detalhes: string | null;
-  orgao: string | null;
-  empresa: string | null;
-  ultima_atualizacao: string | null;
   total_votos: number | null;
   origem: string | null;
 };
