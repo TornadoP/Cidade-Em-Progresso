@@ -24,6 +24,17 @@ type Voto = {
   obras: ObraDoVoto | null;
 };
 
+type Sugestao = {
+  id: string;
+  titulo: string;
+  local: string | null;
+  bairro: string | null;
+  categoria: string | null;
+  descricao: string | null;
+  status: string | null;
+  created_at: string;
+};
+
 type PerfilResposta = {
   usuario: {
     id: string;
@@ -39,12 +50,14 @@ type PerfilResposta = {
     total_votos: number;
   };
   votos: Voto[];
+  sugestoes: Sugestao[];
 };
 
 export default function PerfilPage() {
   const router = useRouter();
 
   const [perfil, setPerfil] = useState<PerfilResposta | null>(null);
+  const [usuarioUuid, setUsuarioUuid] = useState("");
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState("");
 
@@ -66,17 +79,22 @@ export default function PerfilPage() {
   const [mensagemExclusao, setMensagemExclusao] = useState("");
   const [erroExclusao, setErroExclusao] = useState("");
   const [excluindoConta, setExcluindoConta] = useState(false);
+  const [excluindoSugestaoId, setExcluindoSugestaoId] = useState("");
 
   const carregarPerfil = useCallback(async () => {
     setCarregando(true);
     setErro("");
 
-    const usuarioUuid = localStorage.getItem("cidade_progresso_usuario_uuid");
+    const usuarioUuidSalvo = localStorage.getItem(
+      "cidade_progresso_usuario_uuid",
+    );
 
-    if (!usuarioUuid) {
+    if (!usuarioUuidSalvo) {
       router.push("/rotas/login?voltar=/rotas/perfil");
       return;
     }
+
+    setUsuarioUuid(usuarioUuidSalvo);
 
     const resposta = await fetch("/api/perfil", {
       method: "POST",
@@ -84,7 +102,7 @@ export default function PerfilPage() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        usuario_uuid: usuarioUuid,
+        usuario_uuid: usuarioUuidSalvo,
       }),
     });
 
@@ -99,8 +117,6 @@ export default function PerfilPage() {
       return;
     }
 
-    setPerfil(dados);
-    setCarregando(false);
     setPerfil(dados);
     setCarregando(false);
   }, [router]);
@@ -314,6 +330,37 @@ export default function PerfilPage() {
     window.location.href = "/rotas/login";
   }
 
+  async function excluirSugestao(sugestaoId: string) {
+    const confirmar = window.confirm(
+      "Tem certeza que deseja excluir esta sugestão? A obra popular criada a partir dela também será removida.",
+    );
+
+    if (!confirmar) return;
+
+    setExcluindoSugestaoId(sugestaoId);
+
+    const resposta = await fetch(`/api/sugestoes/${sugestaoId}/excluir`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        usuario_uuid: usuarioUuid,
+      }),
+    });
+
+    const dados = await resposta.json();
+
+    if (!resposta.ok) {
+      alert(dados.erro || "Erro ao excluir sugestão.");
+      setExcluindoSugestaoId("");
+      return;
+    }
+
+    alert("Sugestão excluída com sucesso.");
+    window.location.reload();
+  }
+
   if (carregando) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-[#E3F1F1] to-[#CBDfde] p-6 font-sans">
@@ -354,6 +401,7 @@ export default function PerfilPage() {
 
   const votosAtivos = perfil.votos.filter((voto) => voto.ativo);
   const votosHistoricos = perfil.votos.filter((voto) => !voto.ativo);
+  const sugestoes = perfil.sugestoes || [];
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#E3F1F1] to-[#CBDfde] p-4 font-sans sm:p-6">
@@ -668,6 +716,74 @@ export default function PerfilPage() {
               </form>
             </div>
           </div>
+        </section>
+
+        <section className="mt-6 rounded-3xl bg-white/85 p-6 shadow-xl ring-1 ring-black/5">
+          <h2 className="text-xl font-bold text-black">Minhas sugestões</h2>
+
+          <p className="mt-2 text-sm text-black/70">
+            Acompanhe as sugestões que você enviou para análise popular.
+          </p>
+
+          {sugestoes.length === 0 ? (
+            <div className="mt-5 rounded-2xl bg-[#E3F1F1] p-5 text-sm text-black/70">
+              Você ainda não enviou sugestões.
+            </div>
+          ) : (
+            <div className="mt-5 grid gap-4 md:grid-cols-2">
+              {sugestoes.map((sugestao) => (
+                <article
+                  key={sugestao.id}
+                  className="rounded-2xl bg-white p-4 shadow-md ring-1 ring-black/5"
+                >
+                  <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                    <div>
+                      <h3 className="font-bold text-black">
+                        {sugestao.titulo}
+                      </h3>
+
+                      <p className="mt-1 text-sm text-black/60">
+                        {sugestao.status || "Status não informado"}
+                        {sugestao.categoria ? ` - ${sugestao.categoria}` : ""}
+                      </p>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() => excluirSugestao(sugestao.id)}
+                      disabled={excluindoSugestaoId === sugestao.id}
+                      className="shrink-0 rounded-xl bg-red-100 px-4 py-2 text-sm font-bold text-red-700 transition hover:bg-red-200 disabled:cursor-not-allowed disabled:opacity-70"
+                    >
+                      {excluindoSugestaoId === sugestao.id
+                        ? "Excluindo..."
+                        : "Excluir sugestão"}
+                    </button>
+                  </div>
+
+                  <p className="mt-3 line-clamp-3 text-sm leading-6 text-black/70">
+                    {sugestao.descricao || "Sem descrição informada."}
+                  </p>
+
+                  <div className="mt-4 flex flex-wrap gap-2 text-xs font-semibold text-black/55">
+                    {(sugestao.local || sugestao.bairro) && (
+                      <span className="rounded-full bg-[#E3F1F1] px-3 py-1">
+                        {[sugestao.local, sugestao.bairro]
+                          .filter(Boolean)
+                          .join(" - ")}
+                      </span>
+                    )}
+
+                    <span className="rounded-full bg-[#E3F1F1] px-3 py-1">
+                      Enviada em{" "}
+                      {new Date(sugestao.created_at).toLocaleDateString(
+                        "pt-BR",
+                      )}
+                    </span>
+                  </div>
+                </article>
+              ))}
+            </div>
+          )}
         </section>
 
         <section className="mt-6 rounded-3xl bg-white/85 p-6 shadow-xl ring-1 ring-black/5">

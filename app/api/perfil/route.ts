@@ -57,6 +57,21 @@ export async function POST(request: Request) {
       return NextResponse.json({ erro: erroVotos.message }, { status: 500 });
     }
 
+    const { data: sugestoes, error: erroSugestoes } = await supabaseAdmin
+      .from("sugestoes")
+      .select(
+        "id, titulo, local, bairro, categoria, descricao, status, created_at",
+      )
+      .eq("usuario_uuid", usuarioUuid)
+      .order("created_at", { ascending: false });
+
+    if (erroSugestoes) {
+      return NextResponse.json(
+        { erro: erroSugestoes.message },
+        { status: 500 },
+      );
+    }
+
     const votosAtivos = (votos || []).filter((voto) => voto.ativo === true);
     const totalVotos = votos?.length || 0;
     const limiteVotosAtivos = 5;
@@ -71,6 +86,7 @@ export async function POST(request: Request) {
         total_votos: totalVotos,
       },
       votos: votos || [],
+      sugestoes: sugestoes || [],
     });
   } catch (error) {
     console.error(error);
