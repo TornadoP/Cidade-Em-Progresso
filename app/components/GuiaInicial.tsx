@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { supabase } from "@/app/lib/supabaseClient";
 
 type SlideGuia = {
   titulo: string;
@@ -70,18 +71,38 @@ export default function GuiaInicial() {
 
   useEffect(() => {
     const timer = window.setTimeout(() => {
-      const guiaJaVisto = localStorage.getItem("cidade_progresso_guia_visto");
+      async function verificarSeDeveAbrirGuia() {
+        const { data } = await supabase.auth.getSession();
 
-      if (!guiaJaVisto) {
-        setAberto(true);
+        const usuarioLogado = Boolean(data.session);
+
+        if (!usuarioLogado) {
+          setAberto(true);
+          return;
+        }
+
+        const guiaJaVisto = localStorage.getItem("cidade_progresso_guia_visto");
+
+        if (!guiaJaVisto) {
+          setAberto(true);
+        }
       }
+
+      verificarSeDeveAbrirGuia();
     }, 0);
 
     return () => window.clearTimeout(timer);
   }, []);
 
-  function fecharGuia() {
-    localStorage.setItem("cidade_progresso_guia_visto", "true");
+  async function fecharGuia() {
+    const { data } = await supabase.auth.getSession();
+
+    const usuarioLogado = Boolean(data.session);
+
+    if (usuarioLogado) {
+      localStorage.setItem("cidade_progresso_guia_visto", "true");
+    }
+
     setAberto(false);
   }
 
