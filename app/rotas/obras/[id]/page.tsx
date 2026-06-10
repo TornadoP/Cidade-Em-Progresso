@@ -6,6 +6,7 @@ import BotaoVotar from "@/app/components/BotaoVotar";
 import AcoesUsuario from "@/app/components/AcoesUsuario";
 import ModalInformacoesObra from "@/app/components/ModalInformacoesObra";
 import ModalGaleriaObra from "@/app/components/ModalGaleriaObra";
+import SeloOrigemObra from "@/app/components/SeloOrigemObra";
 
 //P A G I N A    D E   D E T A L H E S  O B R A S
 
@@ -152,11 +153,7 @@ export default async function DetalhesObraPage({
           <aside className="rounded-[2rem] bg-[#425C59] p-6 text-white shadow-[0_25px_60px_rgba(0,0,0,0.35)] ring-1 ring-white/20 sm:p-8">
             <div className="flex flex-col gap-6">
               <div className="flex flex-wrap items-center gap-3">
-                <span className="inline-flex h-11 items-center rounded-full bg-[#FFC222] px-5 text-sm font-bold text-black shadow-sm">
-                  {obra.origem === "Sugestão popular"
-                    ? "Sugestão popular"
-                    : "Obra oficial"}
-                </span>
+                <SeloOrigemObra origem={obra.origem} />
               </div>
 
               <div className="min-w-0">

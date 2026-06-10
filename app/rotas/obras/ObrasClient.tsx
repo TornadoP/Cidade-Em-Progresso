@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useState } from "react";
 import type { Dispatch, SetStateAction } from "react";
 import AcoesUsuario from "@/app/components/AcoesUsuario";
+import SeloOrigemObra from "@/app/components/SeloOrigemObra";
 
 type Obra = {
   id: string;
@@ -321,6 +322,10 @@ export default function ObrasClient({
                     className="flex h-full min-h-[520px] flex-col overflow-hidden rounded-3xl bg-white shadow-[0_18px_45px_rgba(0,0,0,0.28)] ring-1 ring-black/5 transition-all duration-300 hover:-translate-y-2 hover:scale-[1.01] hover:shadow-[0_30px_70px_rgba(0,0,0,0.42)]"
                   >
                     <div className="relative h-52 w-full shrink-0 bg-[#425C59]/20">
+                      <div className="absolute left-4 top-4 z-10">
+                        <SeloOrigemObra origem={obra.origem} />
+                      </div>
+
                       <Image
                         src={obra.imagem || "/obra-principal.png"}
                         alt={obra.titulo}
@@ -331,11 +336,6 @@ export default function ObrasClient({
                     </div>
 
                     <div className="flex flex-1 flex-col p-5">
-                      {obra.origem === "Sugestão popular" && (
-                        <span className="mb-3 inline-flex w-fit rounded-full bg-[#FFC222] px-3 py-1 text-xs font-bold text-black shadow-sm">
-                          Sugestão popular
-                        </span>
-                      )}
                       <div className="min-h-[112px]">
                         <h3 className="h-[56px] overflow-hidden text-xl font-bold leading-7 text-black">
                           {obra.titulo}

@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import AcoesUsuario from "@/app/components/AcoesUsuario";
 import GuiaInicial from "@/app/components/GuiaInicial";
+import SeloOrigemObra from "@/app/components/SeloOrigemObra";
 
 type Obra = {
   id: string;
@@ -17,6 +18,7 @@ type Obra = {
   tipo: string | null;
   imagem: string | null;
   descricao: string | null;
+  origem: string | null;
 };
 {
   /* P A G I N A    P R I N C I P A L*/
@@ -261,6 +263,10 @@ export default function HomeClient({ obras }: { obras: Obra[] }) {
               >
                 {/* Área da imagem */}
                 <div className="relative h-[260px] w-full overflow-hidden rounded-2xl bg-white/20 sm:h-[320px] md:h-[360px]">
+                  <div className="absolute left-4 top-4 z-10">
+                    <SeloOrigemObra origem={obraPrincipal.origem} />
+                  </div>
+
                   <Image
                     src={obraPrincipal.imagem || "/obra-principal.png"}
                     alt={obraPrincipal.titulo}
@@ -329,6 +335,11 @@ export default function HomeClient({ obras }: { obras: Obra[] }) {
                       href={`/rotas/obras/${obra.fonte_id || obra.id}`}
                       className="animacao-troca-obra flex h-[160px] min-w-[160px] flex-col items-center justify-center rounded-lg bg-white px-3 text-center shadow-sm transition-all duration-300 hover:-translate-y-1 hover:scale-[1.02] hover:shadow-xl lg:h-auto lg:min-w-0 lg:flex-1"
                     >
+                      <SeloOrigemObra
+                        origem={obra.origem}
+                        className="mb-2 scale-90"
+                      />
+
                       <p className="mb-2 line-clamp-2 text-sm font-medium text-black">
                         {obra.titulo}
                       </p>
