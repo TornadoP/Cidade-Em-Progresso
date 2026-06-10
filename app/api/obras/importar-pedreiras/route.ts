@@ -63,6 +63,7 @@ type ObraNormalizada = {
   ultima_atualizacao: string;
   origem: "Oficial";
   imagens_prefeitura?: string[];
+  documentos_prefeitura?: string[];
 };
 
 function limparTexto(texto: string) {
@@ -127,6 +128,28 @@ function extrairImagensDaPrefeitura(html: string) {
   }
 
   return Array.from(new Set(imagens));
+}
+
+function extrairLinksPdf(html: string, baseUrl: string) {
+  const regex = /href=["']([^"']+\.pdf[^"']*)["']/gi;
+  const links: string[] = [];
+
+  let match;
+
+  while ((match = regex.exec(html)) !== null) {
+    const href = match[1]?.replace(/&amp;/gi, "&").trim();
+
+    if (!href) continue;
+
+    try {
+      const urlCompleta = new URL(href, baseUrl).toString();
+      links.push(urlCompleta);
+    } catch {
+      // Ignora links inválidos publicados no HTML da prefeitura.
+    }
+  }
+
+  return Array.from(new Set(links));
 }
 
 function escolherImagemPrincipal(imagensPrefeitura: string[], tipo: string) {
@@ -658,6 +681,7 @@ async function buscarObrasPrefeitura() {
       const htmlDetalhe = await respostaDetalhe.text();
       const textoDetalhe = limparTexto(htmlDetalhe);
       const imagensPrefeitura = extrairImagensDaPrefeitura(htmlDetalhe);
+      const documentosPrefeitura = extrairLinksPdf(htmlDetalhe, link.url);
 
       const investimento = pegarValorTotal(textoDetalhe);
       const totalMedicoes = pegarTotalMedicoes(textoDetalhe);
@@ -701,6 +725,7 @@ async function buscarObrasPrefeitura() {
         ultima_atualizacao: ultimaAtualizacao,
         origem: "Oficial",
         imagens_prefeitura: imagensPrefeitura,
+        documentos_prefeitura: documentosPrefeitura,
       });
     } catch (error) {
       console.error("Erro ao ler detalhe da obra:", link.url, error);
@@ -869,6 +894,38 @@ function removerDuplicadas(obras: ObraNormalizada[]) {
   return Array.from(mapa.values());
 }
 
+async function salvarDocumentosDaObra({
+  obraId,
+  linksPdf,
+}: {
+  obraId: string;
+  linksPdf: string[];
+}) {
+  if (linksPdf.length === 0) return 0;
+
+  const documentos = linksPdf.map((url, index) => ({
+    obra_id: obraId,
+    titulo: `Documento ${index + 1}`,
+    url,
+    tipo: "medicao",
+    origem: "prefeitura",
+  }));
+
+  const { error } = await supabaseAdmin.from("obras_documentos").upsert(
+    documentos,
+    {
+      onConflict: "obra_id,url",
+    },
+  );
+
+  if (error) {
+    console.error("Erro ao salvar documentos da obra:", error);
+    return 0;
+  }
+
+  return documentos.length;
+}
+
 export async function POST(request: NextRequest) {
   try {
     const chaveImportacao = request.headers.get("x-import-secret");
@@ -905,11 +962,12 @@ export async function POST(request: NextRequest) {
     }
 
     const obrasParaUpsert = obrasParaSalvar.map((obra) => {
-      const obraSemImagens = { ...obra };
+      const obraSemArquivos = { ...obra };
 
-      delete obraSemImagens.imagens_prefeitura;
+      delete obraSemArquivos.imagens_prefeitura;
+      delete obraSemArquivos.documentos_prefeitura;
 
-      return obraSemImagens;
+      return obraSemArquivos;
     });
 
     const { data, error } = await supabaseAdmin
@@ -963,6 +1021,21 @@ export async function POST(request: NextRequest) {
       await supabaseAdmin.from("obras_imagens").insert(imagensParaInserir);
     }
 
+    let documentosOficiais = 0;
+
+    if (data) {
+      for (const obraSalva of data) {
+        const obraOriginal = obrasParaSalvar.find(
+          (obra) => obra.fonte_id === obraSalva.fonte_id,
+        );
+
+        documentosOficiais += await salvarDocumentosDaObra({
+          obraId: obraSalva.id,
+          linksPdf: obraOriginal?.documentos_prefeitura || [],
+        });
+      }
+    }
+
     return NextResponse.json({
       mensagem: "Obras oficiais importadas/atualizadas com sucesso.",
       fontes: {
@@ -971,6 +1044,7 @@ export async function POST(request: NextRequest) {
       },
       salvas: data?.length || 0,
       imagens_oficiais: imagensParaInserir.length,
+      documentos_oficiais: documentosOficiais,
       exemplo: obrasParaSalvar[0],
       obras: data || [],
     });
