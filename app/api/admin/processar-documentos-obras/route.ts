@@ -167,7 +167,7 @@ async function renderizarPaginaComoImagem(
   }
 
   const page = await pdf.getPage(numeroPagina);
-  const viewport = page.getViewport({ scale: 1.6 });
+  const viewport = page.getViewport({ scale: 1.1 });
 
   const canvas = createCanvas(
     Math.floor(viewport.width),
@@ -265,7 +265,7 @@ export async function POST(request: NextRequest) {
           })
           .eq("id", documento.id);
 
-        const textoOcr = await fazerOcrNasPrimeirasPaginas(documento.url, 4);
+        const textoOcr = await fazerOcrNasPrimeirasPaginas(documento.url, 1);
         const classificacao = classificarDocumentoPorOcr(textoOcr, index);
 
         const { error: erroAtualizar } = await supabaseAdmin
