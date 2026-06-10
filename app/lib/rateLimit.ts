@@ -18,6 +18,12 @@ function segundosParaTexto(segundos: number) {
   return `${minutos} minuto${minutos === 1 ? "" : "s"}`;
 }
 
+function pareceUuid(valor: string) {
+  return /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(
+    valor,
+  );
+}
+
 export function obterIpCliente(request: Request) {
   const encaminhado = request.headers.get("x-forwarded-for");
   const ipEncaminhado = encaminhado?.split(",")[0]?.trim();
@@ -38,14 +44,25 @@ export async function aplicarRateLimit({
 }: RateLimitOptions) {
   const desde = new Date(Date.now() - janelaSegundos * 1000).toISOString();
 
-  const { count, error: erroContagem } = await supabaseAdmin
+  const chaveEhUuid = pareceUuid(chave);
+
+  let consulta = supabaseAdmin
     .from("limites_requisicoes")
     .select("id", { count: "exact", head: true })
-    .eq("chave", chave)
-    .eq("rota", rota)
+    .eq("acao", rota)
     .gte("created_at", desde);
 
+  if (chaveEhUuid) {
+    consulta = consulta.eq("usuario_uuid", chave);
+  } else {
+    consulta = consulta.eq("ip", chave);
+  }
+
+  const { count, error: erroContagem } = await consulta;
+
   if (erroContagem) {
+    console.error("Erro ao verificar rate limit:", erroContagem);
+
     return NextResponse.json(
       { erro: "Erro ao verificar limite de requisições." },
       { status: 500 },
@@ -66,11 +83,14 @@ export async function aplicarRateLimit({
   const { error: erroRegistro } = await supabaseAdmin
     .from("limites_requisicoes")
     .insert({
-      chave,
-      rota,
+      usuario_uuid: chaveEhUuid ? chave : null,
+      ip: chaveEhUuid ? null : chave,
+      acao: rota,
     });
 
   if (erroRegistro) {
+    console.error("Erro ao registrar rate limit:", erroRegistro);
+
     return NextResponse.json(
       { erro: "Erro ao registrar limite de requisições." },
       { status: 500 },
