@@ -19,6 +19,10 @@ type Obra = {
   status: string | null;
   tipo: string | null;
   imagem: string | null;
+  descricao: string | null;
+  bairro?: string | null;
+  orgao: string | null;
+  empresa: string | null;
   total_votos: number | null;
   origem: string | null;
 };
@@ -40,6 +44,14 @@ const filtrosStatus = [
 
 const filtrosOrigem = ["Oficial", "Sugestão popular"];
 
+function normalizarBusca(texto: string | null | undefined) {
+  return String(texto || "")
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .trim();
+}
+
 export default function ObrasClient({
   obras,
   pesquisaInicial,
@@ -52,15 +64,23 @@ export default function ObrasClient({
   const [tiposSelecionados, setTiposSelecionados] = useState<string[]>([]);
   const [origensSelecionadas, setOrigensSelecionadas] = useState<string[]>([]);
 
-  const obrasFiltradas = obras.filter((obra) => {
-    const texto = pesquisa.toLowerCase();
+  const termoBusca = normalizarBusca(pesquisa);
 
-    const titulo = obra.titulo?.toLowerCase() || "";
-    const local = obra.local?.toLowerCase() || "";
-    const status = obra.status?.toLowerCase() || "";
+  const obrasFiltradas = obras.filter((obra) => {
+    const textoDaObra = normalizarBusca(`
+      ${obra.titulo}
+      ${obra.descricao}
+      ${obra.local}
+      ${obra.bairro}
+      ${obra.tipo}
+      ${obra.status}
+      ${obra.origem}
+      ${obra.orgao}
+      ${obra.empresa}
+    `);
 
     const correspondePesquisa =
-      titulo.includes(texto) || local.includes(texto) || status.includes(texto);
+      !termoBusca || textoDaObra.includes(termoBusca);
 
     const correspondeStatus =
       statusSelecionados.length === 0 ||

@@ -11,7 +11,7 @@ export default async function ObrasPage({
   const { data: obras, error } = await supabase
     .from("obras_com_votos")
     .select(
-      "id, fonte_id, titulo, local, investimento, inicio, prazo, progresso, status, tipo, imagem, total_votos, origem",
+      "id, fonte_id, titulo, local, investimento, inicio, prazo, progresso, status, tipo, imagem, descricao, orgao, empresa, total_votos, origem",
     )
     .order("created_at", { ascending: false })
     .limit(100);
