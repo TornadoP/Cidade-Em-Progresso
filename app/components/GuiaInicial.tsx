@@ -123,8 +123,8 @@ export default function GuiaInicial() {
   if (!aberto) return null;
 
   return (
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/65 px-4 py-6 backdrop-blur-sm">
-      <div className="relative flex max-h-[92vh] w-full max-w-4xl flex-col overflow-hidden rounded-3xl bg-white shadow-2xl">
+    <div className="fixed inset-0 z-[9999] flex items-end justify-center bg-black/65 px-3 py-3 backdrop-blur-sm sm:items-center sm:px-4 sm:py-6">
+      <div className="relative flex h-[92vh] w-full max-w-4xl flex-col overflow-hidden rounded-3xl bg-white shadow-2xl sm:h-auto sm:max-h-[92vh]">
         <div className="flex items-center justify-between gap-4 border-b border-black/10 px-5 py-4">
           <div>
             <p className="text-xs font-bold uppercase tracking-[0.25em] text-[#425C59]">
@@ -146,7 +146,7 @@ export default function GuiaInicial() {
         </div>
 
         <div className="grid flex-1 overflow-y-auto md:grid-cols-[1.2fr_0.8fr]">
-          <div className="relative min-h-[300px] bg-[#E3F1F1] sm:min-h-[420px] md:min-h-[540px]">
+          <div className="relative min-h-[220px] bg-[#E3F1F1] sm:min-h-[360px] md:min-h-[540px]">
             <Image
               src={slideAtual.imagem}
               alt={slideAtual.titulo}
@@ -157,7 +157,7 @@ export default function GuiaInicial() {
             />
           </div>
 
-          <div className="flex flex-col justify-between p-6 sm:p-8">
+          <div className="flex flex-col justify-between p-5 sm:p-8">
             <div>
               <div className="mb-5 flex flex-wrap gap-2">
                 {slides.map((slide, indice) => (
@@ -179,21 +179,21 @@ export default function GuiaInicial() {
                 Passo {indiceAtual + 1} de {slides.length}
               </p>
 
-              <h3 className="text-2xl font-bold leading-tight text-black sm:text-3xl">
+              <h3 className="text-xl font-bold leading-tight text-black sm:text-3xl">
                 {slideAtual.titulo}
               </h3>
 
-              <p className="mt-4 text-base leading-8 text-black/70">
+              <p className="mt-3 text-sm leading-7 text-black/70 sm:text-base sm:leading-8">
                 {slideAtual.descricao}
               </p>
             </div>
 
-            <div className="mt-8 flex items-center justify-between gap-3">
+            <div className="mt-6 flex items-center justify-between gap-3">
               <button
                 type="button"
                 onClick={voltarSlide}
                 disabled={primeiroSlide}
-                className="rounded-xl border border-black/10 px-5 py-3 text-sm font-bold text-black transition hover:bg-zinc-100 disabled:cursor-not-allowed disabled:opacity-40"
+                className="rounded-xl border border-black/10 px-4 py-3 text-sm font-bold text-black transition hover:bg-zinc-100 disabled:cursor-not-allowed disabled:opacity-40 sm:px-5"
               >
                 ← Voltar
               </button>
@@ -201,7 +201,7 @@ export default function GuiaInicial() {
               <button
                 type="button"
                 onClick={avancarSlide}
-                className="rounded-xl bg-[#FFC222] px-5 py-3 text-sm font-bold text-black transition hover:bg-[#eab308]"
+                className="rounded-xl bg-[#FFC222] px-4 py-3 text-sm font-bold text-black transition hover:bg-[#eab308] sm:px-5"
               >
                 {ultimoSlide ? "Começar" : "Próximo →"}
               </button>

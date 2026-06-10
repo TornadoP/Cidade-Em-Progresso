@@ -7,15 +7,11 @@ import AcoesUsuario from "@/app/components/AcoesUsuario";
 import { supabase } from "@/app/lib/supabaseClient";
 
 const categorias = [
-  "Pavimentação",
-  "Saúde",
   "Educação",
-  "Iluminação",
-  "Saneamento",
-  "Drenagem",
+  "Saúde",
+  "Infraestrutura",
   "Lazer",
-  "Segurança",
-  "Mobilidade",
+  "Patrimônio público",
   "Outro",
 ];
 
@@ -145,6 +141,34 @@ export default function ParticiparPage() {
     }
 
     return String(dados.url || "");
+  }
+
+  function podeAvancarEtapa() {
+    if (etapa === 1) {
+      return Boolean(titulo.trim() && local.trim() && bairro.trim() && categoria);
+    }
+
+    if (etapa === 2) {
+      return Boolean(descricao.trim() && justificativa.trim());
+    }
+
+    return true;
+  }
+
+  function voltarEtapa() {
+    setConfirmado(false);
+    setEtapa(etapa - 1);
+  }
+
+  function avancarEtapa() {
+    if (!podeAvancarEtapa()) {
+      setErro("Preencha os campos obrigatórios desta etapa antes de continuar.");
+      return;
+    }
+
+    setErro("");
+    setConfirmado(false);
+    setEtapa(etapa + 1);
   }
 
   async function enviarSugestao(event: React.FormEvent<HTMLFormElement>) {
@@ -703,7 +727,7 @@ export default function ParticiparPage() {
                   <div className="mt-4 space-y-4">
                     <div>
                       <label className="mb-1 block text-sm font-semibold text-black">
-                        Etapas sugeridas
+                        O que você acha que deveria ser feito?
                       </label>
 
                       <textarea
@@ -711,7 +735,7 @@ export default function ParticiparPage() {
                         onChange={(event) =>
                           setEtapasSugeridas(event.target.value)
                         }
-                        placeholder="Ex: levantamento, projeto, licitação, execução..."
+                        placeholder="Ex: visitar o local, fazer orçamento, pavimentar a rua, instalar iluminação..."
                         rows={3}
                         className="w-full resize-none rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm text-black outline-none transition focus:border-[#425C59]"
                       />
@@ -719,7 +743,7 @@ export default function ParticiparPage() {
 
                     <div>
                       <label className="mb-1 block text-sm font-semibold text-black">
-                        Transparência ou informação conhecida
+                        Você conhece alguma informação sobre esse problema?
                       </label>
 
                       <textarea
@@ -727,7 +751,7 @@ export default function ParticiparPage() {
                         onChange={(event) =>
                           setTransparenciaInfo(event.target.value)
                         }
-                        placeholder="Ex: promessa pública, informação de orçamento, edital conhecido..."
+                        placeholder="Ex: já foi prometido antes, moradores já solicitaram, existe reclamação antiga..."
                         rows={3}
                         className="w-full resize-none rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm text-black outline-none transition focus:border-[#425C59]"
                       />
@@ -735,7 +759,7 @@ export default function ParticiparPage() {
 
                     <div>
                       <label className="mb-1 block text-sm font-semibold text-black">
-                        Órgão sugerido
+                        Órgão ou secretaria responsável, se souber
                       </label>
 
                       <input
@@ -744,7 +768,7 @@ export default function ParticiparPage() {
                         onChange={(event) =>
                           setOrgaoSugerido(event.target.value)
                         }
-                        placeholder="Ex: Secretaria Municipal de Obras"
+                        placeholder="Ex: Secretaria de Obras, Secretaria de Saúde, Secretaria de Educação..."
                         className="w-full rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm text-black outline-none transition focus:border-[#425C59]"
                       />
                     </div>
@@ -813,19 +837,19 @@ export default function ParticiparPage() {
                     </p>
 
                     <p>
-                      <strong>Etapas Sugeridas:</strong>
+                      <strong>O que deveria ser feito:</strong>
                       <br />
                       {etapasSugeridas || "-"}
                     </p>
 
                     <p>
-                      <strong>Transparência:</strong>
+                      <strong>Informação conhecida:</strong>
                       <br />
                       {transparenciaInfo || "-"}
                     </p>
 
                     <p>
-                      <strong>Órgão:</strong>
+                      <strong>Órgão ou secretaria:</strong>
                       <br />
                       {orgaoSugerido || "-"}
                     </p>
@@ -866,7 +890,7 @@ export default function ParticiparPage() {
                 {etapa > 1 && (
                   <button
                     type="button"
-                    onClick={() => setEtapa(etapa - 1)}
+                    onClick={voltarEtapa}
                     className="rounded-2xl bg-gray-400 px-6 py-3 text-white"
                   >
                     Voltar
@@ -876,7 +900,7 @@ export default function ParticiparPage() {
                 {etapa < 5 ? (
                   <button
                     type="button"
-                    onClick={() => setEtapa(etapa + 1)}
+                    onClick={avancarEtapa}
                     className="ml-auto rounded-2xl bg-[#425C59] px-6 py-3 text-white"
                   >
                     Próximo
