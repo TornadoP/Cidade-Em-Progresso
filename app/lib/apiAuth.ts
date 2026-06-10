@@ -16,6 +16,20 @@ type ResultadoAuth =
       resposta: NextResponse;
     };
 
+type ResultadoAdmin =
+  | {
+      usuario: UsuarioAutenticado;
+      email: string;
+      adminFixo: boolean;
+      resposta?: never;
+    }
+  | {
+      usuario?: never;
+      email?: never;
+      adminFixo?: never;
+      resposta: NextResponse;
+    };
+
 function obterToken(request: Request) {
   const authHeader = request.headers.get("authorization");
 
@@ -62,14 +76,14 @@ export async function exigirUsuarioAutenticado(
   };
 }
 
-function emailsAdmins() {
+function obterEmailsAdminFixos() {
   return (process.env.ADMIN_EMAILS || "")
     .split(",")
     .map((email) => email.trim().toLowerCase())
     .filter(Boolean);
 }
 
-export async function exigirAdmin(request: Request): Promise<ResultadoAuth> {
+export async function exigirAdmin(request: Request): Promise<ResultadoAdmin> {
   const auth = await exigirUsuarioAutenticado(request);
 
   if (auth.resposta) {
@@ -78,14 +92,52 @@ export async function exigirAdmin(request: Request): Promise<ResultadoAuth> {
 
   const emailUsuario = auth.usuario.email?.toLowerCase();
 
-  if (!emailUsuario || !emailsAdmins().includes(emailUsuario)) {
+  if (!emailUsuario) {
     return {
       resposta: NextResponse.json(
-        { erro: "Não autorizado." },
+        { erro: "Usuário sem email." },
         { status: 403 },
       ),
     };
   }
 
-  return auth;
+  const emailsFixos = obterEmailsAdminFixos();
+
+  if (emailsFixos.includes(emailUsuario)) {
+    return {
+      usuario: auth.usuario,
+      email: emailUsuario,
+      adminFixo: true,
+    };
+  }
+
+  const { data: adminDinamico, error: erroAdmin } = await supabaseAdmin
+    .from("admin_users")
+    .select("id, email")
+    .eq("email", emailUsuario)
+    .maybeSingle();
+
+  if (erroAdmin) {
+    return {
+      resposta: NextResponse.json(
+        { erro: "Erro ao verificar permissão admin." },
+        { status: 500 },
+      ),
+    };
+  }
+
+  if (!adminDinamico) {
+    return {
+      resposta: NextResponse.json(
+        { erro: "Acesso negado." },
+        { status: 403 },
+      ),
+    };
+  }
+
+  return {
+    usuario: auth.usuario,
+    email: emailUsuario,
+    adminFixo: false,
+  };
 }

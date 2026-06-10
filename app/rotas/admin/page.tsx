@@ -3,6 +3,7 @@ import AdminGuard from "@/app/components/AdminGuard";
 import AdminNavegacao from "@/app/components/AdminNavegacao";
 import BotaoImportarObras from "@/app/components/BotaoImportarObras";
 import BotaoProcessarDocumentos from "@/app/components/BotaoProcessarDocumentos";
+import GerenciarAdmins from "@/app/components/GerenciarAdmins";
 
 export const dynamic = "force-dynamic";
 
@@ -50,6 +51,10 @@ export default function AdminPage() {
                   Conferir como as obras aparecem para os cidadãos.
                 </p>
               </Link>
+            </div>
+
+            <div className="mt-8">
+              <GerenciarAdmins />
             </div>
           </div>
         </div>
