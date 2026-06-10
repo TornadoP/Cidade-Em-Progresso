@@ -195,18 +195,36 @@ function ordenarPdfsMedicaoDoMaisAntigo(links: string[]) {
 }
 
 function gerarTituloDocumento(url: string, index: number) {
-  const numeroDocumento = extrairNumeroDocumentoMedicao(url);
+  const texto = normalizarTextoDocumento(url);
 
-  if (numeroDocumento > 0) {
-    return `${index + 1}º Relatório fotográfico / medição`;
+  if (texto.includes("/contratos/")) {
+    return "Contrato";
   }
 
-  return `${index + 1}º Relatório fotográfico / medição`;
+  if (texto.includes("/obras/art/")) {
+    return "ART da obra";
+  }
+
+  if (/\/obras\/\d+\/\d+\//.test(texto)) {
+    return `Documento oficial da medição ${index + 1}`;
+  }
+
+  return `Documento oficial ${index + 1}`;
 }
 
 function classificarTipoDocumento(url: string) {
-  if (ehPdfDeMedicaoDaObra(url)) {
-    return "medicao_relatorio_fotografico";
+  const texto = normalizarTextoDocumento(url);
+
+  if (texto.includes("/contratos/")) {
+    return "contrato";
+  }
+
+  if (texto.includes("/obras/art/")) {
+    return "art";
+  }
+
+  if (/\/obras\/\d+\/\d+\//.test(texto)) {
+    return "documento_medicao";
   }
 
   return "documento";
