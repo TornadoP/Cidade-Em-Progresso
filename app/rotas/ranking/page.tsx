@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import type { CSSProperties } from "react";
 import { supabase } from "@/app/lib/supabaseClient";
 import AcoesUsuario from "@/app/components/AcoesUsuario";
 
@@ -37,20 +36,24 @@ function corPosicao(posicao: number) {
 }
 function progressoReal(status: string | null, progresso: string | null) {
   if (status === "Em planejamento") {
-    return "0%";
+    return 0;
   }
 
-  return progresso || "0%";
+  const numero = Number(String(progresso || "0").replace("%", ""));
+
+  if (Number.isNaN(numero)) {
+    return 0;
+  }
+
+  return Math.max(0, Math.min(100, Math.round(numero)));
 }
 
-function corProgresso(progresso: string | null) {
-  const valor = Number((progresso || "0%").replace("%", ""));
-
-  if (valor < 50) {
+function corProgresso(progresso: number) {
+  if (progresso < 50) {
     return "bg-gradient-to-r from-[#EF4444] to-[#FACC15]";
   }
 
-  if (valor < 75) {
+  if (progresso < 75) {
     return "bg-gradient-to-r from-[#FACC15] to-[#84CC16]";
   }
 
@@ -161,6 +164,7 @@ export default async function RankingPage() {
                 const totalVotos = Number(obra.total_votos || 0);
                 const votosAtivos = Number(obra.votos_ativos || 0);
                 const pontuacao = Number(obra.pontuacao_prioridade || 0);
+                const progresso = progressoReal(obra.status, obra.progresso);
 
                 return (
                   <Link
@@ -206,26 +210,19 @@ export default async function RankingPage() {
                       </div>
 
                       <div className="mt-4">
-                        <div className="mb-1 flex items-center justify-between text-xs text-black/70">
+                        <div className="mb-1 flex items-center justify-between text-xs text-black/60">
                           <span>Progresso</span>
-                          <span>
-                            {progressoReal(obra.status, obra.progresso)}
-                          </span>
+                          <span>{progresso}%</span>
                         </div>
 
-                        <div className="h-3 w-full overflow-hidden rounded-full bg-[#E5E7EB]">
+                        <div className="h-3 w-full overflow-hidden rounded-full bg-black/10">
                           <div
-                            className={`h-full rounded-full barra-progresso-animada ${corProgresso(
-                              progressoReal(obra.status, obra.progresso),
+                            className={`h-full rounded-full transition-all duration-700 ${corProgresso(
+                              progresso,
                             )}`}
-                            style={
-                              {
-                                "--progresso": progressoReal(
-                                  obra.status,
-                                  obra.progresso,
-                                ),
-                              } as CSSProperties
-                            }
+                            style={{
+                              width: `${progresso}%`,
+                            }}
                           ></div>
                         </div>
                       </div>
