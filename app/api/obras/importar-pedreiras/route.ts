@@ -143,13 +143,16 @@ function extrairLinksPdf(html: string, baseUrl: string) {
 
     try {
       const urlCompleta = new URL(href, baseUrl).toString();
-      links.push(urlCompleta);
+
+      if (ehPdfDeMedicaoDaObra(urlCompleta)) {
+        links.push(urlCompleta);
+      }
     } catch {
       // Ignora links inválidos publicados no HTML da prefeitura.
     }
   }
 
-  return Array.from(new Set(links));
+  return ordenarPdfsMedicaoDoMaisAntigo(Array.from(new Set(links)));
 }
 
 function normalizarTextoDocumento(url: string) {
@@ -167,45 +170,44 @@ function normalizarTextoDocumento(url: string) {
     .replace(/[\u0300-\u036f]/g, "");
 }
 
-function gerarTituloDocumento(url: string, index: number) {
+function ehPdfDeMedicaoDaObra(url: string) {
   const texto = normalizarTextoDocumento(url);
 
-  if (texto.includes("medicao")) {
-    return `${index + 1}ª Medição`;
+  return /\/obras\/\d+\/\d+\/pdf_0000001\.pdf/.test(texto);
+}
+
+function extrairNumeroDocumentoMedicao(url: string) {
+  const texto = normalizarTextoDocumento(url);
+  const match = texto.match(/\/obras\/\d+\/(\d+)\/pdf_0000001\.pdf/);
+
+  if (!match?.[1]) return 0;
+
+  return Number(match[1]);
+}
+
+function ordenarPdfsMedicaoDoMaisAntigo(links: string[]) {
+  return [...links].sort((a, b) => {
+    const numeroA = extrairNumeroDocumentoMedicao(a);
+    const numeroB = extrairNumeroDocumentoMedicao(b);
+
+    return numeroA - numeroB;
+  });
+}
+
+function gerarTituloDocumento(url: string, index: number) {
+  const numeroDocumento = extrairNumeroDocumentoMedicao(url);
+
+  if (numeroDocumento > 0) {
+    return `${index + 1}º Relatório fotográfico / medição`;
   }
 
-  if (texto.includes("empenho")) {
-    return "Nota de Empenho";
-  }
-
-  if (texto.includes("liquidacao")) {
-    return "Liquidação";
-  }
-
-  if (texto.includes("nota") && texto.includes("fiscal")) {
-    return "Nota Fiscal";
-  }
-
-  if (texto.includes("relatorio") || texto.includes("fotografico")) {
-    return "Relatório Fotográfico";
-  }
-
-  if (texto.includes("contrato")) {
-    return "Contrato";
-  }
-
-  return `Documento ${index + 1}`;
+  return `${index + 1}º Relatório fotográfico / medição`;
 }
 
 function classificarTipoDocumento(url: string) {
-  const texto = normalizarTextoDocumento(url);
-
-  if (texto.includes("medicao")) return "medicao";
-  if (texto.includes("empenho")) return "empenho";
-  if (texto.includes("liquidacao")) return "liquidacao";
-  if (texto.includes("fiscal")) return "nota_fiscal";
-  if (texto.includes("fotografico")) return "relatorio_fotografico";
-  if (texto.includes("contrato")) return "contrato";
+  if (ehPdfDeMedicaoDaObra(url)) {
+    return "medicao_relatorio_fotografico";
+  }
 
   return "documento";
 }
