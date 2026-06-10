@@ -25,7 +25,7 @@ function normalizarTexto(texto?: string | null) {
     .trim();
 }
 
-function limitarTexto(texto: string, limite = 5000) {
+function limitarTexto(texto: string, limite = 8000) {
   if (texto.length <= limite) return texto;
   return `${texto.slice(0, limite).trim()}...`;
 }
@@ -102,7 +102,8 @@ function classificarDocumentoPorOcr(textoOriginal: string, index: number) {
 
   if (
     texto.includes("anotacao de responsabilidade tecnica") ||
-    texto.includes("art")
+    texto.includes("responsabilidade tecnica") ||
+    texto.includes(" art ")
   ) {
     return {
       titulo: "ART da obra",
@@ -213,13 +214,18 @@ export async function POST(request: NextRequest) {
     const { data: documentos, error: erroDocumentos } = await supabaseAdmin
       .from("obras_documentos")
       .select("id, obra_id, titulo, url, tipo")
-      .in("status_processamento", ["pendente", "erro"])
+      .or(
+        "status_processamento.is.null,status_processamento.eq.pendente,status_processamento.eq.erro",
+      )
       .order("created_at", { ascending: true })
       .limit(Math.max(1, Math.min(limite, 5)));
 
     if (erroDocumentos) {
       return NextResponse.json(
-        { erro: "Erro ao buscar documentos para processar." },
+        {
+          erro: "Erro ao buscar documentos para processar.",
+          detalhes: erroDocumentos.message,
+        },
         { status: 500 },
       );
     }
