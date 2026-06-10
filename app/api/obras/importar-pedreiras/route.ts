@@ -152,6 +152,64 @@ function extrairLinksPdf(html: string, baseUrl: string) {
   return Array.from(new Set(links));
 }
 
+function normalizarTextoDocumento(url: string) {
+  let texto = url;
+
+  try {
+    texto = decodeURIComponent(url);
+  } catch {
+    texto = url;
+  }
+
+  return texto
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
+}
+
+function gerarTituloDocumento(url: string, index: number) {
+  const texto = normalizarTextoDocumento(url);
+
+  if (texto.includes("medicao")) {
+    return `${index + 1}ª Medição`;
+  }
+
+  if (texto.includes("empenho")) {
+    return "Nota de Empenho";
+  }
+
+  if (texto.includes("liquidacao")) {
+    return "Liquidação";
+  }
+
+  if (texto.includes("nota") && texto.includes("fiscal")) {
+    return "Nota Fiscal";
+  }
+
+  if (texto.includes("relatorio") || texto.includes("fotografico")) {
+    return "Relatório Fotográfico";
+  }
+
+  if (texto.includes("contrato")) {
+    return "Contrato";
+  }
+
+  return `Documento ${index + 1}`;
+}
+
+function classificarTipoDocumento(url: string) {
+  const texto = normalizarTextoDocumento(url);
+
+  if (texto.includes("medicao")) return "medicao";
+  if (texto.includes("empenho")) return "empenho";
+  if (texto.includes("liquidacao")) return "liquidacao";
+  if (texto.includes("fiscal")) return "nota_fiscal";
+  if (texto.includes("fotografico")) return "relatorio_fotografico";
+  if (texto.includes("contrato")) return "contrato";
+
+  return "documento";
+}
+
 function escolherImagemPrincipal(imagensPrefeitura: string[], tipo: string) {
   return imagensPrefeitura[0] || escolherImagemPorTipo(tipo);
 }
@@ -905,9 +963,9 @@ async function salvarDocumentosDaObra({
 
   const documentos = linksPdf.map((url, index) => ({
     obra_id: obraId,
-    titulo: `Documento ${index + 1}`,
+    titulo: gerarTituloDocumento(url, index),
     url,
-    tipo: "medicao",
+    tipo: classificarTipoDocumento(url),
     origem: "prefeitura",
   }));
 
