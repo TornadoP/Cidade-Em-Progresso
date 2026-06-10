@@ -1,13 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createCanvas } from "@napi-rs/canvas";
 import { createWorker } from "tesseract.js";
-import * as pdfjsLib from "pdfjs-dist/legacy/build/pdf.mjs";
+import * as pdfjsLib from "pdfjs-dist/legacy/build/pdf.js";
 import type {
   DocumentInitParameters,
   PDFDocumentProxy,
 } from "pdfjs-dist/types/src/display/api";
 import { exigirAdmin } from "@/app/lib/apiAuth";
 import { supabaseAdmin } from "@/app/lib/supabaseAdmin";
+
+pdfjsLib.GlobalWorkerOptions.workerSrc = "";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -176,7 +178,6 @@ async function renderizarPaginaComoImagem(
 
   await page.render({
     canvasContext: context as unknown as CanvasRenderingContext2D,
-    canvas: null,
     viewport,
   }).promise;
 
