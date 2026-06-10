@@ -39,12 +39,41 @@ function progressoReal(
   return Math.max(0, Math.min(100, Number.isNaN(valor) ? 0 : Math.round(valor)));
 }
 
+function localizacaoValida(local: string | null) {
+  if (!local) return false;
+
+  const texto = local.trim().toLowerCase();
+
+  if (!texto) return false;
+  if (texto === "não informado") return false;
+  if (texto === "nao informado") return false;
+  if (texto === "pedreiras - ma") return false;
+  if (texto === "pedreiras") return false;
+
+  return true;
+}
+
+function gerarConsultaGoogleMaps(local: string | null) {
+  if (localizacaoValida(local)) {
+    return `${local}, Pedreiras - MA`;
+  }
+
+  return "Pedreiras - MA";
+}
+
 function gerarLinkGoogleMaps(local: string | null) {
-  const endereco =
-    local && local !== "Não informado" ? `${local}, Pedreiras - MA` : "Pedreiras - MA";
+  const consulta = gerarConsultaGoogleMaps(local);
 
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-    endereco,
+    consulta,
+  )}`;
+}
+
+function gerarEmbedGoogleMaps(local: string | null) {
+  const consulta = gerarConsultaGoogleMaps(local);
+
+  return `https://www.google.com/maps?q=${encodeURIComponent(
+    consulta,
   )}`;
 }
 
@@ -86,6 +115,7 @@ export default async function DetalhesObraPage({
   const progressoObra = progressoReal(obra.status, obra.progresso);
 
   const linkGoogleMaps = gerarLinkGoogleMaps(obra.local);
+  const embedGoogleMaps = gerarEmbedGoogleMaps(obra.local);
 
   const mostrarAvisoSugestaoPopular =
     obra.origem === "Sugestão popular" && progressoObra === 0;
@@ -342,11 +372,27 @@ export default async function DetalhesObraPage({
               <h3 className="text-lg font-bold text-black">Localização</h3>
             </div>
 
-            <div className="flex h-40 items-center justify-center rounded-2xl bg-[#E3F1F1] text-center text-sm text-black/60">
-              Mapa ilustrativo da obra
-              <br />
-              {obra.local || "Local não informado"}
-            </div>
+            <a
+              href={linkGoogleMaps}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block overflow-hidden rounded-2xl bg-[#E3F1F1] shadow-sm ring-1 ring-black/5 transition hover:opacity-95"
+              aria-label="Abrir localização da obra no Google Maps"
+            >
+              <iframe
+                src={embedGoogleMaps}
+                title={`Mapa da obra ${obra.titulo}`}
+                className="h-48 w-full border-0"
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
+            </a>
+
+            <p className="mt-3 text-xs leading-5 text-black/60">
+              {localizacaoValida(obra.local)
+                ? obra.local
+                : "Localização aproximada: Pedreiras - MA"}
+            </p>
 
             <a
               href={linkGoogleMaps}
