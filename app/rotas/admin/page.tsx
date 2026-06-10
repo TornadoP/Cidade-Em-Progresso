@@ -1,5 +1,6 @@
 import Link from "next/link";
 import AdminGuard from "@/app/components/AdminGuard";
+import BotaoImportarObras from "@/app/components/BotaoImportarObras";
 
 export const dynamic = "force-dynamic";
 
@@ -16,6 +17,10 @@ export default function AdminPage() {
             Área interna para revisar obras, corrigir dados importados e
             adicionar fotos reais.
           </p>
+
+          <div className="mt-8">
+            <BotaoImportarObras />
+          </div>
 
           <div className="mt-8 grid gap-4 md:grid-cols-2">
             <Link
