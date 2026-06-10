@@ -236,7 +236,7 @@ export default function HomeClient({ obras }: { obras: Obra[] }) {
 
                 <input
                   type="text"
-                  placeholder="Pesquisar"
+                  placeholder="Busque por asfalto, escola, saúde, buraco, praça..."
                   value={pesquisa}
                   onChange={(event) => setPesquisa(event.target.value)}
                   onKeyDown={(event) => {
