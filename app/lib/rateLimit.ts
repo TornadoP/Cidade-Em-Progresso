@@ -39,7 +39,7 @@ export async function aplicarRateLimit({
   const desde = new Date(Date.now() - janelaSegundos * 1000).toISOString();
 
   const { count, error: erroContagem } = await supabaseAdmin
-    .from("api_rate_limits")
+    .from("limites_requisicoes")
     .select("id", { count: "exact", head: true })
     .eq("chave", chave)
     .eq("rota", rota)
@@ -64,7 +64,7 @@ export async function aplicarRateLimit({
   }
 
   const { error: erroRegistro } = await supabaseAdmin
-    .from("api_rate_limits")
+    .from("limites_requisicoes")
     .insert({
       chave,
       rota,
