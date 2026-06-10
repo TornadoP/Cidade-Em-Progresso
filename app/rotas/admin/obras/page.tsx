@@ -1,4 +1,5 @@
 import AdminGuard from "@/app/components/AdminGuard";
+import AdminNavegacao from "@/app/components/AdminNavegacao";
 import AdminObrasClient from "@/app/components/AdminObrasClient";
 import { supabase } from "@/app/lib/supabaseClient";
 
@@ -16,20 +17,22 @@ export default async function AdminObrasPage() {
   return (
     <AdminGuard>
       <main className="min-h-screen bg-[#E3F1F1] p-6">
-        <div className="mx-auto max-w-7xl rounded-3xl bg-white p-6 shadow-xl">
-          <h1 className="text-3xl font-bold text-black">Gerenciar obras</h1>
+        <div className="mx-auto max-w-7xl">
+          <AdminNavegacao titulo="Gerenciar obras" />
 
-          <p className="mt-2 text-sm leading-7 text-black/60">
-            Revise e ajuste os dados exibidos no site público.
-          </p>
-
-          {error ? (
-            <p className="mt-6 rounded-2xl bg-red-50 p-4 text-sm text-red-700">
-              Erro ao carregar obras: {error.message}
+          <div className="rounded-3xl bg-white p-6 shadow-xl">
+            <p className="text-sm leading-7 text-black/60">
+              Revise e ajuste os dados exibidos no site público.
             </p>
-          ) : (
-            <AdminObrasClient obras={obras || []} />
-          )}
+
+            {error ? (
+              <p className="mt-6 rounded-2xl bg-red-50 p-4 text-sm text-red-700">
+                Erro ao carregar obras: {error.message}
+              </p>
+            ) : (
+              <AdminObrasClient obras={obras || []} />
+            )}
+          </div>
         </div>
       </main>
     </AdminGuard>
