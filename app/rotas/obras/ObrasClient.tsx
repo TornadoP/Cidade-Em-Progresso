@@ -44,12 +44,212 @@ const filtrosStatus = [
 
 const filtrosOrigem = ["Oficial", "Sugestão popular"];
 
+const termosRelacionados: Record<string, string[]> = {
+  asfalto: [
+    "asfaltica",
+    "asfaltico",
+    "pavimentacao",
+    "pavimentar",
+    "pavimentada",
+    "recapeamento",
+    "rua",
+    "avenida",
+    "estrada",
+    "via",
+    "buraco",
+  ],
+  pavimentacao: [
+    "asfalto",
+    "asfaltica",
+    "asfaltico",
+    "pavimentar",
+    "recapeamento",
+    "calçamento",
+    "calcamento",
+    "rua",
+    "estrada",
+    "buraco",
+  ],
+  buraco: ["asfalto", "pavimentacao", "recapeamento", "rua", "estrada", "via"],
+  escola: [
+    "educacao",
+    "ensino",
+    "creche",
+    "colegio",
+    "infancia",
+    "sala de aula",
+    "unidade de ensino",
+  ],
+  educacao: [
+    "escola",
+    "creche",
+    "ensino",
+    "colegio",
+    "infancia",
+    "aluno",
+    "sala de aula",
+    "unidade de ensino",
+  ],
+  creche: [
+    "educacao",
+    "escola",
+    "ensino",
+    "colegio",
+    "infancia",
+    "aluno",
+    "sala de aula",
+    "unidade de ensino",
+  ],
+  saude: [
+    "hospital",
+    "ubs",
+    "posto de saude",
+    "unidade basica",
+    "medico",
+    "atendimento",
+    "samu",
+  ],
+  hospital: [
+    "saude",
+    "ubs",
+    "posto de saude",
+    "unidade basica",
+    "atendimento",
+    "medico",
+  ],
+  posto: [
+    "saude",
+    "hospital",
+    "ubs",
+    "posto de saude",
+    "unidade basica",
+    "atendimento",
+    "medico",
+  ],
+  ubs: [
+    "saude",
+    "hospital",
+    "posto",
+    "posto de saude",
+    "unidade basica",
+    "atendimento",
+    "medico",
+  ],
+  drenagem: [
+    "esgoto",
+    "saneamento",
+    "alagamento",
+    "enchente",
+    "bueiro",
+    "galeria",
+    "agua",
+  ],
+  saneamento: [
+    "esgoto",
+    "drenagem",
+    "alagamento",
+    "enchente",
+    "bueiro",
+    "galeria",
+  ],
+  alagamento: [
+    "drenagem",
+    "saneamento",
+    "esgoto",
+    "enchente",
+    "bueiro",
+    "galeria",
+    "agua",
+  ],
+  praça: [
+    "praca",
+    "lazer",
+    "parque",
+    "quadra",
+    "espaco publico",
+    "convivencia",
+  ],
+  praca: [
+    "praça",
+    "lazer",
+    "parque",
+    "quadra",
+    "espaco publico",
+    "convivencia",
+  ],
+  lazer: ["praca", "praça", "parque", "quadra", "ginásio", "ginasio", "esporte"],
+  iluminacao: [
+    "luz",
+    "poste",
+    "lampada",
+    "energia",
+    "escuro",
+    "iluminação publica",
+  ],
+  luz: ["iluminacao", "poste", "lampada", "energia", "escuro"],
+  seguranca: ["iluminacao", "luz", "poste", "escuro", "risco"],
+  ponte: ["travessia", "rio", "passagem", "estrutura metalica", "acesso"],
+  mercado: ["feira", "comercio", "box", "vendedor", "mercado municipal"],
+  predio: [
+    "prédio",
+    "sede",
+    "secretaria",
+    "patrimonio",
+    "patrimônio",
+    "reforma",
+  ],
+  reforma: [
+    "manutencao",
+    "adequacao",
+    "melhoria",
+    "recuperacao",
+    "restauracao",
+    "conserto",
+  ],
+  manutencao: [
+    "reforma",
+    "adequacao",
+    "conserto",
+    "recuperacao",
+    "melhoria",
+  ],
+};
+
 function normalizarBusca(texto: string | null | undefined) {
   return String(texto || "")
     .toLowerCase()
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
+    .replace(/ç/g, "c")
+    .replace(/\s+/g, " ")
     .trim();
+}
+
+function expandirTermosBusca(busca: string) {
+  const buscaNormalizada = normalizarBusca(busca);
+
+  if (!buscaNormalizada) return [];
+
+  const palavras = buscaNormalizada
+    .split(" ")
+    .map((palavra) => palavra.trim())
+    .filter(Boolean);
+
+  const termos = new Set<string>();
+
+  termos.add(buscaNormalizada);
+
+  for (const palavra of palavras) {
+    termos.add(palavra);
+
+    const relacionados = termosRelacionados[palavra] || [];
+
+    for (const termo of relacionados) {
+      termos.add(normalizarBusca(termo));
+    }
+  }
+
+  return Array.from(termos);
 }
 
 export default function ObrasClient({
@@ -64,7 +264,7 @@ export default function ObrasClient({
   const [tiposSelecionados, setTiposSelecionados] = useState<string[]>([]);
   const [origensSelecionadas, setOrigensSelecionadas] = useState<string[]>([]);
 
-  const termoBusca = normalizarBusca(pesquisa);
+  const termosBusca = expandirTermosBusca(pesquisa);
 
   const obrasFiltradas = obras.filter((obra) => {
     const textoDaObra = normalizarBusca(`
@@ -80,7 +280,8 @@ export default function ObrasClient({
     `);
 
     const correspondePesquisa =
-      !termoBusca || textoDaObra.includes(termoBusca);
+      termosBusca.length === 0 ||
+      termosBusca.some((termo) => textoDaObra.includes(termo));
 
     const correspondeStatus =
       statusSelecionados.length === 0 ||
@@ -320,7 +521,7 @@ export default function ObrasClient({
 
                 <input
                   type="text"
-                  placeholder="Pesquisar obra"
+                  placeholder="Busque por asfalto, escola, saúde, buraco, praça..."
                   value={pesquisa}
                   onChange={(event) => setPesquisa(event.target.value)}
                   className="w-full bg-transparent text-sm text-zinc-700 outline-none placeholder:text-zinc-400"
