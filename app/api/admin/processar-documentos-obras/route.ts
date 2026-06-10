@@ -13,6 +13,7 @@ pdfjsLib.GlobalWorkerOptions.workerSrc = "";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
+export const maxDuration = 60;
 
 type DocumentoObra = {
   id: string;
@@ -167,7 +168,7 @@ async function renderizarPaginaComoImagem(
   }
 
   const page = await pdf.getPage(numeroPagina);
-  const viewport = page.getViewport({ scale: 1.1 });
+  const viewport = page.getViewport({ scale: 1.0 });
 
   const canvas = createCanvas(
     Math.floor(viewport.width),
@@ -222,7 +223,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json().catch(() => null);
-    const limite = Number(body?.limite || 3);
+    const limite = Number(body?.limite || 1);
 
     const { data: documentos, error: erroDocumentos } = await supabaseAdmin
       .from("obras_documentos")
