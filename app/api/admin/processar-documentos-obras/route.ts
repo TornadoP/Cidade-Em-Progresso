@@ -247,6 +247,7 @@ export async function POST(request: NextRequest) {
           .from("obras_documentos")
           .update({
             status_processamento: "processando",
+            erro_processamento: null,
             processado_em: new Date().toISOString(),
           })
           .eq("id", documento.id);
@@ -288,6 +289,7 @@ export async function POST(request: NextRequest) {
           .from("obras_documentos")
           .update({
             status_processamento: "erro",
+            erro_processamento: mensagemErro,
             processado_em: new Date().toISOString(),
           })
           .eq("id", documento.id);
