@@ -211,7 +211,9 @@ function classificarTipoDocumento(url: string) {
 }
 
 function escolherImagemPrincipal(imagensPrefeitura: string[], tipo: string) {
-  return imagensPrefeitura[0] || escolherImagemPorTipo(tipo);
+  void imagensPrefeitura;
+
+  return escolherImagemPorTipo(tipo);
 }
 
 function pegarPrimeiroMatch(texto: string, regex: RegExp) {
