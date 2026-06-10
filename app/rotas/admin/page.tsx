@@ -1,6 +1,7 @@
 import Link from "next/link";
 import AdminGuard from "@/app/components/AdminGuard";
 import BotaoImportarObras from "@/app/components/BotaoImportarObras";
+import BotaoProcessarDocumentos from "@/app/components/BotaoProcessarDocumentos";
 
 export const dynamic = "force-dynamic";
 
@@ -18,8 +19,9 @@ export default function AdminPage() {
             adicionar fotos reais.
           </p>
 
-          <div className="mt-8">
+          <div className="mt-8 grid gap-4 lg:grid-cols-2">
             <BotaoImportarObras />
+            <BotaoProcessarDocumentos />
           </div>
 
           <div className="mt-8 grid gap-4 md:grid-cols-2">
