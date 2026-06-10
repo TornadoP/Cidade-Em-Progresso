@@ -35,7 +35,7 @@ export default function BotaoProcessarDocumentos() {
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-          limite: 3,
+          limite: 1,
         }),
       });
 
