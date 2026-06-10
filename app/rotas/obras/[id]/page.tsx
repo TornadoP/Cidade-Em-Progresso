@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { supabase } from "@/app/lib/supabaseClient";
 import BotaoVotar from "@/app/components/BotaoVotar";
 import AcoesUsuario from "@/app/components/AcoesUsuario";
+import GerenciarMidiasObra from "@/app/components/GerenciarMidiasObra";
 import ModalInformacoesObra from "@/app/components/ModalInformacoesObra";
 import ModalGaleriaObra from "@/app/components/ModalGaleriaObra";
 import SeloOrigemObra from "@/app/components/SeloOrigemObra";
@@ -61,7 +62,7 @@ export default async function DetalhesObraPage({
 
   const { data: imagensObra } = await supabase
     .from("obras_imagens")
-    .select("id, url, legenda, ordem")
+    .select("id, url, legenda, ordem, tipo")
     .eq("obra_id", obra.id)
     .order("ordem", { ascending: true })
     .order("created_at", { ascending: true })
@@ -346,6 +347,12 @@ export default async function DetalhesObraPage({
             </a>
           </div>
         </section>
+
+        {obra.origem === "Sugestão popular" && (
+          <section className="mt-6">
+            <GerenciarMidiasObra obraId={obra.id} />
+          </section>
+        )}
 
         {/* Segunda linha */}
         <section className="mt-6 grid gap-6 lg:grid-cols-[1.2fr_0.65fr_0.8fr]">

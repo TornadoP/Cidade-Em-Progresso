@@ -8,6 +8,7 @@ type ImagemObra = {
   url: string;
   legenda?: string | null;
   ordem?: number | null;
+  tipo?: "imagem" | "video" | string | null;
 };
 
 type Props = {
@@ -30,9 +31,15 @@ export default function ModalGaleriaObra({
     legenda?: string;
   } | null>(null);
 
-  const imagensDisponiveis = imagens || [];
+  const midiasDisponiveis = imagens || [];
+  const imagensDisponiveis = midiasDisponiveis.filter(
+    (midia) => midia.tipo !== "video",
+  );
+  const videosDisponiveis = midiasDisponiveis.filter(
+    (midia) => midia.tipo === "video",
+  );
   const temImagensReais = imagensDisponiveis.length > 0;
-  const temVideo = Boolean(videoUrl);
+  const temVideo = Boolean(videoUrl) || videosDisponiveis.length > 0;
   const temMidia = temImagensReais || temVideo;
 
   function abrirImagem(url: string, legenda?: string | null) {
@@ -208,6 +215,27 @@ export default function ModalGaleriaObra({
                   </div>
                 </button>
               ) : null}
+
+              {videosDisponiveis.map((video) => (
+                <button
+                  key={video.id}
+                  type="button"
+                  onClick={() => abrirVideo(video.url)}
+                  className="group overflow-hidden rounded-2xl bg-[#E3F1F1] text-left shadow-sm ring-1 ring-black/5 transition hover:-translate-y-1 hover:shadow-lg"
+                >
+                  <div className="flex h-44 w-full items-center justify-center bg-black text-white">
+                    <span className="rounded-full bg-white/15 px-4 py-2 text-sm font-bold">
+                      ▶ Vídeo
+                    </span>
+                  </div>
+
+                  <div className="p-3">
+                    <p className="line-clamp-2 text-sm font-semibold text-black/75">
+                      {video.legenda || "Vídeo da obra"}
+                    </p>
+                  </div>
+                </button>
+              ))}
 
               {videoUrl && (
                 <button
