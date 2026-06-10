@@ -39,6 +39,15 @@ function progressoReal(
   return Math.max(0, Math.min(100, Number.isNaN(valor) ? 0 : Math.round(valor)));
 }
 
+function gerarLinkGoogleMaps(local: string | null) {
+  const endereco =
+    local && local !== "Não informado" ? `${local}, Pedreiras - MA` : "Pedreiras - MA";
+
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+    endereco,
+  )}`;
+}
+
 export const dynamic = "force-dynamic";
 
 export default async function DetalhesObraPage({
@@ -75,6 +84,8 @@ export default async function DetalhesObraPage({
     .order("created_at", { ascending: false });
 
   const progressoObra = progressoReal(obra.status, obra.progresso);
+
+  const linkGoogleMaps = gerarLinkGoogleMaps(obra.local);
 
   const mostrarAvisoSugestaoPopular =
     obra.origem === "Sugestão popular" && progressoObra === 0;
@@ -338,7 +349,7 @@ export default async function DetalhesObraPage({
             </div>
 
             <a
-              href="https://www.google.com/maps"
+              href={linkGoogleMaps}
               target="_blank"
               rel="noopener noreferrer"
               className="mt-4 block rounded-xl bg-[#CBDfde] px-4 py-3 text-center text-sm font-semibold text-black transition hover:bg-white"
