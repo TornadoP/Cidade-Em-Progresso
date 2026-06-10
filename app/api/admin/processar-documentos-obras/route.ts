@@ -2,6 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 import { createCanvas } from "@napi-rs/canvas";
 import { createWorker } from "tesseract.js";
 import * as pdfjsLib from "pdfjs-dist/legacy/build/pdf.mjs";
+import type {
+  DocumentInitParameters,
+  PDFDocumentProxy,
+} from "pdfjs-dist/types/src/display/api";
 import { exigirAdmin } from "@/app/lib/apiAuth";
 import { supabaseAdmin } from "@/app/lib/supabaseAdmin";
 
@@ -14,6 +18,11 @@ type DocumentoObra = {
   titulo: string;
   url: string;
   tipo: string | null;
+};
+
+type ParametrosPdfNode = DocumentInitParameters & {
+  disableWorker: boolean;
+  isEvalSupported: boolean;
 };
 
 function normalizarTexto(texto?: string | null) {
@@ -138,14 +147,19 @@ async function baixarPdf(url: string) {
   return new Uint8Array(arrayBuffer);
 }
 
+function criarParametrosPdf(pdfData: Uint8Array) {
+  return {
+    data: pdfData.slice(),
+    disableWorker: true,
+    useWorkerFetch: false,
+    isEvalSupported: false,
+  } satisfies ParametrosPdfNode;
+}
+
 async function renderizarPaginaComoImagem(
-  pdfData: Uint8Array,
+  pdf: PDFDocumentProxy,
   numeroPagina: number,
 ) {
-  const pdf = await pdfjsLib.getDocument({
-    data: pdfData.slice(),
-  }).promise;
-
   if (numeroPagina > pdf.numPages) {
     return null;
   }
@@ -172,9 +186,7 @@ async function renderizarPaginaComoImagem(
 async function fazerOcrNasPrimeirasPaginas(url: string, paginasMaximas = 4) {
   const pdfData = await baixarPdf(url);
 
-  const pdf = await pdfjsLib.getDocument({
-    data: pdfData.slice(),
-  }).promise;
+  const pdf = await pdfjsLib.getDocument(criarParametrosPdf(pdfData)).promise;
 
   const totalPaginasParaLer = Math.min(pdf.numPages, paginasMaximas);
 
@@ -184,7 +196,7 @@ async function fazerOcrNasPrimeirasPaginas(url: string, paginasMaximas = 4) {
 
   try {
     for (let pagina = 1; pagina <= totalPaginasParaLer; pagina++) {
-      const imagem = await renderizarPaginaComoImagem(pdfData, pagina);
+      const imagem = await renderizarPaginaComoImagem(pdf, pagina);
 
       if (!imagem) continue;
 
