@@ -97,6 +97,31 @@ async function usuarioPodeEditarObra({
   };
 }
 
+export async function GET(
+  request: NextRequest,
+  context: { params: Promise<{ id: string }> },
+) {
+  const auth = await exigirUsuarioAutenticado(request);
+
+  if (auth.resposta) {
+    return NextResponse.json({
+      podeEditar: false,
+    });
+  }
+
+  const { id: obraId } = await context.params;
+
+  const permissao = await usuarioPodeEditarObra({
+    obraId,
+    usuarioUuid: auth.usuario.id,
+    usuarioEhAdmin: false,
+  });
+
+  return NextResponse.json({
+    podeEditar: permissao.podeEditar,
+  });
+}
+
 export async function POST(
   request: NextRequest,
   context: { params: Promise<{ id: string }> },

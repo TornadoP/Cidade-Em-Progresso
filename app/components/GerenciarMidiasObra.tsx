@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { supabase } from "@/app/lib/supabaseClient";
 
 type GerenciarMidiasObraProps = {
@@ -12,9 +12,51 @@ export default function GerenciarMidiasObra({
 }: GerenciarMidiasObraProps) {
   const [arquivo, setArquivo] = useState<File | null>(null);
   const [tornarPrincipal, setTornarPrincipal] = useState(false);
+  const [verificandoPermissao, setVerificandoPermissao] = useState(true);
+  const [podeEditar, setPodeEditar] = useState(false);
   const [carregando, setCarregando] = useState(false);
   const [mensagem, setMensagem] = useState("");
   const [erro, setErro] = useState("");
+
+  const verificarPermissao = useCallback(async () => {
+    try {
+      const { data } = await supabase.auth.getSession();
+      const token = data.session?.access_token;
+
+      if (!token) {
+        setPodeEditar(false);
+        return;
+      }
+
+      const resposta = await fetch(`/api/obras/${obraId}/midias`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!resposta.ok) {
+        setPodeEditar(false);
+        return;
+      }
+
+      const dados = await resposta.json();
+
+      setPodeEditar(Boolean(dados.podeEditar));
+    } catch {
+      setPodeEditar(false);
+    } finally {
+      setVerificandoPermissao(false);
+    }
+  }, [obraId]);
+
+  useEffect(() => {
+    const timeoutId = window.setTimeout(() => {
+      void verificarPermissao();
+    }, 0);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [verificarPermissao]);
 
   async function enviarMidia() {
     if (!arquivo) {
@@ -66,10 +108,18 @@ export default function GerenciarMidiasObra({
     }
   }
 
+  if (verificandoPermissao) {
+    return null;
+  }
+
+  if (!podeEditar) {
+    return null;
+  }
+
   return (
     <section className="rounded-3xl bg-white/80 p-6 shadow-xl ring-1 ring-black/5">
       <h2 className="text-lg font-black text-black">
-        Gerenciar imagens e vídeos da sua obra
+        Gerenciar imagens e vídeos da sua sugestão
       </h2>
 
       <p className="mt-2 text-sm leading-6 text-black/70">
