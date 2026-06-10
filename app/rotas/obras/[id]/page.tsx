@@ -72,9 +72,9 @@ function gerarLinkGoogleMaps(local: string | null) {
 function gerarEmbedGoogleMaps(local: string | null) {
   const consulta = gerarConsultaGoogleMaps(local);
 
-  return `https://www.google.com/maps?q=${encodeURIComponent(
+  return `https://maps.google.com/maps?q=${encodeURIComponent(
     consulta,
-  )}`;
+  )}&t=&z=15&ie=UTF8&iwloc=&output=embed`;
 }
 
 export const dynamic = "force-dynamic";
@@ -372,13 +372,7 @@ export default async function DetalhesObraPage({
               <h3 className="text-lg font-bold text-black">Localização</h3>
             </div>
 
-            <a
-              href={linkGoogleMaps}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block overflow-hidden rounded-2xl bg-[#E3F1F1] shadow-sm ring-1 ring-black/5 transition hover:opacity-95"
-              aria-label="Abrir localização da obra no Google Maps"
-            >
+            <div className="overflow-hidden rounded-2xl bg-[#E3F1F1] shadow-sm ring-1 ring-black/5">
               <iframe
                 src={embedGoogleMaps}
                 title={`Mapa da obra ${obra.titulo}`}
@@ -386,7 +380,7 @@ export default async function DetalhesObraPage({
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
               />
-            </a>
+            </div>
 
             <p className="mt-3 text-xs leading-5 text-black/60">
               {localizacaoValida(obra.local)
