@@ -135,42 +135,44 @@ export default function BotaoVotar({
 
   return (
     <>
-      <div className="mt-4 flex flex-wrap items-start gap-3">
-        <div className="flex min-w-[180px] flex-col gap-2">
+      <div className="mt-5 grid gap-6 lg:grid-cols-[1fr_auto] lg:items-end">
+        <div className="flex flex-wrap items-center gap-3">
           <span
-            className={`inline-flex w-fit items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold ${statusCores.fundo} ${statusCores.texto}`}
+            className={`inline-flex h-11 min-w-[180px] items-center justify-center gap-2 rounded-full px-5 text-sm font-bold ${statusCores.fundo} ${statusCores.texto}`}
           >
             <span
-              className={`h-2.5 w-2.5 rounded-full ${statusCores.bolinha}`}
+              className={`h-3 w-3 rounded-full ${statusCores.bolinha}`}
             ></span>
             {status}
           </span>
 
-          <p className="text-sm font-medium text-white/90">
+          <span className="inline-flex h-11 min-w-[120px] items-center justify-center rounded-full bg-white/15 px-5 text-sm font-bold text-white ring-1 ring-white/20">
             🗳️ {votosAtuais} voto{votosAtuais === 1 ? "" : "s"}
-          </p>
+          </span>
 
           {mensagem && (
-            <p className="max-w-[240px] text-sm font-medium text-white/90">
+            <p className="basis-full text-sm font-medium text-white/90">
               {mensagem}
             </p>
           )}
         </div>
 
-        {obraConcluida ? (
-          <div className="inline-flex items-center justify-center rounded-2xl bg-green-100 px-6 py-3 text-base font-bold text-green-800 shadow-md">
-            ✅ Obra concluída
-          </div>
-        ) : (
-          <button
-            type="button"
-            onClick={abrirConfirmacaoDeVoto}
-            disabled={carregando}
-            className="inline-flex items-center justify-center gap-2 rounded-2xl bg-blue-600 px-6 py-3 text-base font-bold text-white shadow-lg transition-all duration-300 hover:-translate-y-1 hover:scale-[1.03] hover:bg-blue-700 hover:shadow-xl disabled:cursor-not-allowed disabled:opacity-70"
-          >
-            {carregando ? "Registrando..." : "Votar nesta obra"}
-          </button>
-        )}
+        <div className="flex w-full lg:w-auto lg:justify-end">
+          {obraConcluida ? (
+            <div className="inline-flex h-14 w-full items-center justify-center rounded-2xl bg-green-100 px-8 text-base font-black text-green-800 shadow-lg lg:w-auto">
+              ✅ Obra concluída
+            </div>
+          ) : (
+            <button
+              type="button"
+              onClick={abrirConfirmacaoDeVoto}
+              disabled={carregando}
+              className="h-14 w-full rounded-2xl bg-blue-600 px-8 text-base font-black text-white shadow-lg transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-70 lg:w-auto"
+            >
+              {carregando ? "Registrando..." : "Votar nesta obra"}
+            </button>
+          )}
+        </div>
       </div>
 
       {mostrarModalLogin && (

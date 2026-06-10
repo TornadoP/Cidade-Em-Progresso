@@ -149,34 +149,43 @@ export default async function DetalhesObraPage({
           </div>
 
           {/* Card resumo */}
-          <aside className="rounded-3xl bg-[#425C59] p-6 text-white shadow-[0_25px_60px_rgba(0,0,0,0.35)] ring-1 ring-white/20">
-            {obra.origem === "Sugestão popular" && (
-              <span className="mb-3 inline-flex w-fit rounded-full bg-[#FFC222] px-4 py-2 text-sm font-bold text-black shadow-sm">
-                Sugestão popular
-              </span>
-            )}
-            <h2 className="text-2xl font-bold">{obra.titulo}</h2>
-
-            <BotaoVotar
-              fonteId={obra.fonte_id || ""}
-              status={obra.status || "Em planejamento"}
-              totalVotos={Number(obra.total_votos || 0)}
-              progresso={`${progressoObra}%`}
-            />
-
-            <div className="mt-6">
-              <div className="mb-2 flex items-center justify-between text-sm text-white/90">
-                <span>Progresso da obra</span>
-                <span className="text-xl font-bold">{progressoObra}%</span>
+          <aside className="rounded-[2rem] bg-[#425C59] p-6 text-white shadow-[0_25px_60px_rgba(0,0,0,0.35)] ring-1 ring-white/20 sm:p-8">
+            <div className="flex flex-col gap-6">
+              <div className="flex flex-wrap items-center gap-3">
+                <span className="inline-flex h-11 items-center rounded-full bg-[#FFC222] px-5 text-sm font-bold text-black shadow-sm">
+                  {obra.origem === "Sugestão popular"
+                    ? "Sugestão popular"
+                    : "Obra oficial"}
+                </span>
               </div>
 
-              <div className="h-3 w-full overflow-hidden rounded-full bg-white/20">
-                <div
-                  className={`h-full rounded-full transition-all duration-500 ${corProgresso(
-                    progressoObra,
-                  )}`}
-                  style={{ width: `${progressoObra}%` }}
-                ></div>
+              <div className="min-w-0">
+                <h2 className="max-w-4xl text-3xl font-black leading-tight tracking-tight text-white sm:text-4xl">
+                  {obra.titulo}
+                </h2>
+
+                <BotaoVotar
+                  fonteId={obra.fonte_id || ""}
+                  status={obra.status || "Em planejamento"}
+                  totalVotos={Number(obra.total_votos || 0)}
+                  progresso={`${progressoObra}%`}
+                />
+              </div>
+
+              <div className="mt-6">
+                <div className="mb-2 flex items-center justify-between text-sm font-bold text-white">
+                  <span>Progresso da obra</span>
+                  <span>{progressoObra}%</span>
+                </div>
+
+                <div className="h-3 w-full overflow-hidden rounded-full bg-white/20">
+                  <div
+                    className={`h-full rounded-full transition-all duration-500 ${corProgresso(
+                      progressoObra,
+                    )}`}
+                    style={{ width: `${progressoObra}%` }}
+                  ></div>
+                </div>
               </div>
             </div>
 
