@@ -40,6 +40,7 @@ export default function GerenciarAdmins() {
     }
 
     const resposta = await fetch("/api/admin/usuarios-admin", {
+      cache: "no-store",
       headers: {
         Authorization: `Bearer ${token}`,
       },

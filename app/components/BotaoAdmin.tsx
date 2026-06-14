@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { supabase } from "@/app/lib/supabaseClient";
 
@@ -8,44 +8,67 @@ export default function BotaoAdmin() {
   const [ehAdmin, setEhAdmin] = useState(false);
   const [carregando, setCarregando] = useState(true);
 
-  useEffect(() => {
-    async function verificarAdmin() {
-      try {
-        const { data: sessao } = await supabase.auth.getSession();
-        const token = sessao.session?.access_token;
-
-        if (!token) {
-          setEhAdmin(false);
-          return;
-        }
-
-        const resposta = await fetch("/api/admin/verificar", {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        setEhAdmin(resposta.ok);
-      } catch {
-        setEhAdmin(false);
-      } finally {
-        setCarregando(false);
-      }
+  const verificarAdmin = useCallback(async (mostrarCarregando = false) => {
+    if (mostrarCarregando) {
+      setCarregando(true);
     }
 
-    verificarAdmin();
+    try {
+      const { data: sessao } = await supabase.auth.getSession();
+      const token = sessao.session?.access_token;
+
+      if (!token) {
+        setEhAdmin(false);
+        return;
+      }
+
+      const resposta = await fetch("/api/admin/verificar", {
+        method: "GET",
+        cache: "no-store",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      setEhAdmin(resposta.ok);
+    } catch {
+      setEhAdmin(false);
+    } finally {
+      setCarregando(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    const timeoutId = window.setTimeout(() => {
+      void verificarAdmin(true);
+    }, 0);
+
+    function verificarAoFocar() {
+      void verificarAdmin();
+    }
+
+    function verificarAoVoltarParaAba() {
+      if (document.visibilityState === "visible") {
+        void verificarAdmin();
+      }
+    }
 
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(() => {
-      verificarAdmin();
+      void verificarAdmin();
     });
 
+    window.addEventListener("focus", verificarAoFocar);
+    document.addEventListener("visibilitychange", verificarAoVoltarParaAba);
+
     return () => {
+      window.clearTimeout(timeoutId);
       subscription.unsubscribe();
+      window.removeEventListener("focus", verificarAoFocar);
+      document.removeEventListener("visibilitychange", verificarAoVoltarParaAba);
     };
-  }, []);
+  }, [verificarAdmin]);
 
   if (carregando || !ehAdmin) {
     return null;

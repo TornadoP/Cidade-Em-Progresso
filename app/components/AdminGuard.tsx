@@ -1,7 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { supabase } from "@/app/lib/supabaseClient";
 
@@ -14,43 +14,96 @@ export default function AdminGuard({ children }: Props) {
   const [autorizado, setAutorizado] = useState(false);
   const [email, setEmail] = useState<string | null>(null);
 
-  useEffect(() => {
-    async function verificarAdmin() {
-      try {
-        const { data: usuarioData } = await supabase.auth.getUser();
-        const usuario = usuarioData.user;
+  const verificarAdmin = useCallback(async (mostrarCarregando = false) => {
+    if (mostrarCarregando) {
+      setCarregando(true);
+    }
 
-        setEmail(usuario?.email || null);
+    try {
+      const { data: usuarioData } = await supabase.auth.getUser();
+      const usuario = usuarioData.user;
 
-        if (!usuario?.email) {
-          setAutorizado(false);
-          return;
-        }
+      setEmail(usuario?.email || null);
 
-        const { data: sessaoData } = await supabase.auth.getSession();
-        const token = sessaoData.session?.access_token;
-
-        if (!token) {
-          setAutorizado(false);
-          return;
-        }
-
-        const resposta = await fetch("/api/admin/verificar", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        setAutorizado(resposta.ok);
-      } catch {
+      if (!usuario?.email) {
         setAutorizado(false);
-      } finally {
-        setCarregando(false);
+        return;
+      }
+
+      const { data: sessaoData } = await supabase.auth.getSession();
+      const token = sessaoData.session?.access_token;
+
+      if (!token) {
+        setAutorizado(false);
+        return;
+      }
+
+      const resposta = await fetch("/api/admin/verificar", {
+        cache: "no-store",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      setAutorizado(resposta.ok);
+    } catch {
+      setAutorizado(false);
+    } finally {
+      setCarregando(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    const timeoutId = window.setTimeout(() => {
+      void verificarAdmin(true);
+    }, 0);
+
+    function verificarAoFocar() {
+      void verificarAdmin();
+    }
+
+    function verificarAoVoltarParaAba() {
+      if (document.visibilityState === "visible") {
+        void verificarAdmin();
       }
     }
 
-    verificarAdmin();
-  }, []);
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange(() => {
+      void verificarAdmin();
+    });
+
+    window.addEventListener("focus", verificarAoFocar);
+    document.addEventListener("visibilitychange", verificarAoVoltarParaAba);
+
+    return () => {
+      window.clearTimeout(timeoutId);
+      subscription.unsubscribe();
+      window.removeEventListener("focus", verificarAoFocar);
+      document.removeEventListener("visibilitychange", verificarAoVoltarParaAba);
+    };
+  }, [verificarAdmin]);
+
+  useEffect(() => {
+    if (!autorizado) {
+      return;
+    }
+
+    function verificarAoVoltar() {
+      void verificarAdmin();
+    }
+
+    window.addEventListener("pageshow", verificarAoVoltar);
+
+    return () => {
+      window.removeEventListener("pageshow", verificarAoVoltar);
+    };
+  }, [autorizado, verificarAdmin]);
+
+  async function tentarNovamente() {
+    await verificarAdmin(true);
+  }
 
   if (carregando) {
     return (
@@ -78,12 +131,22 @@ export default function AdminGuard({ children }: Props) {
             </p>
           )}
 
-          <Link
-            href="/rotas/login?voltar=/rotas/admin"
-            className="mt-5 inline-flex rounded-xl bg-[#FFC222] px-5 py-3 text-sm font-bold text-black"
-          >
-            Ir para login
-          </Link>
+          <div className="mt-5 flex flex-wrap gap-3">
+            <button
+              type="button"
+              onClick={tentarNovamente}
+              className="rounded-xl bg-[#425C59] px-5 py-3 text-sm font-bold text-white"
+            >
+              Verificar novamente
+            </button>
+
+            <Link
+              href="/rotas/login?voltar=/rotas/admin"
+              className="rounded-xl bg-[#FFC222] px-5 py-3 text-sm font-bold text-black"
+            >
+              Ir para login
+            </Link>
+          </div>
         </div>
       </main>
     );
