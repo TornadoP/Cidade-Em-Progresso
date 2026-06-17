@@ -50,8 +50,7 @@ export default function ParticiparPage() {
   const TAMANHO_MAXIMO_VIDEO_MB = 50;
   const QUANTIDADE_MAXIMA_IMAGENS = 5;
 
-  const TAMANHO_MAXIMO_IMAGEM_BYTES =
-    TAMANHO_MAXIMO_IMAGEM_MB * 1024 * 1024;
+  const TAMANHO_MAXIMO_IMAGEM_BYTES = TAMANHO_MAXIMO_IMAGEM_MB * 1024 * 1024;
 
   const TAMANHO_MAXIMO_VIDEO_BYTES = TAMANHO_MAXIMO_VIDEO_MB * 1024 * 1024;
 
@@ -145,7 +144,9 @@ export default function ParticiparPage() {
 
   function podeAvancarEtapa() {
     if (etapa === 1) {
-      return Boolean(titulo.trim() && local.trim() && bairro.trim() && categoria);
+      return Boolean(
+        titulo.trim() && local.trim() && bairro.trim() && categoria,
+      );
     }
 
     if (etapa === 2) {
@@ -162,7 +163,9 @@ export default function ParticiparPage() {
 
   function avancarEtapa() {
     if (!podeAvancarEtapa()) {
-      setErro("Preencha os campos obrigatórios desta etapa antes de continuar.");
+      setErro(
+        "Preencha os campos obrigatórios desta etapa antes de continuar.",
+      );
       return;
     }
 
@@ -327,7 +330,7 @@ export default function ParticiparPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#E3F1F1] to-[#CBDfde] p-4 font-sans sm:p-6">
-      <main className="mx-auto w-full max-w-6xl rounded-3xl bg-[#C9D9DB] p-6 shadow-[0_25px_80px_rgba(0,0,0,0.45)]">
+      <main className="mx-auto w-full max-w-6xl rounded-3xl bg-[#D9EAF7] p-6 shadow-[0_25px_80px_rgba(0,0,0,0.45)]">
         <header className="mb-8 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
           <div>
             <h1 className="text-2xl font-bold text-black">Participar</h1>

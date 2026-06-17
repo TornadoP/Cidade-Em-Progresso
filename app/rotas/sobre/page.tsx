@@ -4,7 +4,7 @@ import AcoesUsuario from "@/app/components/AcoesUsuario";
 export default function SobrePage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#E3F1F1] to-[#CBDfde] p-4 font-sans sm:p-6">
-      <main className="mx-auto w-full max-w-6xl rounded-3xl bg-[#C9D9DB] p-6 shadow-[0_25px_80px_rgba(0,0,0,0.45)]">
+      <main className="mx-auto w-full max-w-6xl rounded-3xl bg-[#D9EAF7] p-6 shadow-[0_25px_80px_rgba(0,0,0,0.45)]">
         <header className="mb-8 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
           <div>
             <h1 className="text-2xl font-bold text-black">Sobre o Projeto</h1>

@@ -36,7 +36,10 @@ function progressoReal(
       ? Number(progresso.replace("%", ""))
       : Number(progresso);
 
-  return Math.max(0, Math.min(100, Number.isNaN(valor) ? 0 : Math.round(valor)));
+  return Math.max(
+    0,
+    Math.min(100, Number.isNaN(valor) ? 0 : Math.round(valor)),
+  );
 }
 
 function localizacaoValida(local: string | null) {
@@ -122,7 +125,7 @@ export default async function DetalhesObraPage({
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#E3F1F1] to-[#CBDfde] p-4 font-sans sm:p-6">
-      <main className="mx-auto w-full max-w-7xl rounded-3xl bg-[#C9D9DB] p-6 shadow-[0_25px_80px_rgba(0,0,0,0.45)]">
+      <main className="mx-auto w-full max-w-7xl rounded-3xl bg-[#D9EAF7] p-6 shadow-[0_25px_80px_rgba(0,0,0,0.45)]">
         {/* Topo */}
         <header className="mb-8 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
           <div>
@@ -465,9 +468,7 @@ export default async function DetalhesObraPage({
                     className="flex items-center justify-between gap-4 rounded-2xl bg-[#E3F1F1] px-4 py-3 text-sm font-semibold text-black transition hover:bg-[#d4e7e7]"
                   >
                     <span>{documento.titulo}</span>
-                    <span className="shrink-0 text-[#425C59]">
-                      Abrir PDF →
-                    </span>
+                    <span className="shrink-0 text-[#425C59]">Abrir PDF →</span>
                   </a>
                 ))}
               </div>

@@ -177,7 +177,15 @@ const termosRelacionados: Record<string, string[]> = {
     "espaco publico",
     "convivencia",
   ],
-  lazer: ["praca", "praça", "parque", "quadra", "ginásio", "ginasio", "esporte"],
+  lazer: [
+    "praca",
+    "praça",
+    "parque",
+    "quadra",
+    "ginásio",
+    "ginasio",
+    "esporte",
+  ],
   iluminacao: [
     "luz",
     "poste",
@@ -206,13 +214,7 @@ const termosRelacionados: Record<string, string[]> = {
     "restauracao",
     "conserto",
   ],
-  manutencao: [
-    "reforma",
-    "adequacao",
-    "conserto",
-    "recuperacao",
-    "melhoria",
-  ],
+  manutencao: ["reforma", "adequacao", "conserto", "recuperacao", "melhoria"],
 };
 
 function normalizarBusca(texto: string | null | undefined) {
@@ -328,7 +330,10 @@ export default function ObrasClient({
         ? Number(progresso.replace("%", ""))
         : Number(progresso);
 
-    return Math.max(0, Math.min(100, Number.isNaN(valor) ? 0 : Math.round(valor)));
+    return Math.max(
+      0,
+      Math.min(100, Number.isNaN(valor) ? 0 : Math.round(valor)),
+    );
   }
 
   function alternarFiltro(
@@ -358,7 +363,7 @@ export default function ObrasClient({
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-[#E3F1F1] to-[#CBDfde] p-4 font-sans sm:p-6">
-      <main className="w-full max-w-6xl overflow-hidden rounded-3xl bg-[#C9D9DB] p-6 shadow-[0_25px_80px_rgba(0,0,0,0.45)]">
+      <main className="w-full max-w-6xl overflow-hidden rounded-3xl bg-[#D9EAF7] p-6 shadow-[0_25px_80px_rgba(0,0,0,0.45)]">
         {/* Navegação superior */}
         <header className="mb-8 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
           <h1 className="text-2xl font-bold text-black">Cidade em Progresso</h1>
